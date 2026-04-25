@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formation OSINT — Service RLF · Croix-Rouge de Belgique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --red: #CC0000;
+    --red-dark: #990000;
+    --red-light: #F9ECEC;
+    --red-mid: #E8C0C0;
+    --black: #1A1A1A;
+    --grey-dark: #444;
+    --grey-mid: #888;
+    --grey-light: #F4F4F4;
+    --border: #E0E0E0;
+    --white: #FFFFFF;
+    --green: #2D6A2D;
+    --green-light: #EAF4EA;
+    --orange: #B85A00;
+    --orange-light: #FFF3E6;
+    --blue: #1A3F6F;
+    --blue-light: #E8EFF8;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── TOPBAR ── */
+  #topbar {
+    background: var(--red);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 56px;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  #topbar .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    letter-spacing: 0.01em;
+  }
+  #topbar .cross {
+    font-size: 22px;
+    font-weight: 400;
+  }
+  #topbar nav {
+    display: flex;
+    gap: 4px;
+  }
+  #topbar nav button {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.85);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  #topbar nav button:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+  #topbar nav button.active { background: var(--white); color: var(--red); }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed;
+    top: 56px; left: 0; bottom: 0;
+    width: 240px;
+    background: var(--grey-light);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 50;
+    padding: 16px 0;
+  }
+  #sidebar .day-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    padding: 12px 20px 4px;
+  }
+  #sidebar button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 8px 20px 8px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--grey-dark);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+    line-height: 1.4;
+  }
+  #sidebar button:hover { background: var(--red-light); color: var(--red); border-left-color: var(--red-mid); }
+  #sidebar button.active { background: var(--red-light); color: var(--red); border-left-color: var(--red); font-weight: 600; }
+  #sidebar .locked { opacity: 0.45; cursor: not-allowed; }
+  #sidebar .locked:hover { background: none; color: var(--grey-dark); border-left-color: transparent; }
+  #sidebar .sidebar-sep { height: 1px; background: var(--border); margin: 8px 16px; }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: 240px;
+    margin-top: 56px;
+    min-height: calc(100vh - 56px);
+  }
+  .page { display: none; padding: 40px 48px; max-width: 860px; }
+  .page.active { display: block; }
+
+  /* ── TYPOGRAPHY ── */
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--black);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--red);
+    margin: 32px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--red-mid);
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--black);
+    margin: 20px 0 8px;
+  }
+  p { margin-bottom: 12px; color: var(--grey-dark); }
+  .lead {
+    font-size: 16px;
+    color: var(--grey-mid);
+    margin-bottom: 28px;
+    font-weight: 300;
+    border-left: 3px solid var(--red);
+    padding-left: 16px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .card-red { border-left: 4px solid var(--red); }
+  .card-blue { border-left: 4px solid var(--blue); background: var(--blue-light); }
+  .card-green { border-left: 4px solid var(--green); background: var(--green-light); }
+  .card-orange { border-left: 4px solid var(--orange); background: var(--orange-light); }
+
+  /* ── TAGS ── */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 6px;
+    margin-bottom: 12px;
+  }
+  .tag-red { background: var(--red); color: var(--white); }
+  .tag-grey { background: var(--grey-light); color: var(--grey-mid); border: 1px solid var(--border); }
+  .tag-blue { background: var(--blue); color: var(--white); }
+
+  /* ── PÉRIODE BADGE ── */
+  .period-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    background: var(--red);
+    color: var(--white);
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+  }
+
+  /* ── MODULE ITEM ── */
+  .module-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .module-item:last-child { border-bottom: none; }
+  .module-content { flex: 1; }
+  .module-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .module-desc { font-size: 13px; color: var(--grey-mid); line-height: 1.5; }
+
+  /* ── PLACEHOLDER ── */
+  .placeholder {
+    background: var(--grey-light);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: var(--grey-mid);
+    font-style: italic;
+    margin: 12px 0;
+  }
+
+  /* ── TOOL LINK ── */
+  .tool-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--grey-light);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: var(--black);
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .tool-link:hover { background: var(--red-light); border-color: var(--red-mid); color: var(--red); }
+  .tool-link .tool-icon { font-size: 16px; }
+  .tool-link .tool-name { font-weight: 600; }
+  .tool-link .tool-desc { color: var(--grey-mid); font-size: 12px; }
+
+  /* ── QUIZ ── */
+  .quiz-container { margin-top: 8px; }
+  .quiz-q {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .quiz-q .q-text {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 14px;
+    color: var(--black);
+  }
+  .quiz-q label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--grey-dark);
+    transition: background 0.1s;
+    margin-bottom: 4px;
+    border: 1px solid transparent;
+  }
+  .quiz-q label:hover { background: var(--grey-light); }
+  .quiz-q label input { margin-top: 2px; flex-shrink: 0; }
+  .quiz-q label.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 500; }
+  .quiz-q label.wrong { background: #FEF0F0; border-color: #E88; color: #C00; }
+  .quiz-q label.reveal-correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .quiz-feedback {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: var(--green-light); color: var(--green); }
+  .quiz-feedback.ko { background: #FEF0F0; color: #C00; }
+  .btn-quiz {
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background 0.15s;
+  }
+  .btn-quiz:hover { background: var(--red-dark); }
+  .quiz-score {
+    background: var(--red-light);
+    border: 1px solid var(--red-mid);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--red);
+    text-align: center;
+    margin-top: 16px;
+    display: none;
+  }
+  .quiz-score.show { display: block; }
+
+  /* ── LOCK SCREEN ── */
+  .lock-screen {
+    text-align: center;
+    padding: 60px 40px;
+  }
+  .lock-icon { font-size: 48px; margin-bottom: 16px; }
+  .lock-screen h2 { border: none; color: var(--black); text-align: center; }
+  .lock-screen p { color: var(--grey-mid); margin-bottom: 24px; }
+  .lock-input {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .lock-input input {
+    font-family: 'DM Mono', monospace;
+    font-size: 24px;
+    text-align: center;
+    width: 120px;
+    padding: 10px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    letter-spacing: 0.3em;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .lock-input input:focus { border-color: var(--red); }
+  .lock-input input.error { border-color: #C00; animation: shake 0.3s; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  .btn-unlock {
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-unlock:hover { background: var(--red-dark); }
+
+  /* ── HOME ── */
+  .home-hero {
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+    color: var(--white);
+    padding: 48px 48px 40px;
+    margin: -40px -48px 32px;
+  }
+  .home-hero .cross-large { font-size: 40px; margin-bottom: 12px; display: block; }
+  .home-hero h1 { color: var(--white); font-size: 28px; }
+  .home-hero .subtitle { color: rgba(255,255,255,0.8); font-size: 15px; margin-top: 6px; font-weight: 300; }
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .home-day-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-top: 3px solid var(--red);
+  }
+  .home-day-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .home-day-card .day-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .home-day-card h3 { font-size: 14px; margin-bottom: 8px; color: var(--black); }
+  .home-day-card .day-periods { font-size: 12px; color: var(--grey-mid); }
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .info-item {
+    background: var(--grey-light);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .info-item .info-label { font-size: 11px; color: var(--grey-mid); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .info-item .info-val { font-size: 14px; font-weight: 500; color: var(--black); }
+
+  /* ── RESSOURCES ── */
+  .tool-section { margin-bottom: 28px; }
+  .tool-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--grey-mid); margin-bottom: 10px; }
+  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  /* ── GLOSSAIRE ── */
+  .glossary-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .glossary-term { font-weight: 600; font-size: 14px; color: var(--red); font-family: 'DM Mono', monospace; }
+  .glossary-def { font-size: 13px; color: var(--grey-dark); margin-top: 3px; }
+
+  /* ── PROGRESS ── */
+  .day-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    color: var(--grey-mid);
+  }
+  .prog-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .prog-dot.done { background: var(--red); }
+
+  /* ── SCROLLBAR ── */
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-track { background: transparent; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="brand">
+    <span class="cross">✛</span>
+    <span>Formation OSINT · RLF</span>
+  </div>
+  <nav>
+    <button class="active" onclick="showSection('home')">Accueil</button>
+    <button onclick="showSection('jour1')">Jour 1</button>
+    <button onclick="showSection('jour2')">Jour 2</button>
+    <button onclick="showSection('jour3')">Jour 3</button>
+    <button onclick="showSection('ressources')">Ressources</button>
+  </nav>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="day-label">Général</div>
+  <button onclick="showPage('home')" class="active">🏠 Accueil</button>
+
+  <div class="sidebar-sep"></div>
+  <div class="day-label">Jour 1 — Fondamentaux</div>
+  <button onclick="showPage('j1p1')">P1 · Introduction OSINT</button>
+  <button onclick="showPage('j1p2')">P2 · Fonctionnement d'Internet</button>
+  <button onclick="showPage('j1p3')">P3 · Cadre légal & RGPD</button>
+  <button onclick="showPage('j1p4')">P4 · Cycle du renseignement</button>
+  <button onclick="showPage('j1p5')">P5 · Méthodologie OSINT</button>
+  <button onclick="showPage('j1p6')">P6 · Recherche avancée</button>
+  <button onclick="showPage('quiz1')" style="color:var(--red);font-weight:600">✅ Quiz Jour 1</button>
+
+  <div class="sidebar-sep"></div>
+  <div class="day-label">Jour 2 — Outils terrain</div>
+  <button onclick="showPage('j2ma')">MOD A · Veille & crises</button>
+  <button onclick="showPage('j2mb')">MOD B · Recherche multilingue</button>
+  <button onclick="showPage('j2mc')">MOD C · Vérification de contenu</button>
+  <button onclick="showPage('quiz2')" style="color:var(--red);font-weight:600">✅ Quiz Jour 2</button>
+
+  <div class="sidebar-sep"></div>
+  <div class="day-label">Jour 3 — Sécurité & pratique</div>
+  <button onclick="showPage('j3md')">MOD D · Sécurité numérique</button>
+  <button onclick="showPage('j3me')">MOD E · GEOINT</button>
+  <button onclick="showPage('j3mg')">MOD G · Environnements isolés</button>
+  <button onclick="showPage('j3consol')">Consolidation</button>
+  <button onclick="showPage('alwada')" class="locked" id="btn-alwada">🔒 Exercice Al-Wada</button>
+
+  <div class="sidebar-sep"></div>
+  <div class="day-label">Ressources</div>
+  <button onclick="showPage('outils')">🔧 Boîte à outils</button>
+  <button onclick="showPage('glossaire')">📖 Glossaire</button>
+  <button onclick="showPage('docs')">📄 Documents</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+  <!-- HOME -->
+  <div id="page-home" class="page active">
+    <div class="home-hero">
+      <span class="cross-large">✛</span>
+      <h1>Formation OSINT</h1>
+      <div class="subtitle">Service Rétablissement des Liens Familiaux · Croix-Rouge de Belgique</div>
+    </div>
+
+    <div class="home-grid">
+      <div class="home-day-card" onclick="showPage('j1p1')">
+        <div class="day-num">Jour 1</div>
+        <h3>Fondamentaux & cadre méthodologique</h3>
+        <div class="day-periods">6 périodes · Introduction, légal, méthode, recherche avancée</div>
+      </div>
+      <div class="home-day-card" onclick="showPage('j2ma')">
+        <div class="day-num">Jour 2</div>
+        <h3>Outils terrain RLF</h3>
+        <div class="day-periods">6 périodes · Veille, multilinguisme, fact-checking</div>
+      </div>
+      <div class="home-day-card" onclick="showPage('j3md')">
+        <div class="day-num">Jour 3</div>
+        <h3>Sécurité, GEOINT & exercice final</h3>
+        <div class="day-periods">6 périodes · Sécurité, géolocalisation, scénario Al-Wada</div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-label">Dates</div>
+        <div class="info-val">25 août 2026 · 3 journées</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Lieu</div>
+        <div class="info-val">Croix-Rouge de Belgique · Bruxelles</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Participants</div>
+        <div class="info-val">Jusqu'à 10 agents RLF</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Format</div>
+        <div class="info-val">Présentiel · 6 périodes × 50 min/jour</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOUR 1 : P1 -->
+  <div id="page-j1p1" class="page">
+    <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 1</span>
+    <h1>Introduction à l'OSINT</h1>
+    <p class="lead">Comprendre ce qu'est le renseignement en sources ouvertes, son périmètre et ses applications concrètes dans le contexte RLF.</p>
+    <h2>Concepts clés</h2>
+    <div class="placeholder">[ À compléter : définition OSINT, RENS vs OSINT, typologies de sources (HUMINT, SIGINT, OSINT), principes fondamentaux ]</div>
+    <h2>Applications RLF</h2>
+    <div class="card card-blue">
+      <h3>Pourquoi l'OSINT pour le service RLF ?</h3>
+      <div class="placeholder">[ À compléter : cas concrets d'usage — recherche de personnes, vérification d'identité, contexte géographique ]</div>
+    </div>
+    <h2>Ce que l'OSINT n'est pas</h2>
+    <div class="card card-orange">
+      <div class="placeholder">[ À compléter : limites légales, éthiques, techniques — ce qu'on ne peut pas faire ]</div>
+    </div>
+  </div>
+
+  <!-- JOUR 1 : P2 -->
+  <div id="page-j1p2" class="page">
+    <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 2</span>
+    <h1>Fonctionnement d'Internet</h1>
+    <p class="lead">Comprendre l'infrastructure du web pour mieux en exploiter les sources et protéger son empreinte numérique.</p>
+    <h2>Infrastructure & traces</h2>
+    <div class="placeholder">[ À compléter : DNS, adresses IP, cookies, métadonnées, empreinte numérique ]</div>
+    <h2>Ce que vous laissez derrière vous</h2>
+    <div class="card card-orange">
+      <div class="placeholder">[ À compléter : logs, historique, traceurs tiers, risques pour les bénéficiaires ]</div>
+    </div>
+  </div>
+
+  <!-- JOUR 1 : P3 -->
+  <div id="page-j1p3" class="page">
+    <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 3</span>
+    <h1>Cadre légal & RGPD</h1>
+    <p class="lead">Ce qu'on peut faire, ce qu'on ne peut pas faire — dans le contexte juridique belge et humanitaire.</p>
+    <h2>Cadre légal belge</h2>
+    <div class="placeholder">[ À compléter : loi du 30 juillet 2018, RGPD appliqué aux ONG, jurisprudence pertinente ]</div>
+    <h2>Principes Croix-Rouge applicables</h2>
+    <div class="card card-red">
+      <div class="placeholder">[ À compléter : consentement, confidentialité, minimisation des données, protection des bénéficiaires ]</div>
+    </div>
+    <h2>Droit international humanitaire</h2>
+    <div class="placeholder">[ À compléter : DIH et données personnelles, obligations du réseau CICR ]</div>
+  </div>
+
+  <!-- JOUR 1 : P4 -->
+  <div id="page-j1p4" class="page">
+    <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 4</span>
+    <h1>Cycle du renseignement</h1>
+    <p class="lead">Planifier une collecte d'informations de façon méthodique, appliquée à une fiche RLF type.</p>
+    <h2>Les 5 phases</h2>
+    <div class="placeholder">[ À compléter : orientation, collecte, traitement, analyse, diffusion — avec exemples RLF ]</div>
+    <h2>Plan de collecte</h2>
+    <div class="placeholder">[ À compléter : définition des mots-clés, stratégie de recherche, priorisation des sources ]</div>
+    <h2>Exercice guidé</h2>
+    <div class="card card-blue">
+      <div class="placeholder">[ À compléter : construire un plan de collecte à partir d'une fiche RLF fictive ]</div>
+    </div>
+  </div>
+
+  <!-- JOUR 1 : P5 -->
+  <div id="page-j1p5" class="page">
+    <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 5</span>
+    <h1>Méthodologie OSINT</h1>
+    <p class="lead">Structurer une investigation RLF avec des outils de cartographie de l'information.</p>
+    <h2>Mind Mapping</h2>
+    <div class="placeholder">[ À compléter : construction d'une carte mentale pour un dossier RLF, outils recommandés ]</div>
+    <h2>Cartographie de l'information</h2>
+    <div class="placeholder">[ À compléter : schémas de liens, identification des lacunes, sources à croiser ]</div>
+  </div>
+
+  <!-- JOUR 1 : P6 -->
+  <div id="page-j1p6" class="page">
+    <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 6</span>
+    <h1>Recherche avancée</h1>
+    <p class="lead">Maîtriser les opérateurs de recherche pour trouver ce que Google ne montre pas en première page.</p>
+    <h2>Opérateurs booléens</h2>
+    <div class="placeholder">[ À compléter : AND, OR, NOT, guillemets, parenthèses — avec exemples ]</div>
+    <h2>Google Dorking</h2>
+    <div class="card card-blue">
+      <h3>Opérateurs essentiels</h3>
+      <div class="placeholder">[ À compléter : site:, filetype:, inurl:, intitle:, before:, after:, cache: — tableau avec exemples RLF ]</div>
+    </div>
+    <h2>Exercice guidé</h2>
+    <div class="card card-green">
+      <div class="placeholder">[ À compléter : exercices sur des profils fictifs en contexte migratoire — variantes de noms arabes ]</div>
+    </div>
+    <h2>Yandex et autres moteurs</h2>
+    <div class="placeholder">[ À compléter : quand utiliser Yandex, DuckDuckGo, Bing — avantages pour la recherche arabe ]</div>
+  </div>
+
+  <!-- QUIZ JOUR 1 -->
+  <div id="page-quiz1" class="page">
+    <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Quiz de consolidation</span>
+    <h1>Quiz — Fondamentaux</h1>
+    <p class="lead">8 questions pour consolider les acquis du Jour 1. Répondez individuellement avant de valider.</p>
+    <div class="quiz-container" id="quiz1-container">
+
+      <div class="quiz-q" data-correct="b">
+        <div class="q-text">1. Que signifie l'acronyme OSINT ?</div>
+        <label><input type="radio" name="q1" value="a"> Open Source Internet</label>
+        <label><input type="radio" name="q1" value="b"> Open Source Intelligence</label>
+        <label><input type="radio" name="q1" value="c"> Online Search & Investigation Network</label>
+        <label><input type="radio" name="q1" value="d"> Operational Security Intelligence</label>
+        <div class="quiz-feedback">L'OSINT désigne le renseignement à partir de sources ouvertes — informations légalement accessibles au public.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="c">
+        <div class="q-text">2. Dans le contexte RGPD, quelle base légale s'applique le plus souvent aux recherches RLF ?</div>
+        <label><input type="radio" name="q2" value="a"> Le consentement explicite de la personne recherchée</label>
+        <label><input type="radio" name="q2" value="b"> L'intérêt commercial du responsable de traitement</label>
+        <label><input type="radio" name="q2" value="c"> L'intérêt vital de la personne concernée ou d'une autre personne</label>
+        <label><input type="radio" name="q2" value="d"> La loi nationale sur la sécurité publique</label>
+        <div class="quiz-feedback">L'article 9(2)(c) du RGPD permet le traitement de données sensibles lorsque cela est nécessaire pour sauvegarder les intérêts vitaux d'une personne.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="a">
+        <div class="q-text">3. Quel opérateur Google Dorking permet de limiter la recherche à un site spécifique ?</div>
+        <label><input type="radio" name="q3" value="a"> site:</label>
+        <label><input type="radio" name="q3" value="b"> domain:</label>
+        <label><input type="radio" name="q3" value="c"> web:</label>
+        <label><input type="radio" name="q3" value="d"> host:</label>
+        <div class="quiz-feedback">L'opérateur site: limite les résultats à un domaine précis. Ex : site:facebook.com "Fatima Al-Rashid"</div>
+      </div>
+
+      <div class="quiz-q" data-correct="d">
+        <div class="q-text">4. Quelle est la première phase du cycle du renseignement ?</div>
+        <label><input type="radio" name="q4" value="a"> Collecte</label>
+        <label><input type="radio" name="q4" value="b"> Analyse</label>
+        <label><input type="radio" name="q4" value="c"> Diffusion</label>
+        <label><input type="radio" name="q4" value="d"> Orientation</label>
+        <div class="quiz-feedback">Le cycle commence par l'orientation : définir ce qu'on cherche, pourquoi, et comment. Sans cette étape, la collecte est aveugle.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="b">
+        <div class="q-text">5. Pourquoi est-il important de tester plusieurs variantes orthographiques d'un nom arabe ?</div>
+        <label><input type="radio" name="q5" value="a"> Pour contourner les restrictions de confidentialité Facebook</label>
+        <label><input type="radio" name="q5" value="b"> Parce que la translittération arabe-latin n'est pas standardisée et produit de nombreuses variantes</label>
+        <label><input type="radio" name="q5" value="c"> Pour éviter les faux positifs dans les résultats</label>
+        <label><input type="radio" name="q5" value="d"> Car Google pénalise les recherches en arabe</label>
+        <div class="quiz-feedback">Un même prénom arabe peut s'écrire de 5 à 10 façons différentes en caractères latins selon les pays et les habitudes de translittération.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="c">
+        <div class="q-text">6. Lequel de ces éléments NE fait PAS partie des sources OSINT ?</div>
+        <label><input type="radio" name="q6" value="a"> Un article de presse en ligne</label>
+        <label><input type="radio" name="q6" value="b"> Un profil Facebook public</label>
+        <label><input type="radio" name="q6" value="c"> Un fichier confidentiel obtenu par hacking</label>
+        <label><input type="radio" name="q6" value="d"> Une image satellite publique</label>
+        <div class="quiz-feedback">L'OSINT se limite aux sources légalement accessibles. Toute information obtenue illégalement sort du périmètre OSINT et engage la responsabilité pénale.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="a">
+        <div class="q-text">7. Que désigne le principe de "minimisation des données" dans le contexte RLF ?</div>
+        <label><input type="radio" name="q7" value="a"> Ne collecter que les données strictement nécessaires à la recherche en cours</label>
+        <label><input type="radio" name="q7" value="b"> Supprimer toutes les données après 30 jours</label>
+        <label><input type="radio" name="q7" value="c"> Limiter la recherche à trois sources maximum</label>
+        <label><input type="radio" name="q7" value="d"> Ne pas partager les données avec les Sociétés nationales</label>
+        <div class="quiz-feedback">Le principe de minimisation (art. 5 RGPD) impose de ne traiter que les données adéquates, pertinentes et limitées à ce qui est nécessaire au regard des finalités.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="d">
+        <div class="q-text">8. Quel moteur de recherche est particulièrement recommandé pour les recherches en cyrillique ou arabe ?</div>
+        <label><input type="radio" name="q8" value="a"> DuckDuckGo</label>
+        <label><input type="radio" name="q8" value="b"> Bing</label>
+        <label><input type="radio" name="q8" value="c"> Startpage</label>
+        <label><input type="radio" name="q8" value="d"> Yandex</label>
+        <div class="quiz-feedback">Yandex indexe beaucoup mieux les contenus arabophones et russophones que Google, et son moteur de recherche d'images est particulièrement efficace pour la vérification.</div>
+      </div>
+
+    </div>
+    <button class="btn-quiz" onclick="submitQuiz('quiz1')">Valider mes réponses</button>
+    <div class="quiz-score" id="quiz1-score"></div>
+  </div>
+
+  <!-- JOUR 2 : MODULE A -->
+  <div id="page-j2ma" class="page">
+    <span class="tag tag-red">Jour 2</span><span class="tag tag-blue">Module A</span>
+    <h1>Suivi des crises & sources humanitaires</h1>
+    <p class="lead">Identifier et exploiter les sources spécialisées pour documenter les contextes de conflit, de migration et de catastrophe — directement applicables aux dossiers RLF.</p>
+    <h2>Sources de référence</h2>
+    <div class="placeholder">[ À compléter : ACLED, ReliefWeb, Crisis Group, UNOSAT, UNHCR — présentation et cas d'usage ]</div>
+    <h2>Atelier — Construire une veille</h2>
+    <div class="card card-green">
+      <div class="placeholder">[ À compléter : exercice pratique — construire une alerte sur une zone de conflit active pertinente pour les dossiers RLF ]</div>
+    </div>
+  </div>
+
+  <!-- JOUR 2 : MODULE B -->
+  <div id="page-j2mb" class="page">
+    <span class="tag tag-red">Jour 2</span><span class="tag tag-blue">Module B</span>
+    <h1>Recherche multilingue</h1>
+    <p class="lead">Dépasser la barrière de la langue pour accéder aux sources locales — arabe, dari, somali, tigrigna.</p>
+    <h2>Outils de traduction</h2>
+    <div class="placeholder">[ À compléter : DeepL, Google Translate, Yandex.Translate — forces et limites de chacun ]</div>
+    <h2>Stratégies de recherche multilingue</h2>
+    <div class="placeholder">[ À compléter : recherche directe en alphabet arabe, translittération, combinaisons ]</div>
+    <h2>Atelier — Variantes de noms propres</h2>
+    <div class="card card-green">
+      <div class="placeholder">[ À compléter : exercice sur les variantes orthographiques de prénoms arabes courants dans les dossiers RLF ]</div>
+    </div>
+  </div>
+
+  <!-- JOUR 2 : MODULE C -->
+  <div id="page-j2mc" class="page">
+    <span class="tag tag-red">Jour 2</span><span class="tag tag-blue">Module C</span>
+    <h1>Vérification de contenu</h1>
+    <p class="lead">Évaluer la fiabilité des images, vidéos et informations reçues dans le cadre d'une demande RLF.</p>
+    <h2>Vérification d'images</h2>
+    <div class="placeholder">[ À compléter : Google Lens, TinEye, FotoForensics, InVID/WeVerify — procédure étape par étape ]</div>
+    <h2>Détection de manipulation</h2>
+    <div class="placeholder">[ À compléter : signes visuels d'une image manipulée, analyse des métadonnées EXIF ]</div>
+    <h2>Atelier — Vérification d'une photo reçue</h2>
+    <div class="card card-green">
+      <div class="placeholder">[ À compléter : exercice sur une photo fictive reçue d'un proche — vérifier l'authenticité et la géolocalisation ]</div>
+    </div>
+  </div>
+
+  <!-- QUIZ JOUR 2 -->
+  <div id="page-quiz2" class="page">
+    <span class="tag tag-red">Jour 2</span><span class="tag tag-grey">Quiz de consolidation</span>
+    <h1>Quiz — Outils terrain</h1>
+    <p class="lead">6 questions pour consolider les acquis du Jour 2.</p>
+    <div class="quiz-container" id="quiz2-container">
+
+      <div class="quiz-q" data-correct="b">
+        <div class="q-text">1. Quelle base de données documente les événements de violence politique et les crises dans le monde en temps quasi-réel ?</div>
+        <label><input type="radio" name="q2_1" value="a"> ReliefWeb</label>
+        <label><input type="radio" name="q2_1" value="b"> ACLED</label>
+        <label><input type="radio" name="q2_1" value="c"> Crisis Group</label>
+        <label><input type="radio" name="q2_1" value="d"> UNOSAT</label>
+        <div class="quiz-feedback">ACLED (Armed Conflict Location & Event Data) recense et géolocalise les incidents de violence politique dans le monde. Données téléchargeables gratuitement.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="c">
+        <div class="q-text">2. Pourquoi Yandex est-il préférable à Google pour chercher des profils arabophones ?</div>
+        <label><input type="radio" name="q2_2" value="a"> Il ne respecte pas le RGPD et montre plus de données</label>
+        <label><input type="radio" name="q2_2" value="b"> Il traduit automatiquement les résultats en français</label>
+        <label><input type="radio" name="q2_2" value="c"> Il indexe mieux les contenus en alphabet cyrillique et arabe</label>
+        <label><input type="radio" name="q2_2" value="d"> Il accède aux profils privés Facebook</label>
+        <div class="quiz-feedback">Yandex a développé ses algorithmes pour les langues slaves et arabes. Son moteur de recherche d'images est également très efficace pour la vérification.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="a">
+        <div class="q-text">3. Qu'est-ce que les métadonnées EXIF d'une photo peuvent révéler ?</div>
+        <label><input type="radio" name="q2_3" value="a"> La date, l'heure, les coordonnées GPS et le modèle d'appareil</label>
+        <label><input type="radio" name="q2_3" value="b"> Le nom du photographe et son adresse email</label>
+        <label><input type="radio" name="q2_3" value="c"> Le nombre de fois que la photo a été partagée</label>
+        <label><input type="radio" name="q2_3" value="d"> La résolution et la palette de couleurs uniquement</label>
+        <div class="quiz-feedback">Les EXIF peuvent contenir des coordonnées GPS précises, la date/heure exacte de prise de vue, le modèle d'appareil, et parfois le logiciel de traitement utilisé.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="d">
+        <div class="q-text">4. Quel outil est spécialisé dans la vérification de vidéos en ligne ?</div>
+        <label><input type="radio" name="q2_4" value="a"> TinEye</label>
+        <label><input type="radio" name="q2_4" value="b"> FotoForensics</label>
+        <label><input type="radio" name="q2_4" value="c"> Google Lens</label>
+        <label><input type="radio" name="q2_4" value="d"> InVID / WeVerify</label>
+        <div class="quiz-feedback">InVID/WeVerify est une extension navigateur spécialisée dans l'analyse de vidéos : extraction d'images-clés, recherche inversée, vérification de métadonnées.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="b">
+        <div class="q-text">5. Qu'est-ce que ReliefWeb ?</div>
+        <label><input type="radio" name="q2_5" value="a"> Un outil de traduction humanitaire de l'ONU</label>
+        <label><input type="radio" name="q2_5" value="b"> Une plateforme d'information humanitaire gérée par OCHA avec rapports, cartes et offres d'emploi</label>
+        <label><input type="radio" name="q2_5" value="c"> Une base de données des réfugiés enregistrés par le HCR</label>
+        <label><input type="radio" name="q2_5" value="d"> Un système de veille des catastrophes naturelles</label>
+        <div class="quiz-feedback">ReliefWeb est géré par OCHA et centralise rapports humanitaires, cartes de crise, alertes et analyses provenant de centaines d'organisations.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="c">
+        <div class="q-text">6. En contexte RLF, vous recevez une photo d'un proche potentiellement retrouvé. Quelle est la bonne démarche ?</div>
+        <label><input type="radio" name="q2_6" value="a"> Partager immédiatement la photo avec le demandeur pour confirmation</label>
+        <label><input type="radio" name="q2_6" value="b"> Ignorer la photo car elle n'est pas une source officielle</label>
+        <label><input type="radio" name="q2_6" value="c"> Vérifier l'authenticité (EXIF, recherche inversée), géolocaliser si possible, usage strictement interne</label>
+        <label><input type="radio" name="q2_6" value="d"> Transférer la photo à la police pour identification</label>
+        <div class="quiz-feedback">Usage interne uniquement, vérification préalable obligatoire. Aucun partage externe sans consentement. La confirmation se fait via le canal officiel Croix-Rouge.</div>
+      </div>
+
+    </div>
+    <button class="btn-quiz" onclick="submitQuiz('quiz2')">Valider mes réponses</button>
+    <div class="quiz-score" id="quiz2-score"></div>
+  </div>
+
+  <!-- JOUR 3 : MODULE D -->
+  <div id="page-j3md" class="page">
+    <span class="tag tag-red">Jour 3</span><span class="tag tag-blue">Module D</span>
+    <h1>Sécurité numérique</h1>
+    <p class="lead">Protéger les données des bénéficiaires et maîtriser les bases de la sécurité opérationnelle dans le contexte RLF.</p>
+    <h2>Hygiène numérique de base</h2>
+    <div class="placeholder">[ À compléter : mots de passe, authentification à deux facteurs, comptes dédiés aux investigations ]</div>
+    <h2>Gestion des métadonnées</h2>
+    <div class="placeholder">[ À compléter : ExifTool, MAT2 — supprimer les métadonnées avant partage ]</div>
+    <h2>Navigation sécurisée & VPN</h2>
+    <div class="placeholder">[ À compléter : Brave, Firefox + extensions, ProtonVPN, Windscribe — calibré au profil RLF ]</div>
+    <h2>Messagerie chiffrée</h2>
+    <div class="placeholder">[ À compléter : Signal, ProtonMail — quand et pourquoi les utiliser ]</div>
+  </div>
+
+  <!-- JOUR 3 : MODULE E -->
+  <div id="page-j3me" class="page">
+    <span class="tag tag-red">Jour 3</span><span class="tag tag-blue">Module E</span>
+    <h1>GEOINT — Géolocalisation</h1>
+    <p class="lead">Analyser des images satellites et géolocaliser des photos pour localiser des zones de résidence ou de passage.</p>
+    <h2>Google Earth Pro</h2>
+    <div class="placeholder">[ À compléter : navigation, historique d'images, mesures, coordonnées GPS ]</div>
+    <h2>Sentinel Hub & EO Browser</h2>
+    <div class="placeholder">[ À compléter : images satellites Copernicus, accès gratuit, cas d'usage humanitaire ]</div>
+    <h2>Atelier — Géolocalisation d'une image</h2>
+    <div class="card card-green">
+      <div class="placeholder">[ À compléter : exercice pratique — retrouver l'emplacement d'une photo à partir d'éléments visuels ]</div>
+    </div>
+  </div>
+
+  <!-- JOUR 3 : MODULE G -->
+  <div id="page-j3mg" class="page">
+    <span class="tag tag-red">Jour 3</span><span class="tag tag-blue">Module G</span>
+    <h1>Environnements de travail isolés</h1>
+    <p class="lead">Comprendre le cloisonnement numérique pour les investigations sensibles — sans aller jusqu'aux outils de journaliste en zone hostile.</p>
+    <h2>Pourquoi cloisonner ?</h2>
+    <div class="placeholder">[ À compléter : séparation des environnements pro/perso/investigation, risques concrets pour le RLF ]</div>
+    <h2>Machines virtuelles</h2>
+    <div class="placeholder">[ À compléter : VirtualBox, principe de fonctionnement, cas d'usage RLF ]</div>
+    <h2>Navigateur dédié aux investigations</h2>
+    <div class="placeholder">[ À compléter : profil Firefox dédié, extensions OSINT, configuration recommandée ]</div>
+  </div>
+
+  <!-- JOUR 3 : CONSOLIDATION -->
+  <div id="page-j3consol" class="page">
+    <span class="tag tag-red">Jour 3</span><span class="tag tag-grey">Consolidation</span>
+    <h1>Révision & préparation à l'exercice</h1>
+    <p class="lead">Retour sur les points clés des Jours 1 et 2. Questions ouvertes. Briefing du scénario Al-Wada.</p>
+    <h2>Points-clés à retenir</h2>
+    <div class="card card-red">
+      <div class="placeholder">[ À compléter : synthèse des réflexes OSINT essentiels pour le quotidien RLF ]</div>
+    </div>
+    <h2>Questions fréquentes</h2>
+    <div class="placeholder">[ À compléter : réponses aux questions récurrentes des jours précédents ]</div>
+    <h2>Accéder à l'exercice final</h2>
+    <div class="card card-orange">
+      <p>L'exercice final <strong>Opération Al-Wada</strong> est accessible via le menu latéral avec le code communiqué par le formateur.</p>
+    </div>
+  </div>
+
+  <!-- AL-WADA (VERROUILLÉ) -->
+  <div id="page-alwada" class="page">
+    <div id="alwada-lock" class="lock-screen">
+      <div class="lock-icon">🔒</div>
+      <h2>Opération Al-Wada</h2>
+      <p>Exercice final — Jour 3<br>Saisissez le code communiqué par le formateur pour accéder au dossier.</p>
+      <div class="lock-input">
+        <input type="password" id="lock-code" maxlength="4" placeholder="••••" onkeydown="if(event.key==='Enter')checkCode()">
+        <button class="btn-unlock" onclick="checkCode()">Accéder</button>
+      </div>
+      <p style="font-size:12px;color:var(--grey-mid)">Code à 4 chiffres · Usage Jour 3 uniquement</p>
+    </div>
+    <div id="alwada-content" style="display:none">
+      <span class="tag tag-red">Jour 3</span><span class="tag tag-grey">Exercice final</span>
+      <h1>Opération Al-Wada</h1>
+      <p class="lead">Scénario complet d'investigation OSINT — famille Al-Rashid, séparée sur la route des Balkans. Appliquez l'ensemble des techniques vues en formation.</p>
+      <div class="card card-orange">
+        <h3>⚠ Rappel éthique</h3>
+        <p>Toutes les informations collectées dans cet exercice sont traitées comme un vrai dossier RLF — confidentialité, consentement et protection des données s'appliquent.</p>
+      </div>
+      <h2>Dossier de demande</h2>
+      <p>Le dossier complet vous a été remis au format papier par le formateur. Il contient l'identité du demandeur, le signalement des personnes recherchées et les circonstances de la séparation.</p>
+      <h2>Déroulé de l'exercice</h2>
+      <div class="module-item">
+        <div class="period-badge">1</div>
+        <div class="module-content">
+          <div class="module-title">Phase 1 — Réseaux sociaux & recherche multilingue</div>
+          <div class="module-desc">Entraînez-vous aux variantes orthographiques. Analysez la capture d'écran du profil distribuée par le formateur. Reconstituez la route migratoire.</div>
+        </div>
+      </div>
+      <div class="module-item">
+        <div class="period-badge">2</div>
+        <div class="module-content">
+          <div class="module-title">Phase 2 — GEOINT, EXIF & sources humanitaires</div>
+          <div class="module-desc">Analysez les matériaux distribués (captures ONG, fichier image EXIF, rapports ACLED/UNHCR). Géolocalisez, extrayez les métadonnées, croisez les sources.</div>
+        </div>
+      </div>
+      <div class="module-item">
+        <div class="period-badge">3</div>
+        <div class="module-content">
+          <div class="module-title">Phase 3 — Synthèse & rapport</div>
+          <div class="module-desc">Rédigez le rapport OSINT sur la fiche distribuée. Formulez vos recommandations pour le service RLF.</div>
+        </div>
+      </div>
+      <h2>Rapport à remplir</h2>
+      <p>Utilisez la fiche de rapport papier distribuée par le formateur. Elle comporte 6 sections : résumé exécutif, sources consultées, chronologie, localisation actuelle, limites de l'investigation, recommandations.</p>
+    </div>
+  </div>
+
+  <!-- RESSOURCES : OUTILS -->
+  <div id="page-outils" class="page">
+    <h1>Boîte à outils</h1>
+    <p class="lead">Sélection d'outils gratuits et légaux, testés et validés pour la formation. Classés par thématique.</p>
+
+    <div class="tool-section">
+      <h3>Recherche avancée</h3>
+      <div class="tools-grid">
+        <a class="tool-link" href="https://www.google.com" target="_blank"><span class="tool-icon">🔍</span><div><div class="tool-name">Google</div><div class="tool-desc">Dorking & opérateurs avancés</div></div></a>
+        <a class="tool-link" href="https://yandex.com" target="_blank"><span class="tool-icon">🔍</span><div><div class="tool-name">Yandex</div><div class="tool-desc">Arabe, cyrillique, recherche d'images</div></div></a>
+        <a class="tool-link" href="https://duckduckgo.com" target="_blank"><span class="tool-icon">🔍</span><div><div class="tool-name">DuckDuckGo</div><div class="tool-desc">Recherche sans traçage</div></div></a>
+        <a class="tool-link" href="https://web.archive.org" target="_blank"><span class="tool-icon">📦</span><div><div class="tool-name">Wayback Machine</div><div class="tool-desc">Archives web</div></div></a>
+      </div>
+    </div>
+
+    <div class="tool-section">
+      <h3>Vérification d'images</h3>
+      <div class="tools-grid">
+        <a class="tool-link" href="https://lens.google.com" target="_blank"><span class="tool-icon">🖼️</span><div><div class="tool-name">Google Lens</div><div class="tool-desc">Recherche inversée d'images</div></div></a>
+        <a class="tool-link" href="https://www.tineye.com" target="_blank"><span class="tool-icon">🖼️</span><div><div class="tool-name">TinEye</div><div class="tool-desc">Recherche inversée spécialisée</div></div></a>
+        <a class="tool-link" href="https://fotoforensics.com" target="_blank"><span class="tool-icon">🔬</span><div><div class="tool-name">FotoForensics</div><div class="tool-desc">Analyse ELA des images</div></div></a>
+        <a class="tool-link" href="https://www.invid-project.eu/tools-and-services/invid-verification-plugin/" target="_blank"><span class="tool-icon">🎬</span><div><div class="tool-name">InVID / WeVerify</div><div class="tool-desc">Vérification de vidéos</div></div></a>
+      </div>
+    </div>
+
+    <div class="tool-section">
+      <h3>GEOINT & cartographie</h3>
+      <div class="tools-grid">
+        <a class="tool-link" href="https://earth.google.com/web/" target="_blank"><span class="tool-icon">🌍</span><div><div class="tool-name">Google Earth Web</div><div class="tool-desc">Vues satellites, historique d'images</div></div></a>
+        <a class="tool-link" href="https://browser.dataspace.copernicus.eu" target="_blank"><span class="tool-icon">🛰️</span><div><div class="tool-name">EO Browser (Copernicus)</div><div class="tool-desc">Images satellites ESA gratuites</div></div></a>
+        <a class="tool-link" href="https://www.google.com/maps" target="_blank"><span class="tool-icon">📍</span><div><div class="tool-name">Google Maps</div><div class="tool-desc">Cartographie & Street View</div></div></a>
+        <a class="tool-link" href="https://umap.openstreetmap.fr" target="_blank"><span class="tool-icon">🗺️</span><div><div class="tool-name">uMap</div><div class="tool-desc">Cartes collaboratives OpenStreetMap</div></div></a>
+      </div>
+    </div>
+
+    <div class="tool-section">
+      <h3>Sources humanitaires</h3>
+      <div class="tools-grid">
+        <a class="tool-link" href="https://reliefweb.int" target="_blank"><span class="tool-icon">🆘</span><div><div class="tool-name">ReliefWeb</div><div class="tool-desc">Rapports & alertes humanitaires (OCHA)</div></div></a>
+        <a class="tool-link" href="https://acleddata.com" target="_blank"><span class="tool-icon">⚡</span><div><div class="tool-name">ACLED</div><div class="tool-desc">Données conflits armés géolocalisées</div></div></a>
+        <a class="tool-link" href="https://help.unhcr.org/belgium" target="_blank"><span class="tool-icon">🏕️</span><div><div class="tool-name">UNHCR Belgique</div><div class="tool-desc">Aide aux réfugiés</div></div></a>
+        <a class="tool-link" href="https://familylinks.icrc.org" target="_blank"><span class="tool-icon">✛</span><div><div class="tool-name">Family Links CICR</div><div class="tool-desc">Réseau officiel RLF international</div></div></a>
+      </div>
+    </div>
+
+    <div class="tool-section">
+      <h3>Identité numérique & EXIF</h3>
+      <div class="tools-grid">
+        <a class="tool-link" href="https://whatsmyname.app" target="_blank"><span class="tool-icon">👤</span><div><div class="tool-name">WhatsMyName</div><div class="tool-desc">Recherche de pseudonymes multi-plateformes</div></div></a>
+        <a class="tool-link" href="https://exifdata.com" target="_blank"><span class="tool-icon">📷</span><div><div class="tool-name">ExifData.com</div><div class="tool-desc">Extraction EXIF en ligne</div></div></a>
+        <a class="tool-link" href="https://exif.regex.info/exif.cgi" target="_blank"><span class="tool-icon">📷</span><div><div class="tool-name">Jeffrey's Exif Viewer</div><div class="tool-desc">Analyse EXIF détaillée</div></div></a>
+        <a class="tool-link" href="https://deepl.com" target="_blank"><span class="tool-icon">🌐</span><div><div class="tool-name">DeepL</div><div class="tool-desc">Traduction de qualité</div></div></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESSOURCES : GLOSSAIRE -->
+  <div id="page-glossaire" class="page">
+    <h1>Glossaire</h1>
+    <p class="lead">Termes essentiels de l'OSINT et du contexte RLF.</p>
+    <div id="glossary-list"></div>
+  </div>
+
+  <!-- RESSOURCES : DOCUMENTS -->
+  <div id="page-docs" class="page">
+    <h1>Documents</h1>
+    <p class="lead">Fiches de référence et documents à emporter après la formation.</p>
+    <div class="card card-red">
+      <h3>📄 Fiche-mémo — Opérateurs Google Dorking</h3>
+      <p style="font-size:13px;color:var(--grey-mid)">Récapitulatif des opérateurs essentiels avec exemples RLF.</p>
+      <div class="placeholder">[ Document à ajouter ]</div>
+    </div>
+    <div class="card">
+      <h3>📄 Fiche-mémo — Boîte à outils OSINT RLF</h3>
+      <p style="font-size:13px;color:var(--grey-mid)">Les outils validés, classés par usage, avec liens directs.</p>
+      <div class="placeholder">[ Document à ajouter ]</div>
+    </div>
+    <div class="card">
+      <h3>📄 Fiche-mémo — Cadre légal & RGPD</h3>
+      <p style="font-size:13px;color:var(--grey-mid)">Ce qu'on peut faire, ce qu'on ne peut pas faire, en une page.</p>
+      <div class="placeholder">[ Document à ajouter ]</div>
+    </div>
+    <div class="card">
+      <h3>📄 Rapport d'investigation OSINT — Template</h3>
+      <p style="font-size:13px;color:var(--grey-mid)">Le template utilisé lors de l'exercice Al-Wada, à réutiliser en pratique.</p>
+      <div class="placeholder">[ Document à ajouter ]</div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ── GLOSSAIRE DATA ──────────────────────────────────────────────────────────
+const glossary = [
+  { term: "OSINT", def: "Open Source Intelligence — renseignement à partir de sources légalement accessibles au public : internet, réseaux sociaux, bases de données publiques, images satellites, archives." },
+  { term: "EXIF", def: "Exchangeable Image File Format — métadonnées intégrées dans une image numérique : date, heure, coordonnées GPS, modèle d'appareil photo." },
+  { term: "Google Dork", def: "Utilisation d'opérateurs de recherche avancés (site:, filetype:, inurl:, etc.) pour affiner les résultats Google au-delà de la recherche standard." },
+  { term: "GEOINT", def: "Geospatial Intelligence — renseignement géospatial issu de l'analyse d'images satellites, de cartographies et de données de localisation." },
+  { term: "OPSEC", def: "Operational Security — ensemble de pratiques visant à protéger les informations sensibles et l'identité de l'investigateur lors d'une enquête OSINT." },
+  { term: "Translittération", def: "Transcription d'un mot d'un alphabet à un autre (ex. arabe → latin). Non standardisée, elle produit de nombreuses variantes orthographiques pour un même prénom ou nom." },
+  { term: "Pushback", def: "Terme humanitaire désignant le refoulement de migrants à la frontière par les forces de l'ordre, sans examen individuel de leur situation." },
+  { term: "RLF", def: "Rétablissement des Liens Familiaux — service de la Croix-Rouge qui aide les personnes séparées de leurs proches dans des contextes de migration, conflit ou catastrophe à rétablir le contact." },
+  { term: "RGPD", def: "Règlement Général sur la Protection des Données — règlement européen (2016/679) encadrant le traitement des données personnelles. S'applique à toute organisation traitant des données de résidents européens." },
+  { term: "ACLED", def: "Armed Conflict Location & Event Data — base de données géolocalisée recensant les événements de violence politique dans le monde, mise à jour hebdomadairement." },
+  { term: "Recherche inversée", def: "Technique consistant à utiliser une image comme requête de recherche (plutôt qu'un texte) pour retrouver ses occurrences en ligne ou identifier son origine." },
+  { term: "VPN", def: "Virtual Private Network — outil masquant l'adresse IP réelle de l'utilisateur et chiffrant le trafic réseau. Utile pour protéger la vie privée lors de recherches sensibles." },
+  { term: "CICR", def: "Comité International de la Croix-Rouge — organisation humanitaire indépendante, mandataire du droit international humanitaire. Coordonne le réseau RLF international via familylinks.icrc.org." },
+  { term: "Métadonnées", def: "Données qui décrivent d'autres données. Pour une image : date, localisation, appareil. Pour un document : auteur, date de création, logiciel utilisé." },
+  { term: "Fact-checking", def: "Vérification systématique de l'authenticité et de l'exactitude d'une information, d'une image ou d'une vidéo avant de l'utiliser comme source." },
+];
+
+// Render glossary
+const gl = document.getElementById('glossary-list');
+glossary.sort((a,b) => a.term.localeCompare(b.term)).forEach(item => {
+  gl.innerHTML += `<div class="glossary-item"><div class="glossary-term">${item.term}</div><div class="glossary-def">${item.def}</div></div>`;
+});
+
+// ── NAVIGATION ──────────────────────────────────────────────────────────────
+const CODE = "7550"; // Code de déverrouillage Al-Wada
+let unlocked = false;
+
+function showPage(id) {
+  if (id === 'alwada' && !unlocked) {
+    // Show lock screen
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-alwada').classList.add('active');
+    document.getElementById('alwada-lock').style.display = 'block';
+    document.getElementById('alwada-content').style.display = 'none';
+    updateSidebar(id);
+    updateTopbar(id);
+    return;
+  }
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  updateSidebar(id);
+  updateTopbar(id);
+  window.scrollTo(0, 0);
+}
+
+function showSection(section) {
+  const map = {
+    home: 'home',
+    jour1: 'j1p1',
+    jour2: 'j2ma',
+    jour3: 'j3md',
+    ressources: 'outils',
+  };
+  showPage(map[section] || 'home');
+}
+
+function updateSidebar(id) {
+  document.querySelectorAll('#sidebar button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#sidebar button').forEach(b => {
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+id+"'")) {
+      b.classList.add('active');
+    }
+  });
+}
+
+function updateTopbar(id) {
+  document.querySelectorAll('#topbar nav button').forEach(b => b.classList.remove('active'));
+  let section = 'home';
+  if (id.startsWith('j1') || id === 'quiz1') section = 'jour1';
+  else if (id.startsWith('j2') || id === 'quiz2') section = 'jour2';
+  else if (id.startsWith('j3') || id === 'alwada') section = 'jour3';
+  else if (['outils','glossaire','docs'].includes(id)) section = 'ressources';
+  document.querySelectorAll('#topbar nav button').forEach(b => {
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+section+"'")) {
+      b.classList.add('active');
+    }
+  });
+}
+
+// ── LOCK ────────────────────────────────────────────────────────────────────
+function checkCode() {
+  const input = document.getElementById('lock-code');
+  if (input.value === CODE) {
+    unlocked = true;
+    document.getElementById('alwada-lock').style.display = 'none';
+    document.getElementById('alwada-content').style.display = 'block';
+    document.getElementById('btn-alwada').classList.remove('locked');
+  } else {
+    input.classList.add('error');
+    input.value = '';
+    setTimeout(() => input.classList.remove('error'), 400);
+  }
+}
+
+// ── QUIZ ────────────────────────────────────────────────────────────────────
+function submitQuiz(quizId) {
+  const container = document.getElementById(quizId + '-container');
+  const questions = container.querySelectorAll('.quiz-q');
+  let score = 0;
+  let answered = 0;
+
+  questions.forEach((q, i) => {
+    const correct = q.dataset.correct;
+    const selected = q.querySelector('input:checked');
+    const feedback = q.querySelector('.quiz-feedback');
+    const labels = q.querySelectorAll('label');
+
+    // Reveal correct answer always
+    labels.forEach(label => {
+      const val = label.querySelector('input').value;
+      if (val === correct) label.classList.add('reveal-correct');
+    });
+
+    if (selected) {
+      answered++;
+      if (selected.value === correct) {
+        score++;
+        selected.closest('label').classList.add('correct');
+        feedback.classList.add('show', 'ok');
+        feedback.innerHTML = '✓ Correct ! ' + feedback.innerHTML;
+      } else {
+        selected.closest('label').classList.add('wrong');
+        feedback.classList.add('show', 'ko');
+        feedback.innerHTML = '✗ Incorrect. ' + feedback.innerHTML;
+      }
+    } else {
+      feedback.classList.add('show', 'ko');
+      feedback.innerHTML = '— Sans réponse. ' + feedback.innerHTML;
+    }
+
+    // Disable all inputs
+    q.querySelectorAll('input').forEach(inp => inp.disabled = true);
+  });
+
+  const scoreEl = document.getElementById(quizId + '-score');
+  const pct = Math.round((score / questions.length) * 100);
+  let msg = pct >= 75 ? '🎯 Excellent !' : pct >= 50 ? '👍 Bien !' : '💪 À revoir.';
+  scoreEl.textContent = `${msg}  Résultat : ${score} / ${questions.length} (${pct}%)`;
+  scoreEl.classList.add('show');
+  scoreEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>
