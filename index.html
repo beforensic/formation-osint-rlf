@@ -485,8 +485,8 @@
   <button onclick="showPage('j1p1')">P1 · Introduction OSINT</button>
   <button onclick="showPage('j1p2')">P2 · Fonctionnement d'Internet</button>
   <button onclick="showPage('j1p3')">P3 · Cadre légal & RGPD</button>
-  <button onclick="showPage('j1p4')">P4 · Cycle du renseignement</button>
-  <button onclick="showPage('j1p5')">P5 · Méthodologie OSINT</button>
+  <button onclick="showPage('j1p4')">P4 · Profils d'investigation</button>
+  <button onclick="showPage('j1p5')">P5 · Cycle du renseignement</button>
   <button onclick="showPage('j1p6')">P6 · Recherche avancée</button>
   <button onclick="showPage('quiz1')" style="color:var(--red);font-weight:600">✅ Quiz Jour 1</button>
 
@@ -499,9 +499,8 @@
 
   <div class="sidebar-sep"></div>
   <div class="day-label">Jour 3 — Sécurité & pratique</div>
-  <button onclick="showPage('j3md')">MOD D · Sécurité numérique</button>
+  <button onclick="showPage('j3mg')">MOD D·G · Sécurité & environnement</button>
   <button onclick="showPage('j3me')">MOD E · GEOINT</button>
-  <button onclick="showPage('j3mg')">MOD G · Environnements isolés</button>
   <button onclick="showPage('j3consol')">Consolidation</button>
   <button onclick="showPage('alwada')" class="locked" id="btn-alwada">🔒 Exercice Al-Wada</button>
 
@@ -534,7 +533,7 @@
         <h3>Outils terrain RLF</h3>
         <div class="day-periods">6 périodes · Veille, multilinguisme, fact-checking</div>
       </div>
-      <div class="home-day-card" onclick="showPage('j3md')">
+      <div class="home-day-card" onclick="showPage('j3mg')">
         <div class="day-num">Jour 3</div>
         <h3>Sécurité, GEOINT & exercice final</h3>
         <div class="day-periods">6 périodes · Sécurité, géolocalisation, scénario Al-Wada</div>
@@ -610,47 +609,352 @@
   <!-- JOUR 1 : P4 -->
   <div id="page-j1p4" class="page">
     <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 4</span>
-    <h1>Cycle du renseignement</h1>
-    <p class="lead">Planifier une collecte d'informations de façon méthodique, appliquée à une fiche RLF type.</p>
-    <h2>Les 5 phases</h2>
-    <div class="placeholder">[ À compléter : orientation, collecte, traitement, analyse, diffusion — avec exemples RLF ]</div>
-    <h2>Plan de collecte</h2>
-    <div class="placeholder">[ À compléter : définition des mots-clés, stratégie de recherche, priorisation des sources ]</div>
-    <h2>Exercice guidé</h2>
-    <div class="card card-blue">
-      <div class="placeholder">[ À compléter : construire un plan de collecte à partir d'une fiche RLF fictive ]</div>
+    <h1>Profils d'investigation</h1>
+    <p class="lead">Avant de chercher, il faut préparer son environnement de travail et son identité numérique d'investigation — pour protéger à la fois l'enquêteur et les personnes recherchées.</p>
+
+    <h2>Réfléchir avant d'agir</h2>
+    <p>L'erreur la plus courante en OSINT est de foncer dans les recherches sans préparation. Trois questions préalables sont indispensables :</p>
+    <div class="card">
+      <p style="font-size:13px"><strong>1. Quelle est mon intention ?</strong> Définir précisément ce qu'on cherche et pourquoi.</p>
+      <p style="font-size:13px"><strong>2. Quelle approche adopter ?</strong> Recherche passive (observer sans interagir) ou active (prendre contact, créer un profil) ?</p>
+      <p style="font-size:13px;margin:0"><strong>3. Quel environnement utiliser ?</strong> Jamais votre machine et vos comptes personnels pour une investigation.</p>
     </div>
+
+    <h2>L'identité numérique</h2>
+    <p>Notre identité numérique est la <strong>collection de traces</strong> que nous laissons en ligne : écrits, photos, identifiants, comportements de navigation. Elle se forme consciemment ou non, et se reflète dans les résultats de recherche.</p>
+    <div class="card card-orange">
+      <h3>⚠ Le fingerprinting</h3>
+      <p style="font-size:13px;margin:0">Chaque navigateur a une "empreinte" unique (résolution d'écran, plugins, langue, fuseau horaire...). Même sans cookie, un site peut identifier un visiteur récurrent. C'est pourquoi un navigateur dédié aux investigations est indispensable.</p>
+    </div>
+
+    <h2>La configuration de travail recommandée</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0">
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:4px">🖥️ Navigateur dédié</div>
+        <div style="font-size:12px">Un profil Firefox séparé, configuré avec les extensions OSINT. Jamais votre navigateur personnel.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:4px">📧 E-mail dédié</div>
+        <div style="font-size:12px">ProtonMail ou Tutanota pour les comptes liés aux investigations. Jamais votre adresse professionnelle.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:4px">🔑 Gestionnaire de mots de passe</div>
+        <div style="font-size:12px">KeePassXC (gratuit, open-source) pour gérer les identifiants de vos comptes d'investigation séparément de vos comptes personnels.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:4px">🌐 VPN</div>
+        <div style="font-size:12px">Pour masquer votre adresse IP lors de recherches sensibles. <strong>Jamais de VPN gratuit.</strong> ProtonVPN recommandé.</div>
+      </div>
+    </div>
+
+    <h2>Les profils d'investigation sur les réseaux</h2>
+    <div class="card card-blue">
+      <h3>Option 1 — Avatar clairement fictif</h3>
+      <p style="font-size:13px;margin:0">Un compte centré sur une idée plutôt qu'une identité (ex. @OsintResearcher). Rapide à créer, mais moins efficace pour accéder à des groupes fermés.</p>
+    </div>
+    <div class="card card-blue">
+      <h3>Option 2 — Identité fictive complète</h3>
+      <p style="font-size:13px;margin:0">Une personne fictive crédible avec une histoire cohérente. Plus efficace, mais demande beaucoup de temps de "nursing". Outils : <a href="https://www.fakenamegenerator.com" target="_blank">FakeNameGenerator.com</a> · <a href="https://thispersondoesnotexist.com" target="_blank">ThisPersonDoesNotExist.com</a></p>
+    </div>
+
+    <h2>Le "nursing" de profils</h2>
+    <div class="card card-green">
+      <h3>La règle des 3 comptes</h3>
+      <p style="font-size:13px"><strong>Compte principal :</strong> utilisé activement pour les investigations.</p>
+      <p style="font-size:13px"><strong>Compte backup :</strong> prêt à prendre le relais si le principal est suspendu.</p>
+      <p style="font-size:13px;margin:0"><strong>Compte réserve :</strong> en cours de nursing, pour remplacer le backup si nécessaire.</p>
+    </div>
+
+    <h2>La fiche récapitulative d'identité</h2>
+    <p>Pour chaque profil d'investigation créé, tenir une fiche mémo : adresse IP utilisée, VPN activé, nom et coordonnées fictives, adresses e-mail, comptes créés. Cette fiche est strictement confidentielle.</p>
+    <div class="card card-orange">
+      <h3>⚠ Cadre légal belge</h3>
+      <p style="font-size:13px;margin:0">Éviter les noms suggestifs, les provocations et tout lien avec des documents officiels. L'usurpation d'identité d'une personne réelle est une infraction pénale.</p>
+    </div>
+
+    <h2>Outils</h2>
+    <a href="https://www.fakenamegenerator.com" target="_blank" class="tool-link">
+      <span class="tool-icon">🧑</span><div><div class="tool-name">FakeNameGenerator.com</div><div class="tool-desc">Générer une identité fictive complète et cohérente</div></div>
+    </a>
+    <a href="https://thispersondoesnotexist.com" target="_blank" class="tool-link">
+      <span class="tool-icon">📷</span><div><div class="tool-name">ThisPersonDoesNotExist.com</div><div class="tool-desc">Photo de profil réaliste générée par IA</div></div>
+    </a>
+    <a href="https://keepassxc.org" target="_blank" class="tool-link">
+      <span class="tool-icon">🔑</span><div><div class="tool-name">KeePassXC</div><div class="tool-desc">Gestionnaire de mots de passe gratuit et open-source</div></div>
+    </a>
   </div>
 
   <!-- JOUR 1 : P5 -->
   <div id="page-j1p5" class="page">
     <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 5</span>
-    <h1>Méthodologie OSINT</h1>
-    <p class="lead">Structurer une investigation RLF avec des outils de cartographie de l'information.</p>
+    <h1>Cycle du renseignement & plan de collecte</h1>
+    <p class="lead">Structurer une investigation OSINT de A à Z — du premier contact au rapport final. La qualité du résultat dépend entièrement de la rigueur de la préparation.</p>
+
+    <h2>Le cycle du renseignement</h2>
+    <p>Toute investigation RLF suit un cycle structuré en 5 phases. Ne jamais brûler les étapes.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">
+      <div class="card card-red" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="background:var(--red);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">1</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Évaluation des besoins</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Définir la question. Clarifier la mission, les attentes et la deadline. Vérifier que les EEI fournis sont exacts et suffisants. Évaluer le cadre légal et les considérations éthiques applicables.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="background:var(--blue);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">2</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Collecte</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Préparer les outils (VM, VPN, navigateur dédié). Interroger tous les EEI connus. Gérer les pistes : prometteuse → nouvel onglet · forte → nouvelle fenêtre · sans résultat → fermer. Utiliser OneTab pour regrouper les signets.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="background:var(--blue);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">3</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Exploitation</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Traiter et organiser les données brutes collectées. Traduire, transcrire, nettoyer. Structurer dans le carnet de notes.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="background:var(--blue);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">4</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Analyse</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Croiser et vérifier les informations. Identifier les lacunes. Distinguer faits et hypothèses. Visualiser les liens avec draw.io ou Maltego. Construire la chronologie.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="background:var(--green);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">5</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Diffusion & archivage</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Rédiger le rapport structuré (narration, analyse, annexes). Archiver les notes et médias. Revenir à un snapshot propre de la VM. Graver les éléments importants sur support optique.</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Les pièges classiques de la collecte</h2>
+    <div class="card card-orange">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="font-size:13px">❌ Masse de données trop importante — devenir ingérable</div>
+        <div style="font-size:13px">❌ Défauts d'organisation — perte ou duplication</div>
+        <div style="font-size:13px">❌ Méconnaissance des sources disponibles</div>
+        <div style="font-size:13px">❌ Barrière des langues et dialectes</div>
+        <div style="font-size:13px">❌ Formation inadéquate des équipes</div>
+        <div style="font-size:13px">❌ Trop de collecte, pas assez d'analyse</div>
+      </div>
+    </div>
+
+    <h2>Le plan de collecte</h2>
+    <p>Le plan de collecte est un outil structuré qui accompagne chaque dossier RLF. Il permet de :</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 16px">
+      <div class="card" style="margin:0;padding:12px;font-size:13px">📋 Articuler et clarifier les besoins d'information</div>
+      <div class="card" style="margin:0;padding:12px;font-size:13px">🎯 Identifier et organiser les sources pertinentes</div>
+      <div class="card" style="margin:0;padding:12px;font-size:13px">🔍 Identifier les lacunes en matière de renseignement</div>
+      <div class="card" style="margin:0;padding:12px;font-size:13px">⏱️ Minimiser le temps passé sur les pistes non pertinentes</div>
+      <div class="card" style="margin:0;padding:12px;font-size:13px">✅ Valider des indicateurs de renseignement</div>
+      <div class="card" style="margin:0;padding:12px;font-size:13px">📊 Aider à distinguer faits et opinions</div>
+    </div>
+    <div class="card card-blue">
+      <h3>Règle d'or : recherche spécifique vs générale</h3>
+      <p style="font-size:13px">Plus la demande est <strong>spécifique</strong>, plus il est facile de répondre aux besoins, de concentrer les efforts, de fournir une réponse directe et de gérer l'incertitude résiduelle.</p>
+      <p style="font-size:13px"><strong>Général ❌ :</strong> « Comment la situation humanitaire a-t-elle évolué en Bosnie ces deux dernières années ? »</p>
+      <p style="font-size:13px;margin:0"><strong>Spécifique ✅ :</strong> « Quels camps d'accueil étaient actifs à Velika Kladuša en décembre 2023, et qui les gérait ? »</p>
+    </div>
+
+    <h2>Travailler avec les mots-clés</h2>
+    <p>Le choix des mots-clés détermine directement la qualité des résultats. Un même concept peut s'exprimer de nombreuses façons — en plusieurs langues, avec des variantes orthographiques, des synonymes, des abréviations.</p>
+    <div class="card card-green">
+      <h3>Exemple concret — variantes d'un même terme</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">
+        <div>
+          <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:4px">Noms de personnes</div>
+          <div style="font-size:12px">Hamid Karzai<br>Hamid Karzay<br>Hamed Karzai<br>حامد کرزی</div>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:4px">Lieux</div>
+          <div style="font-size:12px">Kandahar<br>Qandahar<br>Candahar<br>کندھار</div>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:4px">Organisations</div>
+          <div style="font-size:12px">NATO<br>OTAN<br>North Atlantic Treaty Organization<br>Coalition Forces</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Tableau de mots-clés multilingues</h2>
+    <p>Pour chaque dossier RLF, construire un tableau de mots-clés dans toutes les langues pertinentes. Méthode avec Google Sheets :</p>
+    <div class="card">
+      <ol style="font-size:13px;padding-left:20px;line-height:2">
+        <li>Créer un tableur avec les colonnes : FR · EN · AR · Dari · ...</li>
+        <li>Insérer les mots-clés en français dans la première colonne</li>
+        <li>Utiliser la formule GoogleTranslate : <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px">=GOOGLETRANSLATE(A2;"fr";"ar")</code></li>
+        <li>Exporter en CSV et importer dans votre outil de recherche</li>
+      </ol>
+    </div>
+
     <h2>Mind Mapping</h2>
-    <div class="placeholder">[ À compléter : construction d'une carte mentale pour un dossier RLF, outils recommandés ]</div>
-    <h2>Cartographie de l'information</h2>
-    <div class="placeholder">[ À compléter : schémas de liens, identification des lacunes, sources à croiser ]</div>
+    <div class="card card-blue">
+      <p style="font-size:13px">Une mind map organise visuellement les informations autour d'un sujet central. Au centre : la personne recherchée. Les branches : identité, contacts, traces numériques, géographie, chronologie. Les branches <strong>vides</strong> révèlent ce qu'il reste à chercher.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0">
+      <a href="https://www.xmind.net" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🧠</span><div><div class="tool-name">XMind</div><div class="tool-desc">Puissant, version gratuite disponible</div></div>
+      </a>
+      <a href="https://www.mindmeister.com" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🧠</span><div><div class="tool-name">MindMeister</div><div class="tool-desc">Collaboratif en ligne</div></div>
+      </a>
+      <a href="https://app.diagrams.net" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🗂️</span><div><div class="tool-name">draw.io</div><div class="tool-desc">Schémas de liens et cartographie</div></div>
+      </a>
+      <a href="https://osintframework.com" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🗺️</span><div><div class="tool-name">OSINT Framework</div><div class="tool-desc">Carte interactive de tous les outils OSINT</div></div>
+      </a>
+    </div>
+
+    <h2>Documentation de l'investigation</h2>
+    <div class="card card-orange">
+      <h3>Carnet de notes — deux supports complémentaires</h3>
+      <p style="font-size:13px"><strong>Papier :</strong> premières idées, schémas rapides, informations sensibles à ne pas numériser.</p>
+      <p style="font-size:13px;margin:0"><strong>Numérique :</strong> Standard Notes, OneNote, CherryTree — pour structurer, rechercher et archiver.</p>
+    </div>
+    <div class="card card-green">
+      <h3>Hunchly — capture automatique OSINT</h3>
+      <p style="font-size:13px;margin:0">Extension Chrome qui capture automatiquement chaque page visitée pendant une investigation, avec horodatage. Crée un dossier complet et auditable de toutes vos sources.</p>
+    </div>
   </div>
 
   <!-- JOUR 1 : P6 -->
   <div id="page-j1p6" class="page">
     <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 6</span>
-    <h1>Recherche avancée</h1>
-    <p class="lead">Maîtriser les opérateurs de recherche pour trouver ce que Google ne montre pas en première page.</p>
+    <h1>Moteurs de recherche</h1>
+    <p class="lead">Chercher efficacement, c'est comprendre comment les moteurs fonctionnent — et savoir aller au-delà de ce qu'ils montrent par défaut.</p>
+
+    <h2>Les trois couches du web</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0">
+      <div class="card" style="margin:0;padding:16px;border-top:3px solid var(--green)">
+        <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:6px">🌐 Web de surface</div>
+        <div style="font-size:12px;color:var(--grey-dark)">Clear web — indexé par les moteurs de recherche. Accessible à tous. C'est là que se concentrent 90 % des investigations RLF.</div>
+      </div>
+      <div class="card" style="margin:0;padding:16px;border-top:3px solid var(--blue)">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:6px">🔒 Web profond</div>
+        <div style="font-size:12px;color:var(--grey-dark)">Deep web — non indexé (bases de données, espaces privés, intranets). Accessible mais pas via un moteur de recherche standard.</div>
+      </div>
+      <div class="card" style="margin:0;padding:16px;border-top:3px solid var(--grey-dark)">
+        <div style="font-weight:700;font-size:13px;color:var(--grey-dark);margin-bottom:6px">🕶️ Darknets</div>
+        <div style="font-size:12px;color:var(--grey-dark)">Dark web — accessible uniquement via des logiciels spécifiques (TOR). Usage très ponctuel et précautionneux en contexte RLF.</div>
+      </div>
+    </div>
+
+    <h2>Comment fonctionne un moteur de recherche</h2>
+    <p>Un moteur de recherche, c'est une immense base de données avec un index — combiné à une interface d'interrogation simple ou avancée. Il ne "voit" pas tout le web : il ne retourne que ce qu'il a indexé, dans l'ordre que son algorithme détermine.</p>
+    <div class="card card-orange">
+      <h3>⚠ Implication OSINT</h3>
+      <p style="font-size:13px;margin:0">La première page de Google n'est pas "la vérité". Des informations cruciales peuvent être en page 5, sur Yandex, dans les archives ou sur un métamoteur. L'enquêteur OSINT ne s'arrête jamais à la première page.</p>
+    </div>
+
+    <h2>Google — opérateurs de recherche avancée</h2>
+    <p>Utilisez <code style="background:var(--grey-light);padding:2px 6px;border-radius:3px;font-size:13px">google.com/ncr</code> pour éviter la redirection automatique vers la version belge.</p>
+    <div style="display:flex;flex-direction:column;gap:6px;margin:12px 0">
+      <div class="card" style="margin:0;padding:12px">
+        <div style="font-family:monospace;font-size:13px;font-weight:700;color:var(--red);margin-bottom:4px">intitle:</div>
+        <div style="font-size:13px;color:var(--grey-dark);margin-bottom:4px">Recherche dans le <strong>titre</strong> de la page. Exemple :</div>
+        <code style="background:var(--grey-light);padding:4px 8px;border-radius:4px;font-size:12px;display:block">intitle:"Police fédérale" inurl:"police federale"</code>
+      </div>
+      <div class="card" style="margin:0;padding:12px">
+        <div style="font-family:monospace;font-size:13px;font-weight:700;color:var(--red);margin-bottom:4px">inurl:</div>
+        <div style="font-size:13px;color:var(--grey-dark);margin-bottom:4px">Recherche dans l'<strong>URL</strong> de la page. Utile car les mots-clés dans l'URL ne sont pas toujours dans le titre. Exemple :</div>
+        <code style="background:var(--grey-light);padding:4px 8px;border-radius:4px;font-size:12px;display:block">inurl:"algerie terrorisme"</code>
+      </div>
+      <div class="card" style="margin:0;padding:12px">
+        <div style="font-family:monospace;font-size:13px;font-weight:700;color:var(--red);margin-bottom:4px">filetype:</div>
+        <div style="font-size:13px;color:var(--grey-dark);margin-bottom:4px">Recherche un <strong>type de fichier</strong> spécifique. Très puissant combiné avec d'autres opérateurs. Exemple :</div>
+        <code style="background:var(--grey-light);padding:4px 8px;border-radius:4px;font-size:12px;display:block">Bitcoin OR Ethereum filetype:pdf</code>
+      </div>
+      <div class="card" style="margin:0;padding:12px">
+        <div style="font-family:monospace;font-size:13px;font-weight:700;color:var(--red);margin-bottom:4px">intext:</div>
+        <div style="font-size:13px;color:var(--grey-dark);margin-bottom:4px">Recherche dans le <strong>contenu</strong> de la page sans avoir à l'ouvrir. Exemple :</div>
+        <code style="background:var(--grey-light);padding:4px 8px;border-radius:4px;font-size:12px;display:block">intext:"Huawei" AND "Google"</code>
+      </div>
+      <div class="card" style="margin:0;padding:12px">
+        <div style="font-family:monospace;font-size:13px;font-weight:700;color:var(--red);margin-bottom:4px">site:</div>
+        <div style="font-size:13px;color:var(--grey-dark);margin-bottom:4px">Limite la recherche à un <strong>domaine précis</strong>. Exemple :</div>
+        <code style="background:var(--grey-light);padding:4px 8px;border-radius:4px;font-size:12px;display:block">site:facebook.com "Fatima Al-Rashid" OR "فاطمة الراشد"</code>
+      </div>
+    </div>
+
     <h2>Opérateurs booléens</h2>
-    <div class="placeholder">[ À compléter : AND, OR, NOT, guillemets, parenthèses — avec exemples ]</div>
-    <h2>Google Dorking</h2>
-    <div class="card card-blue">
-      <h3>Opérateurs essentiels</h3>
-      <div class="placeholder">[ À compléter : site:, filetype:, inurl:, intitle:, before:, after:, cache: — tableau avec exemples RLF ]</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0 16px">
+      <div class="card" style="margin:0;padding:12px;text-align:center">
+        <code style="font-size:16px;font-weight:700;color:var(--red)">AND</code>
+        <div style="font-size:12px;margin-top:6px">Les deux termes doivent être présents</div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;text-align:center">
+        <code style="font-size:16px;font-weight:700;color:var(--red)">OR</code>
+        <div style="font-size:12px;margin-top:6px">L'un ou l'autre des termes</div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;text-align:center">
+        <code style="font-size:16px;font-weight:700;color:var(--red)">-mot</code>
+        <div style="font-size:12px;margin-top:6px">Exclure un terme des résultats</div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;text-align:center">
+        <code style="font-size:16px;font-weight:700;color:var(--red)">"..."</code>
+        <div style="font-size:12px;margin-top:6px">Recherche exacte de la phrase entre guillemets</div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;text-align:center">
+        <code style="font-size:16px;font-weight:700;color:var(--red)">*</code>
+        <div style="font-size:12px;margin-top:6px">Joker — remplace un ou plusieurs mots</div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;text-align:center">
+        <code style="font-size:16px;font-weight:700;color:var(--red)">(A OR B)</code>
+        <div style="font-size:12px;margin-top:6px">Grouper les termes avec des parenthèses</div>
+      </div>
     </div>
-    <h2>Exercice guidé</h2>
+
+    <h2>Exemple de dork RLF</h2>
     <div class="card card-green">
-      <div class="placeholder">[ À compléter : exercices sur des profils fictifs en contexte migratoire — variantes de noms arabes ]</div>
+      <h3>Recherche d'une personne syrienne sur Facebook</h3>
+      <code style="background:white;padding:8px 12px;border-radius:6px;font-size:13px;display:block;margin-bottom:8px">site:facebook.com ("Fatima Rashid" OR "Fatima Al-Rashid" OR "فاطمة الراشد") "Deir"</code>
+      <code style="background:white;padding:8px 12px;border-radius:6px;font-size:13px;display:block">site:facebook.com "فاطمة راشد" OR "فاطمة الراشد" "دير الزور"</code>
     </div>
-    <h2>Yandex et autres moteurs</h2>
-    <div class="placeholder">[ À compléter : quand utiliser Yandex, DuckDuckGo, Bing — avantages pour la recherche arabe ]</div>
+
+    <h2>Métamoteurs de recherche</h2>
+    <p>Les métamoteurs agrègent les résultats de plusieurs moteurs simultanément — utiles pour élargir la couverture quand Google ne suffit pas.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0">
+      <a href="https://searx.space" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🔍</span>
+        <div><div class="tool-name">SearX</div><div class="tool-desc">Open-source, respectueux de la vie privée</div></div>
+      </a>
+      <a href="https://www.dogpile.com" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🔍</span>
+        <div><div class="tool-name">Dogpile</div><div class="tool-desc">Agrège Google et Yahoo</div></div>
+      </a>
+      <a href="https://carrot2.org" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🔍</span>
+        <div><div class="tool-name">Carrot2</div><div class="tool-desc">Clustering des résultats par thème</div></div>
+      </a>
+      <a href="https://iseek.com" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🔍</span>
+        <div><div class="tool-name">iSeek</div><div class="tool-desc">Très efficace pour l'extraction d'entités</div></div>
+      </a>
+    </div>
+
+    <h2>Wayback Machine — les archives du web</h2>
+    <div class="card card-blue">
+      <p style="font-size:13px">La <strong>Wayback Machine</strong> archive plus de 361 milliards de pages web. Elle permet d'accéder à des versions antérieures de sites qui ont été modifiés ou supprimés — extrêmement utile pour retrouver un profil effacé ou une publication supprimée.</p>
+      <a href="https://archive.org/web/" target="_blank" class="tool-link" style="margin-top:8px">
+        <span class="tool-icon">📦</span>
+        <div><div class="tool-name">archive.org/web</div><div class="tool-desc">Accéder aux archives du web</div></div>
+      </a>
+    </div>
+
+    <h2>Dark web — notions de base</h2>
+    <div class="card card-orange">
+      <h3>⚠ Usage très limité en contexte RLF</h3>
+      <p style="font-size:13px;margin:0">Le dark web peut être utile dans des contextes très spécifiques (recherche de personnes disparues dans des réseaux criminels, vérification de fuites de données). Il nécessite le navigateur TOR et une formation spécifique. En règle générale : ne pas y aller sans raison précise et sans formation adéquate.</p>
+    </div>
+    <p>Moteurs accessibles depuis le clear web pour reconnaissance préalable :</p>
+    <a href="https://ahmia.fi" target="_blank" class="tool-link">
+      <span class="tool-icon">🕶️</span>
+      <div><div class="tool-name">Ahmia.fi</div><div class="tool-desc">Moteur dark web accessible sans TOR — pour reconnaissance uniquement</div></div>
+    </a>
   </div>
 
   <!-- QUIZ JOUR 1 -->
@@ -846,19 +1150,15 @@
     <div class="quiz-score" id="quiz2-score"></div>
   </div>
 
-  <!-- JOUR 3 : MODULE D -->
+  <!-- JOUR 3 : MODULE D — fusionné avec Module G -->
   <div id="page-j3md" class="page">
-    <span class="tag tag-red">Jour 3</span><span class="tag tag-blue">Module D</span>
-    <h1>Sécurité numérique</h1>
-    <p class="lead">Protéger les données des bénéficiaires et maîtriser les bases de la sécurité opérationnelle dans le contexte RLF.</p>
-    <h2>Hygiène numérique de base</h2>
-    <div class="placeholder">[ À compléter : mots de passe, authentification à deux facteurs, comptes dédiés aux investigations ]</div>
-    <h2>Gestion des métadonnées</h2>
-    <div class="placeholder">[ À compléter : ExifTool, MAT2 — supprimer les métadonnées avant partage ]</div>
-    <h2>Navigation sécurisée & VPN</h2>
-    <div class="placeholder">[ À compléter : Brave, Firefox + extensions, ProtonVPN, Windscribe — calibré au profil RLF ]</div>
-    <h2>Messagerie chiffrée</h2>
-    <div class="placeholder">[ À compléter : Signal, ProtonMail — quand et pourquoi les utiliser ]</div>
+    <span class="tag tag-red">Jour 3</span><span class="tag tag-blue">Module D · G</span>
+    <h1>Sécurité & protection de l'environnement de travail</h1>
+    <p class="lead">Ce module a été fusionné avec le Module G. Utilisez le menu latéral pour accéder au contenu complet.</p>
+    <div class="card card-blue">
+      <h3>→ Accéder au contenu</h3>
+      <p style="font-size:13px;margin:0">Le contenu complet sur la sécurité numérique, les VPN, les machines virtuelles et les extensions Firefox se trouve dans <strong>MOD D·G · Sécurité & environnement</strong> dans le menu latéral.</p>
+    </div>
   </div>
 
   <!-- JOUR 3 : MODULE E -->
@@ -879,14 +1179,159 @@
   <!-- JOUR 3 : MODULE G -->
   <div id="page-j3mg" class="page">
     <span class="tag tag-red">Jour 3</span><span class="tag tag-blue">Module G</span>
-    <h1>Environnements de travail isolés</h1>
-    <p class="lead">Comprendre le cloisonnement numérique pour les investigations sensibles — sans aller jusqu'aux outils de journaliste en zone hostile.</p>
-    <h2>Pourquoi cloisonner ?</h2>
-    <div class="placeholder">[ À compléter : séparation des environnements pro/perso/investigation, risques concrets pour le RLF ]</div>
-    <h2>Machines virtuelles</h2>
-    <div class="placeholder">[ À compléter : VirtualBox, principe de fonctionnement, cas d'usage RLF ]</div>
-    <h2>Navigateur dédié aux investigations</h2>
-    <div class="placeholder">[ À compléter : profil Firefox dédié, extensions OSINT, configuration recommandée ]</div>
+    <h1>Protection de l'environnement de travail</h1>
+    <p class="lead">Avant toute investigation OSINT, sécuriser son environnement est indispensable — pour protéger à la fois l'enquêteur et les personnes dont on traite les données.</p>
+
+    <h2>Check-list de sécurité</h2>
+    <p>Avant de commencer une recherche OSINT, vérifiez systématiquement ces points :</p>
+
+    <div class="card card-orange">
+      <h3>🔑 Mots de passe & authentification</h3>
+      <p style="font-size:13px">Utiliser un <strong>gestionnaire de mots de passe</strong> : Bitwarden, KeePassXC (gratuit et portable), 1Password.</p>
+      <p style="font-size:13px">Utiliser un mot de passe <strong>fort et différent</strong> pour chaque compte (passphrase recommandée).</p>
+      <p style="font-size:13px;margin:0">Activer l'<strong>authentification à deux facteurs (2FA)</strong> partout où c'est possible : Google Authenticator, Authy, clé physique.</p>
+    </div>
+
+    <div class="card card-orange">
+      <h3>💾 Chiffrement des données</h3>
+      <p style="font-size:13px">Chiffrer vos <strong>disques durs et clés USB</strong> : BitLocker (Windows Pro), FileVault (macOS), VeraCrypt (multi-OS, gratuit).</p>
+      <p style="font-size:13px;margin:0">Mettre à jour régulièrement vos <strong>navigateurs et systèmes d'exploitation</strong> — les mises à jour corrigent les failles de sécurité.</p>
+    </div>
+
+    <div class="card card-orange">
+      <h3>📧 Messagerie sécurisée</h3>
+      <p style="font-size:13px">Vérifier si votre adresse e-mail a été compromise : <a href="https://haveibeenpwned.com" target="_blank">haveibeenpwned.com</a></p>
+      <p style="font-size:13px">Utiliser un fournisseur sécurisé pour vos comptes d'investigation : <strong>ProtonMail, Tutanota, Mailfence</strong>.</p>
+      <p style="font-size:13px;margin:0">Supprimer les métadonnées des documents et photos avant tout partage.</p>
+    </div>
+
+    <div class="card card-orange">
+      <h3>🔍 Audit de votre empreinte numérique</h3>
+      <p style="font-size:13px">Vérifier ce que votre navigateur révèle sur vous :
+        <a href="https://whoer.net/fr" target="_blank" style="color:var(--red)">whoer.net</a> ·
+        <a href="https://www.deviceinfo.me" target="_blank" style="color:var(--red)">deviceinfo.me</a>
+      </p>
+      <p style="font-size:13px">Passer en revue les paramètres de confidentialité de vos comptes sociaux (Facebook, Google...).</p>
+      <p style="font-size:13px;margin:0">Scanner les fichiers téléchargés avec <a href="https://www.virustotal.com" target="_blank" style="color:var(--red)">VirusTotal</a>.</p>
+    </div>
+
+    <h2>Ce que vous révélez quand vous naviguez</h2>
+    <p>Nos activités en ligne laissent des traces volontaires ou non. L'enquêteur OSINT peut être tracé via plusieurs vecteurs simultanément :</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0">
+      <div class="card" style="margin:0;padding:14px;text-align:center">
+        <div style="font-size:20px;margin-bottom:6px">📍</div>
+        <div style="font-weight:700;font-size:13px;margin-bottom:4px">Géolocalisation</div>
+        <div style="font-size:12px;color:var(--grey-mid)">Localisation physique via smartphone, IoT, GPS des photos</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;text-align:center">
+        <div style="font-size:20px;margin-bottom:6px">🌐</div>
+        <div style="font-weight:700;font-size:13px;margin-bottom:4px">Adresse IP</div>
+        <div style="font-size:12px;color:var(--grey-mid)">Votre "adresse postale" numérique, enregistrée à chaque visite</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;text-align:center">
+        <div style="font-size:20px;margin-bottom:6px">🍪</div>
+        <div style="font-weight:700;font-size:13px;margin-bottom:4px">Cookies & Evercookies</div>
+        <div style="font-size:12px;color:var(--grey-mid)">Traces persistantes — les evercookies (zombie cookies) survivent à la suppression</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;text-align:center;grid-column:span 3">
+        <div style="font-weight:700;font-size:13px;margin-bottom:4px">🖨️ Digital Fingerprinting</div>
+        <div style="font-size:12px;color:var(--grey-mid)">Navigateur + OS + résolution + extensions + polices + fuseau horaire = empreinte unique, sans cookies, sans données stockées en local. Inclut le <strong>canvas fingerprinting</strong> (rendu graphique unique par matériel) et le <strong>user-agent</strong> (informations envoyées à chaque requête web).</div>
+      </div>
+    </div>
+    <div class="card card-orange">
+      <h3>⚠ Rester cohérent</h3>
+      <p style="font-size:13px;margin:0">Si vous utilisez un VPN suisse mais que votre langue est le français belge et votre fuseau horaire Europe/Brussels, votre fingerprint trahit la contradiction. Chaque élément doit être cohérent avec votre identité d'investigation.</p>
+    </div>
+
+    <h2>Choisir son navigateur OSINT</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0">
+      <div class="card card-green" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:6px">✅ Firefox — Recommandé</div>
+        <p style="font-size:12px">Valeur sûre pour l'OSINT. Plus de 2 000 traqueurs bloqués par défaut. Extension <strong>Multi-Account Container</strong> pour compartimenter les investigations. Multi-plateformes.</p>
+      </div>
+      <div class="card card-green" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:6px">✅ Brave — Recommandé</div>
+        <p style="font-size:12px">Moteur Chromium open-source. Bloque automatiquement traqueurs et publicités. Mode TOR intégré (bureau). Excellente réputation en confidentialité.</p>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;margin-bottom:6px">⚠ Google Chrome — Usage limité</div>
+        <p style="font-size:12px">Rapide, nombreux add-ons OSINT. Seul navigateur supportant <strong>Hunchly</strong>. Mais très "bavard" — envoie beaucoup de données à Google. Utiliser uniquement dans la VM dédiée.</p>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;margin-bottom:6px">🔒 TOR — Usage ponctuel</div>
+        <p style="font-size:12px">Anonymat maximal via réseau de relais. Efface cookies et historique à la fermeture. Lent. Pas d'extensions. Réservé aux investigations très sensibles.</p>
+      </div>
+    </div>
+
+    <h2>Anonymisation des connexions</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">
+      <div class="card card-blue" style="margin:0">
+        <h3>Proxy</h3>
+        <p style="font-size:13px">Serveur intermédiaire qui relaye vos requêtes. Masque votre IP mais ne chiffre pas le trafic.</p>
+        <div style="font-size:12px;color:var(--grey-mid)">Sécurité : 3/10 · Confidentialité : 6/10 · Vitesse : 9/10</div>
+      </div>
+      <div class="card card-blue" style="margin:0">
+        <h3>VPN ✅ Recommandé</h3>
+        <p style="font-size:13px">Tunnel chiffré entre votre appareil et le serveur VPN. Masque votre IP <strong>et</strong> chiffre tout votre trafic.</p>
+        <div style="font-size:12px;color:var(--grey-mid)">Sécurité : 9/10 · Confidentialité : 10/10 · Vitesse : 9/10</div>
+      </div>
+    </div>
+    <div class="card card-orange" style="margin-top:8px">
+      <p style="font-size:13px;margin:0"><strong>⚠ Jamais de VPN gratuit !</strong> Les VPN gratuits financent leur service en revendant vos données de navigation — l'inverse de l'effet recherché. Recommandés : ProtonVPN, Mullvad, ExpressVPN.</p>
+    </div>
+
+    <h2>Les machines virtuelles (VM)</h2>
+    <p>Une machine virtuelle est un <strong>système d'exploitation complet fonctionnant dans une fenêtre</strong> de votre ordinateur, isolé du reste. En cas de problème (virus, contamination), on supprime la VM et on recommence — sans affecter la machine hôte.</p>
+
+    <div class="card card-green">
+      <h3>Avantages pour l'OSINT</h3>
+      <p style="font-size:13px"><strong>Isolation :</strong> vos investigations sont séparées de votre système principal.</p>
+      <p style="font-size:13px"><strong>Snapshots :</strong> prendre un "instantané" de la VM avant une investigation — revenir à cet état à tout moment.</p>
+      <p style="font-size:13px;margin:0"><strong>Portabilité :</strong> exporter et importer une VM complète avec tous ses outils.</p>
+    </div>
+
+    <h2>Installation de VirtualBox + Ubuntu</h2>
+    <div class="card">
+      <h3>Étapes principales</h3>
+      <p style="font-size:13px">1. Télécharger et installer <a href="https://www.virtualbox.org" target="_blank" style="color:var(--red)">VirtualBox</a> + ses extensions.</p>
+      <p style="font-size:13px">2. Télécharger <a href="https://ubuntu.com/download/desktop" target="_blank" style="color:var(--red)">Ubuntu 24.04 LTS</a>.</p>
+      <p style="font-size:13px">3. Créer une nouvelle VM dans VirtualBox, allouer RAM et stockage selon votre machine.</p>
+      <p style="font-size:13px">4. Installer Ubuntu dans la VM, puis les Guest Additions.</p>
+      <p style="font-size:13px">5. Mettre à jour le système :</p>
+      <pre style="background:var(--grey-light);padding:10px;border-radius:6px;font-size:12px;overflow-x:auto">sudo apt -y update && sudo apt -y upgrade && sudo apt autoclean && sudo apt autoremove</pre>
+      <p style="font-size:13px">6. Prendre un <strong>snapshot</strong> de l'état initial — votre point de départ propre.</p>
+      <p style="font-size:13px;margin:0">7. Construire votre boîte à outils OSINT : scripts Python, outils GitHub.</p>
+    </div>
+
+    <h2>Extensions Firefox recommandées</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0">
+      <div class="card" style="margin:0;padding:10px;font-size:12px"><strong>uBlock Origin</strong> — blocage de publicités et traceurs</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px"><strong>HTTPS Everywhere</strong> — forcer les connexions chiffrées</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px"><strong>Canvas Defender</strong> — protection contre le fingerprinting</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px"><strong>Cookies AutoDelete</strong> — suppression automatique des cookies</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px"><strong>Search by Image</strong> — recherche inversée d'images</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px"><strong>User-Agent Switcher</strong> — modifier l'empreinte du navigateur</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px"><strong>Video DownloadHelper</strong> — télécharger des vidéos pour analyse</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px"><strong>WebRTC Leak Prevent</strong> — éviter les fuites d'IP réelle</div>
+    </div>
+
+    <h2>Outils</h2>
+    <a href="https://www.virtualbox.org" target="_blank" class="tool-link">
+      <span class="tool-icon">🖥️</span>
+      <div><div class="tool-name">VirtualBox</div><div class="tool-desc">Virtualisation gratuite et open-source — Windows, macOS, Linux</div></div>
+    </a>
+    <a href="https://ubuntu.com/download/desktop" target="_blank" class="tool-link">
+      <span class="tool-icon">🐧</span>
+      <div><div class="tool-name">Ubuntu 24.04 LTS</div><div class="tool-desc">Système d'exploitation Linux recommandé pour la VM OSINT</div></div>
+    </a>
+    <a href="https://www.veracrypt.fr" target="_blank" class="tool-link">
+      <span class="tool-icon">🔒</span>
+      <div><div class="tool-name">VeraCrypt</div><div class="tool-desc">Chiffrement de disques et clés USB — gratuit, multi-OS</div></div>
+    </a>
+    <a href="https://haveibeenpwned.com" target="_blank" class="tool-link">
+      <span class="tool-icon">🔍</span>
+      <div><div class="tool-name">Have I Been Pwned</div><div class="tool-desc">Vérifier si votre adresse e-mail a été compromise</div></div>
+    </a>
   </div>
 
   <!-- JOUR 3 : CONSOLIDATION -->
@@ -1100,7 +1545,7 @@ function showSection(section) {
     home: 'home',
     jour1: 'j1p1',
     jour2: 'j2ma',
-    jour3: 'j3md',
+    jour3: 'j3mg',
     ressources: 'outils',
   };
   showPage(map[section] || 'home');
