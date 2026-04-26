@@ -289,17 +289,23 @@
   .quiz-q label input { margin-top: 2px; flex-shrink: 0; }
   .quiz-q label.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 500; }
   .quiz-q label.wrong { background: #FEF0F0; border-color: #E88; color: #C00; }
-  .quiz-q label.reveal-correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .quiz-q label.reveal-correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight:600; }
+  .quiz-q .q-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+    margin-left: 8px; vertical-align: middle;
+  }
+  .q-badge.ok { background: var(--green); color: white; }
+  .q-badge.ko { background: #C00; color: white; }
+  .q-badge.skip { background: var(--grey-mid); color: white; }
   .quiz-feedback {
-    margin-top: 10px;
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-size: 13px;
-    display: none;
+    margin-top: 10px; padding: 12px 16px; border-radius: 6px;
+    font-size: 13px; display: none; line-height: 1.6;
+    border-left: 4px solid transparent;
   }
   .quiz-feedback.show { display: block; }
-  .quiz-feedback.ok { background: var(--green-light); color: var(--green); }
-  .quiz-feedback.ko { background: #FEF0F0; color: #C00; }
+  .quiz-feedback.ok { background: var(--green-light); color: var(--green); border-left-color: var(--green); }
+  .quiz-feedback.ko { background: #FEF0F0; color: #800; border-left-color: #C00; }
   .btn-quiz {
     background: var(--red);
     color: var(--white);
@@ -315,18 +321,62 @@
   }
   .btn-quiz:hover { background: var(--red-dark); }
   .quiz-score {
-    background: var(--red-light);
-    border: 1px solid var(--red-mid);
-    border-radius: 8px;
-    padding: 16px 20px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--red);
-    text-align: center;
-    margin-top: 16px;
-    display: none;
+    background: var(--red-light); border: 1px solid var(--red-mid);
+    border-radius: 8px; font-size: 15px; font-weight: 600;
+    color: var(--red); margin-top: 16px; display: none; overflow: hidden;
   }
   .quiz-score.show { display: block; }
+  .quiz-score-header {
+    padding: 16px 20px 12px; border-bottom: 1px solid var(--red-mid);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .quiz-score-msg { font-size: 17px; font-weight: 700; flex: 1; }
+  .quiz-score-pct { font-size: 26px; font-weight: 700; color: var(--red); }
+  .quiz-progress-bar {
+    height: 8px; background: var(--red-mid); margin: 0 20px 16px;
+    border-radius: 4px; overflow: hidden;
+  }
+  .quiz-progress-fill { height: 100%; background: var(--red); border-radius: 4px; transition: width 0.6s ease; }
+  .quiz-score-detail { padding: 0 20px 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .quiz-q-pill {
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 10px;
+    cursor: pointer; transition: opacity 0.15s; text-decoration: none;
+  }
+  .quiz-q-pill:hover { opacity: 0.75; }
+  .quiz-q-pill.ok { background: var(--green); color: white; }
+  .quiz-q-pill.ko { background: #C00; color: white; }
+  .quiz-q-pill.skip { background: var(--grey-mid); color: white; }
+
+  /* ── EXERCICE GUIDÉ ── */
+  .exercise-step {
+    border: 1px solid var(--border); border-radius: 8px;
+    margin-bottom: 16px; overflow: hidden; box-shadow: var(--shadow);
+  }
+  .exercise-step-header {
+    background: var(--blue); color: white;
+    padding: 12px 18px; display: flex; align-items: center; gap: 12px;
+  }
+  .exercise-step-num {
+    background: rgba(255,255,255,0.25); border-radius: 50%;
+    width: 28px; height: 28px; display: flex; align-items: center;
+    justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0;
+  }
+  .exercise-step-title { font-weight: 600; font-size: 14px; flex: 1; }
+  .exercise-step-body { padding: 16px 18px; }
+  .exercise-task { font-size: 13px; color: var(--grey-dark); margin-bottom: 12px; line-height: 1.6; }
+  .btn-reveal {
+    background: none; border: 1px solid var(--blue); color: var(--blue);
+    border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+  }
+  .btn-reveal:hover { background: var(--blue); color: white; }
+  .exercise-answer {
+    margin-top: 12px; padding: 12px 16px; background: var(--green-light);
+    border-left: 4px solid var(--green); border-radius: 0 6px 6px 0;
+    font-size: 13px; color: var(--green); display: none; line-height: 1.6;
+  }
+  .exercise-answer.show { display: block; }
+  .exercise-answer strong { color: var(--green); }
 
   /* ── LOCK SCREEN ── */
   .lock-screen {
@@ -560,21 +610,150 @@
     </div>
   </div>
 
-  <!-- JOUR 1 : P1 -->
   <div id="page-j1p1" class="page">
     <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 1</span>
     <h1>Introduction à l'OSINT</h1>
     <p class="lead">Comprendre ce qu'est le renseignement en sources ouvertes, son périmètre et ses applications concrètes dans le contexte RLF.</p>
+
+    <h2>Définition</h2>
+    <p>L'<strong>OSINT</strong> (Open Source Intelligence) désigne le renseignement produit à partir de sources <strong>légalement accessibles au public</strong> : internet, réseaux sociaux, bases de données publiques, images satellites, archives médiatiques, registres officiels.</p>
+    <p>Longtemps réservée aux services de renseignement et aux forces de l'ordre, cette discipline est aujourd'hui parfaitement applicable dans le secteur humanitaire — et directement utile pour le service RLF.</p>
+    <div class="card card-blue">
+      <h3>« Nous n'avons pas besoin d'espions. Nous avons le Times de Londres. »</h3>
+      <p style="font-size:13px;margin:0">— Tsar Nicolas II. Cette phrase illustre une réalité toujours d'actualité : une grande partie de l'information utile est publique. Il suffit de savoir la trouver.</p>
+    </div>
+
     <h2>Concepts clés</h2>
-    <div class="placeholder">[ À compléter : définition OSINT, RENS vs OSINT, typologies de sources (HUMINT, SIGINT, OSINT), principes fondamentaux ]</div>
+
+    <h3>La pyramide du renseignement</h3>
+    <p>L'OSINT ne produit pas directement du "renseignement" — il produit des données brutes qui doivent être traitées, analysées et contextualisées pour devenir exploitables.</p>
+    <div style="display:flex;flex-direction:column;gap:0;margin:12px 0">
+      <div style="background:var(--red);color:white;text-align:center;padding:12px;border-radius:6px 6px 0 0;font-weight:700;font-size:13px">
+        🎯 Intelligence — La connaissance actionnable
+        <div style="font-size:11px;font-weight:400;margin-top:3px;opacity:0.9">Décisions prises sur base du renseignement produit</div>
+      </div>
+      <div style="background:#D44;color:white;text-align:center;padding:12px;font-size:13px;font-weight:600">
+        🔍 Renseignement — L'analyse contextualisée
+        <div style="font-size:11px;font-weight:400;margin-top:3px;opacity:0.9">Informations croisées, vérifiées, interprétées</div>
+      </div>
+      <div style="background:var(--blue);color:white;text-align:center;padding:12px;font-size:13px;font-weight:600">
+        📋 Information — Les données organisées
+        <div style="font-size:11px;font-weight:400;margin-top:3px;opacity:0.9">Données brutes triées et structurées</div>
+      </div>
+      <div style="background:#4A6FA5;color:white;text-align:center;padding:12px;border-radius:0 0 6px 6px;font-size:13px;font-weight:600">
+        📦 Données brutes — Les sources collectées
+        <div style="font-size:11px;font-weight:400;margin-top:3px;opacity:0.9">Profils, publications, images, documents — non traités</div>
+      </div>
+    </div>
+    <div class="card card-blue">
+      <h3>Application RLF concrète</h3>
+      <p style="font-size:13px">Trouver un profil Facebook correspondant à Fatima Al-Rashid = <strong>donnée brute</strong>.</p>
+      <p style="font-size:13px">Vérifier que ce profil correspond à la personne recherchée, identifier ses publications géolocalisées = <strong>information organisée</strong>.</p>
+      <p style="font-size:13px">Croiser avec les rapports UNHCR pour reconstituer un itinéraire probable = <strong>renseignement</strong>.</p>
+      <p style="font-size:13px;margin:0">Formuler des recommandations concrètes pour le service RLF = <strong>intelligence actionnable</strong>.</p>
+    </div>
+
+    <h3>Source vs Information — deux notions distinctes</h3>
+    <p>Une source fiable peut véhiculer une fausse information. Une source peu fiable peut fournir une information exacte. Toujours évaluer les deux séparément.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:8px">La source</div>
+        <p style="font-size:13px;margin-bottom:6px">Primaire ou secondaire ? Directement concernée ? Historique de fiabilité ?</p>
+        <p style="font-size:13px;margin:0;color:var(--grey-mid);font-style:italic">Ex : un témoin direct (primaire) vs un journal qui relaie (secondaire)</p>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:8px">L'information</div>
+        <p style="font-size:13px;margin-bottom:6px">Vérifiable ? Corroborée par d'autres sources ? Cohérente avec le contexte ?</p>
+        <p style="font-size:13px;margin:0;color:var(--grey-mid);font-style:italic">Ex : une photo peut être authentique mais mal datée ou mal localisée</p>
+      </div>
+    </div>
+
+    <h3>Les principes éthiques fondamentaux</h3>
+    <div style="display:flex;flex-direction:column;gap:6px;margin:10px 0">
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🎯</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">Minimisation</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Ne collecter que ce qui est strictement nécessaire à la recherche en cours. Pas de collecte préventive ou spéculative.</div></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🔒</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">Finalité</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Les données collectées ne peuvent pas être réutilisées à d'autres fins, ni partagées hors du réseau Croix-Rouge.</div></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">⚖️</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">Proportionnalité</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Les moyens doivent être proportionnels à l'objectif. Une investigation invasive se justifie uniquement si les méthodes moins intrusives ont échoué.</div></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">👁️</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">"Regarder, ne pas toucher"</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Observer sans interagir sauf nécessité absolue. Toute interaction laisse une trace et peut compromettre l'investigation ou exposer une personne vulnérable.</div></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🛡️</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">Protection des sources</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Ne jamais exposer une personne vulnérable par une démarche maladroite. Le consentement de la personne retrouvée est toujours requis avant tout rétablissement de contact.</div></div>
+      </div>
+    </div>
+
+    <h2>Typologies de renseignement</h2>
+    <p>L'OSINT s'inscrit dans un écosystème plus large de disciplines du renseignement :</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0">
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:4px">OSINT</div>
+        <div style="font-size:13px">Renseignement en sources ouvertes — notre domaine</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:4px">SOCMINT</div>
+        <div style="font-size:13px">Renseignement issu des médias sociaux (sous-catégorie de l'OSINT)</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--grey-dark);margin-bottom:4px">GEOINT</div>
+        <div style="font-size:13px">Renseignement géospatial — images satellites, cartographie</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--grey-dark);margin-bottom:4px">HUMINT</div>
+        <div style="font-size:13px">Renseignement d'origine humaine — témoignages, contacts</div>
+      </div>
+    </div>
+
+    <h2>L'OSINT en pratique — sources exploitables</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 16px">
+      <div style="font-size:13px;padding:4px 0">🔍 Moteurs de recherche</div>
+      <div style="font-size:13px;padding:4px 0">📱 Réseaux sociaux</div>
+      <div style="font-size:13px;padding:4px 0">🗺️ Cartographie en ligne</div>
+      <div style="font-size:13px;padding:4px 0">🧑 Moteurs de recherche de personnes</div>
+      <div style="font-size:13px;padding:4px 0">📷 Photos & vidéos publiques</div>
+      <div style="font-size:13px;padding:4px 0">📄 Documents officiels & archives</div>
+      <div style="font-size:13px;padding:4px 0">🌐 Communautés en ligne</div>
+      <div style="font-size:13px;padding:4px 0">📡 Adresses IP & noms de domaine</div>
+    </div>
+
     <h2>Applications RLF</h2>
     <div class="card card-blue">
       <h3>Pourquoi l'OSINT pour le service RLF ?</h3>
-      <div class="placeholder">[ À compléter : cas concrets d'usage — recherche de personnes, vérification d'identité, contexte géographique ]</div>
+      <p style="font-size:13px"><strong>Recherche de personnes disparues :</strong> identifier et localiser des proches via leurs traces numériques.</p>
+      <p style="font-size:13px"><strong>Vérification d'identité :</strong> confirmer qu'une personne retrouvée correspond bien à celle recherchée.</p>
+      <p style="font-size:13px"><strong>Contexte géographique :</strong> documenter une zone de conflit, un itinéraire migratoire, l'emplacement d'un camp.</p>
+      <p style="font-size:13px;margin:0"><strong>Fact-checking :</strong> vérifier l'authenticité d'une photo ou d'une information reçue d'un demandeur.</p>
     </div>
+
     <h2>Ce que l'OSINT n'est pas</h2>
     <div class="card card-orange">
-      <div class="placeholder">[ À compléter : limites légales, éthiques, techniques — ce qu'on ne peut pas faire ]</div>
+      <p style="font-size:13px"><strong>❌ Du hacking :</strong> l'OSINT se limite strictement aux sources légalement accessibles. Toute intrusion est illégale.</p>
+      <p style="font-size:13px"><strong>❌ Une certitude :</strong> une information trouvée en OSINT doit toujours être croisée et vérifiée.</p>
+      <p style="font-size:13px;margin:0"><strong>❌ Un substitut au réseau Croix-Rouge :</strong> l'OSINT oriente et accélère, mais la confirmation et la prise de contact passent toujours par le canal officiel.</p>
+    </div>
+
+    <h2>Ressource vidéo</h2>
+    <div class="card card-blue">
+      <h3>📺 Cameroun : Anatomie d'une tuerie — BBC Africa Eye</h3>
+      <p style="font-size:13px">Un exemple concret d'investigation OSINT menée par des journalistes pour documenter un événement dans un contexte de conflit.</p>
+      <a href="https://www.youtube.com/watch?v=XbnLkc6r3yc" target="_blank" class="tool-link" style="margin-top:8px">
+        <span class="tool-icon">▶️</span>
+        <div><div class="tool-name">Voir la vidéo sur YouTube</div><div class="tool-desc">BBC Africa Eye · ~25 min</div></div>
+      </a>
     </div>
   </div>
 
@@ -582,29 +761,267 @@
   <div id="page-j1p2" class="page">
     <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 2</span>
     <h1>Fonctionnement d'Internet</h1>
-    <p class="lead">Comprendre l'infrastructure du web pour mieux en exploiter les sources et protéger son empreinte numérique.</p>
-    <h2>Infrastructure & traces</h2>
-    <div class="placeholder">[ À compléter : DNS, adresses IP, cookies, métadonnées, empreinte numérique ]</div>
-    <h2>Ce que vous laissez derrière vous</h2>
-    <div class="card card-orange">
-      <div class="placeholder">[ À compléter : logs, historique, traceurs tiers, risques pour les bénéficiaires ]</div>
+    <p class="lead">Comprendre l'infrastructure du web pour mieux exploiter les sources et maîtriser ce que vous révélez lors de vos recherches.</p>
+
+    <h2>Le réseau local & TCP/IP</h2>
+    <p>Tout appareil connecté fait partie d'un <strong>réseau local</strong> (LAN). Il communique avec les autres appareils et avec internet via le protocole <strong>TCP/IP</strong> — le "langage commun" du web.</p>
+
+    <h2>L'adresse IP — votre identité sur le réseau</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">
+      <div class="card" style="margin:0;padding:16px">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:6px">Adresse IP interne (privée)</div>
+        <p style="font-size:13px;margin-bottom:6px">Identifie votre appareil au sein du réseau local. Non visible depuis internet.</p>
+        <code style="background:var(--grey-light);padding:3px 8px;border-radius:3px;font-size:12px">192.168.2.25</code>
+      </div>
+      <div class="card" style="margin:0;padding:16px">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:6px">Adresse IP publique</div>
+        <p style="font-size:13px;margin-bottom:6px">Identifie votre connexion sur internet. Visible par tout site visité. Enregistrée dans les logs.</p>
+        <code style="background:var(--grey-light);padding:3px 8px;border-radius:3px;font-size:12px">109.89.32.122</code>
+      </div>
     </div>
+    <div class="card card-orange">
+      <h3>⚠ Implication pour vos recherches OSINT</h3>
+      <p style="font-size:13px;margin:0">Chaque visite d'un site web laisse votre adresse IP dans ses logs. Sans précaution, vos recherches sont traçables et peuvent exposer l'identité du service RLF à des acteurs indésirables.</p>
+    </div>
+
+    <h2>Le DNS — l'annuaire d'internet</h2>
+    <p>Un serveur <strong>DNS</strong> (Domain Name System) traduit les noms de domaine lisibles en adresses IP. C'est l'annuaire téléphonique d'internet : <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px;font-size:13px">www.google.com</code> → <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px;font-size:13px">216.58.212.131</code>. Vos requêtes DNS peuvent également être journalisées par votre FAI.</p>
+
+    <h2>Le Carrier Grade NAT — une limite importante</h2>
+    <div class="card card-blue">
+      <h3>Une IP ≠ une personne</h3>
+      <p style="font-size:13px;margin:0">Certains FAI partagent une même adresse IP publique entre plusieurs abonnés (CGN). Une adresse IP est donc un <strong>indice</strong>, jamais une preuve d'identité certaine. En OSINT : toujours croiser avec d'autres éléments avant de conclure.</p>
+    </div>
+
+    <h2>Les cookies</h2>
+    <p>Les cookies sont de petits fichiers déposés par les sites web dans votre navigateur. Il en existe plusieurs types, aux implications très différentes :</p>
+    <div style="display:flex;flex-direction:column;gap:6px;margin:10px 0">
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">⏱️</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px">Cookies de session</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Temporaires — disparaissent à la fermeture du navigateur. Utilisés pour maintenir une connexion active (ex. panier d'achat, session authentifiée).</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">📅</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px">Cookies persistants</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Stockés sur votre disque pendant des jours, mois ou années. Permettent de vous "reconnaître" à votre prochaine visite — préférences, historique, profil publicitaire.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🕵️</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px">Cookies tiers (traceurs)</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Déposés par des domaines extérieurs au site visité (régies publicitaires, analytics). Permettent de vous suivre sur des milliers de sites différents et de construire un profil comportemental détaillé.</div>
+        </div>
+      </div>
+      <div class="card card-orange" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🧟</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px;color:var(--orange)">Evercookies / Zombie cookies</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Se reconstituent après suppression en utilisant plusieurs mécanismes de stockage simultanément (localStorage, IndexedDB, ETag, cache...). Très difficiles à éliminer sans un navigateur configuré pour l'investigation.</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Le User-Agent — votre carte de visite automatique</h2>
+    <p>À chaque requête web, votre navigateur envoie automatiquement un <strong>user-agent</strong> : une chaîne de texte révélant votre système d'exploitation, votre navigateur, sa version et parfois votre langue.</p>
+    <div class="card" style="margin:0;padding:14px;margin-bottom:12px">
+      <div style="font-size:11px;color:var(--grey-mid);margin-bottom:6px">Exemple de user-agent Firefox sous Windows :</div>
+      <code style="background:var(--grey-light);padding:6px 10px;border-radius:4px;font-size:11px;display:block;line-height:1.6;word-break:break-all">Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0</code>
+    </div>
+    <div class="card card-orange">
+      <p style="font-size:13px;margin:0">⚠ Sans précaution, votre user-agent trahit votre configuration réelle même si vous utilisez un VPN. Un investigateur doit utiliser un navigateur configuré avec un user-agent neutre ou modifié.</p>
+    </div>
+
+    <h2>Les métadonnées des fichiers</h2>
+    <p>Tout fichier numérique contient des <strong>métadonnées</strong> — des informations sur le fichier lui-même, invisibles à première vue mais lisibles avec les bons outils.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0">
+      <div class="card" style="margin:0;padding:12px">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:4px">📷 Photo</div>
+        <div style="font-size:12px">Date & heure exactes · Coordonnées GPS · Modèle d'appareil · Logiciel de traitement</div>
+      </div>
+      <div class="card" style="margin:0;padding:12px">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:4px">📄 Document Word/PDF</div>
+        <div style="font-size:12px">Auteur · Organisation · Date de création · Nombre de révisions · Logiciel utilisé</div>
+      </div>
+    </div>
+    <div class="card card-green">
+      <h3>Double usage en contexte RLF</h3>
+      <p style="font-size:13px"><strong>Exploitation :</strong> les métadonnées d'une photo reçue d'un demandeur peuvent révéler la localisation GPS exacte et la date de prise de vue — des EEI précieux.</p>
+      <p style="font-size:13px;margin:0"><strong>Protection :</strong> avant de partager tout document, supprimer les métadonnées avec MAT2 ou ExifTool pour ne pas révéler d'informations sur le service RLF.</p>
+    </div>
+
+    <h2>Exercice pratique</h2>
+    <div class="card card-green">
+      <h3>Découvrir votre empreinte numérique</h3>
+      <p style="font-size:13px"><strong>1.</strong> Trouvez votre adresse IP locale (Paramètres réseau de votre OS).</p>
+      <p style="font-size:13px"><strong>2.</strong> Trouvez votre adresse IP publique via <a href="https://whatismyipaddress.com/fr/mon-ip" target="_blank" style="color:var(--red)">whatismyipaddress.com</a> — notez le FAI et la localisation affichée.</p>
+      <p style="font-size:13px"><strong>3.</strong> Rendez-vous sur <a href="https://whoer.net/fr" target="_blank" style="color:var(--red)">whoer.net</a> — observez tout ce que le site "voit" de vous : IP, localisation, user-agent, fuseau horaire, langue, plugins. C'est ce que voit chaque site que vous visitez.</p>
+      <p style="font-size:13px;margin:0"><strong>4.</strong> À quel FAI correspondent ces adresses ? <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px">15.172.13.247</code> · <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px">109.89.37.129</code> · <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px">10.0.1.125</code> (attention, il y a un piège).</p>
+    </div>
+
+    <h2>Outils</h2>
+    <a href="https://whatismyipaddress.com/fr/mon-ip" target="_blank" class="tool-link">
+      <span class="tool-icon">🌐</span><div><div class="tool-name">WhatIsMyIPAddress.com</div><div class="tool-desc">Connaître son adresse IP publique et le FAI associé</div></div>
+    </a>
+    <a href="https://whoer.net/fr" target="_blank" class="tool-link">
+      <span class="tool-icon">🔍</span><div><div class="tool-name">Whoer.net</div><div class="tool-desc">Audit complet de votre empreinte numérique — IP, user-agent, DNS, plugins</div></div>
+    </a>
+    <a href="https://www.deviceinfo.me" target="_blank" class="tool-link">
+      <span class="tool-icon">🖥️</span><div><div class="tool-name">DeviceInfo.me</div><div class="tool-desc">Informations détaillées sur votre appareil et navigateur</div></div>
+    </a>
   </div>
 
   <!-- JOUR 1 : P3 -->
   <div id="page-j1p3" class="page">
     <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Période 3</span>
-    <h1>Cadre légal & RGPD</h1>
-    <p class="lead">Ce qu'on peut faire, ce qu'on ne peut pas faire — dans le contexte juridique belge et humanitaire.</p>
-    <h2>Cadre légal belge</h2>
-    <div class="placeholder">[ À compléter : loi du 30 juillet 2018, RGPD appliqué aux ONG, jurisprudence pertinente ]</div>
-    <h2>Principes Croix-Rouge applicables</h2>
-    <div class="card card-red">
-      <div class="placeholder">[ À compléter : consentement, confidentialité, minimisation des données, protection des bénéficiaires ]</div>
+    <h1>EEI & cadre légal</h1>
+    <p class="lead">Identifier ce qu'on cherche, comprendre comment on a le droit de le collecter — les deux faces indissociables d'une investigation RLF éthique et efficace.</p>
+
+    <h2>Les Éléments Essentiels d'Identification (EEI)</h2>
+    <p>Les <strong>EEI</strong> sont l'ensemble des informations permettant d'identifier une personne, directement ou indirectement, après recoupement. Ils constituent la matière première de toute investigation RLF.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0">
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--red)">
+        <div style="font-weight:700;font-size:12px;color:var(--red);margin-bottom:6px">Identification directe</div>
+        <div style="font-size:12px;color:var(--grey-dark)">Un seul EEI suffit à identifier la personne. Ex : numéro national, passeport, empreinte digitale.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--blue)">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:6px">Identification indirecte</div>
+        <div style="font-size:12px;color:var(--grey-dark)">Plusieurs EEI croisés permettent d'identifier. Ex : prénom + ville + photo + date de naissance.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--green)">
+        <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:6px">Valeur procédurale</div>
+        <div style="font-size:12px;color:var(--grey-dark)">Les EEI collectés proprement peuvent alimenter une demande officielle ou un réquisitoire judiciaire.</div>
+      </div>
     </div>
+
+    <div class="card card-blue">
+      <h3>La valeur combinée des EEI</h3>
+      <p style="font-size:13px">Un EEI seul vaut peu. Plusieurs croisés valent beaucoup.</p>
+      <p style="font-size:13px">Un prénom → rien. Un prénom + une ville → peu. Un prénom + une ville + une photo + un contact identifié → une piste sérieuse.</p>
+      <p style="font-size:13px;margin:0">Chaque EEI trouvé peut en déverrouiller d'autres : un profil Facebook → un numéro de téléphone → un compte WhatsApp → une localisation.</p>
+    </div>
+
+    <h3>Catégories d'EEI — exemples RLF</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0">
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--red);margin-bottom:8px">🪪 Identité & comptes</div>
+        <div style="font-size:12px;line-height:1.8">Nom · Prénom · Variantes orthographiques<br>Date & lieu de naissance<br>Adresse e-mail · Numéro de téléphone<br>Pseudonyme / username<br>User ID (UID) · Page ID Facebook</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:8px">🌐 Données de connexion</div>
+        <div style="font-size:12px;line-height:1.8">Adresse IP (IPv4 / IPv6)<br>Nom de domaine · URL d'une publication<br>Date & heure de publication<br>Métadonnées EXIF d'une photo<br>Coordonnées GPS</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:8px">📝 Publications & traces</div>
+        <div style="font-size:12px;line-height:1.8">Contenu de publications<br>Photos & vidéos publiées<br>Commentaires & réactions<br>Lieux mentionnés ou géolocalisés<br>Contacts visibles dans les interactions</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--orange);margin-bottom:8px">📋 EEI fournis par le demandeur</div>
+        <div style="font-size:12px;line-height:1.8">Signalement physique<br>Dernière adresse connue<br>Date & lieu de la séparation<br>Numéro de téléphone (souvent hors service)<br>Contacts communs connus</div>
+      </div>
+    </div>
+
+    <h2>Évaluation des sources</h2>
+    <p>Avant d'utiliser une information dans un dossier RLF, évaluer systématiquement sa source selon 4 critères :</p>
+    <div style="display:flex;flex-direction:column;gap:6px;margin:10px 0">
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="background:var(--red);color:white;border-radius:4px;padding:4px 8px;font-size:11px;font-weight:700;flex-shrink:0">FIABILITÉ</div>
+        <div style="font-size:13px;color:var(--grey-dark)">La source est-elle connue et reconnue ? A-t-elle un historique de publications vérifiables ? Est-elle transparente sur ses méthodes ? <em>Ex : UNHCR ✅ · Blog anonyme sans date ❌</em></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="background:var(--blue);color:white;border-radius:4px;padding:4px 8px;font-size:11px;font-weight:700;flex-shrink:0">PERTINENCE</div>
+        <div style="font-size:13px;color:var(--grey-dark)">L'information répond-elle directement à la question posée ? Est-elle suffisamment récente pour le contexte ? <em>Ex : rapport ACLED de décembre 2023 pour un dossier de cette période ✅</em></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="background:var(--green);color:white;border-radius:4px;padding:4px 8px;font-size:11px;font-weight:700;flex-shrink:0">AUTORITÉ</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Qui est l'auteur ou l'organisation ? Quelles sont ses qualifications dans ce domaine ? Est-ce une source primaire (témoin direct) ou secondaire (relais) ?</div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="background:var(--orange);color:white;border-radius:4px;padding:4px 8px;font-size:11px;font-weight:700;flex-shrink:0">EXACTITUDE</div>
+        <div style="font-size:13px;color:var(--grey-dark)">L'information est-elle corroborée par d'autres sources indépendantes ? Les faits sont-ils vérifiables ? Y a-t-il des sources citées ?</div>
+      </div>
+    </div>
+    <div class="card card-orange">
+      <h3>Signaux d'alerte d'une source peu fiable</h3>
+      <p style="font-size:13px;margin:0">Absence de date · Auteur anonyme · Pas de sources citées · Titre sensationnaliste · URL suspecte · Impossible à retrouver via d'autres canaux · Contradictions internes · Absence de contexte géographique précis.</p>
+    </div>
+
+    <h2>Cadre légal belge</h2>
+    <p>En Belgique, deux textes encadrent principalement la collecte et le traitement des données personnelles dans le cadre d'une investigation OSINT :</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:6px">RGPD (2016/679)</div>
+        <p style="font-size:12px;margin:0">Règlement européen applicable depuis mai 2018. Encadre tout traitement de données personnelles de résidents européens. Principe de base : les données ne peuvent être collectées que pour une finalité déterminée, explicite et légitime.</p>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:6px">Loi du 30 juillet 2018</div>
+        <p style="font-size:12px;margin:0">Loi belge relative à la protection des personnes physiques à l'égard des traitements de données à caractère personnel. Transpose le RGPD en droit belge et précise certaines modalités nationales.</p>
+      </div>
+    </div>
+
+    <h3>Les 6 bases légales du RGPD — celle qui s'applique au RLF</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:10px 0">
+      <div class="card" style="margin:0;padding:10px;font-size:12px;color:var(--grey-dark);border:1px solid var(--border)">Consentement (art. 6.1.a)</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px;color:var(--grey-dark);border:1px solid var(--border)">Contrat (art. 6.1.b)</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px;color:var(--grey-dark);border:1px solid var(--border)">Obligation légale (art. 6.1.c)</div>
+      <div class="card card-green" style="margin:0;padding:10px;font-size:12px;grid-column:span 3">
+        <strong style="color:var(--green)">✅ Intérêt vital (art. 6.1.d) — applicable au RLF</strong><br>
+        <span style="font-size:11px">Le traitement est nécessaire pour sauvegarder les intérêts vitaux de la personne concernée ou d'une autre personne physique. Art. 9.2.c pour les données sensibles. C'est la base légale qui couvre les recherches RLF de personnes disparues dans des contextes humanitaires.</span>
+      </div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px;color:var(--grey-dark);border:1px solid var(--border)">Mission d'intérêt public (art. 6.1.e)</div>
+      <div class="card" style="margin:0;padding:10px;font-size:12px;color:var(--grey-dark);border:1px solid var(--border);grid-column:span 2">Intérêt légitime (art. 6.1.f)</div>
+    </div>
+
+    <h3>Ce qu'on peut faire / ce qu'on ne peut pas faire</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
+      <div class="card card-green" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:8px">✅ Autorisé</div>
+        <div style="font-size:12px;line-height:1.8">Consulter des profils publics<br>Analyser des publications accessibles à tous<br>Croiser des EEI fournis par le demandeur<br>Consulter des bases de données publiques<br>Géolocaliser des images publiques<br>Accéder aux archives du web</div>
+      </div>
+      <div class="card card-orange" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--orange);margin-bottom:8px">❌ Interdit</div>
+        <div style="font-size:12px;line-height:1.8">Accéder à des espaces privés (profils verrouillés)<br>Usurper une identité pour obtenir des informations<br>Collecter des données sans finalité précise<br>Partager des données hors du réseau CRB<br>Contacter directement une personne retrouvée<br>Utiliser des outils de hacking ou d'intrusion</div>
+      </div>
+    </div>
+
+    <h2>Principes Croix-Rouge applicables</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0">
+      <div class="card card-red" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--red);margin-bottom:4px">Consentement</div>
+        <div style="font-size:12px">La personne retrouvée doit donner son accord explicite avant tout rétablissement de contact. Aucune exception.</div>
+      </div>
+      <div class="card card-red" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--red);margin-bottom:4px">Confidentialité</div>
+        <div style="font-size:12px">Traitement strictement interne au réseau Croix-Rouge/Croissant-Rouge. Aucun partage externe sans autorisation.</div>
+      </div>
+      <div class="card card-red" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--red);margin-bottom:4px">Neutralité</div>
+        <div style="font-size:12px">La recherche est indépendante du statut administratif, de l'âge, de la nationalité ou de la religion du demandeur.</div>
+      </div>
+      <div class="card card-red" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--red);margin-bottom:4px">Protection des bénéficiaires</div>
+        <div style="font-size:12px">Les données des personnes recherchées ne peuvent jamais être utilisées contre leurs intérêts ou dans un contexte d'asile.</div>
+      </div>
+    </div>
+
     <h2>Droit international humanitaire</h2>
-    <div class="placeholder">[ À compléter : DIH et données personnelles, obligations du réseau CICR ]</div>
+    <p>Le DIH (Droit International Humanitaire) encadre les obligations de protection des données dans les contextes de conflit armé — particulièrement pertinent pour les dossiers RLF impliquant des zones de guerre.</p>
+    <div class="card card-blue">
+      <h3>Obligations spécifiques du réseau CICR</h3>
+      <p style="font-size:13px">Le CICR est mandaté par les Conventions de Genève pour protéger les victimes de conflits armés. Dans ce cadre, les données collectées via <strong>familylinks.icrc.org</strong> bénéficient d'une protection renforcée : elles ne peuvent être communiquées à aucune autorité gouvernementale, même sur réquisition.</p>
+      <p style="font-size:13px;margin:0">Cette protection est un pilier de la confiance accordée au réseau Croix-Rouge par les populations affectées — à préserver absolument dans toute investigation OSINT conduite en appui au service RLF.</p>
+    </div>
+    <div class="card card-orange">
+      <h3>⚠ Note sur le dossier d'asile</h3>
+      <p style="font-size:13px;margin:0">Il est explicitement interdit d'ouvrir un dossier RLF dans le seul but de soutenir une procédure d'asile, et la prise en compte ou le refus d'une demande ne peut jamais être considéré comme une preuve de l'existence d'une relation entre le demandeur et la personne recherchée.</p>
+    </div>
   </div>
+
 
   <!-- JOUR 1 : P4 -->
   <div id="page-j1p4" class="page">
@@ -961,126 +1378,649 @@
   <div id="page-quiz1" class="page">
     <span class="tag tag-red">Jour 1</span><span class="tag tag-grey">Quiz de consolidation</span>
     <h1>Quiz — Fondamentaux</h1>
-    <p class="lead">8 questions pour consolider les acquis du Jour 1. Répondez individuellement avant de valider.</p>
+    <p class="lead">10 questions de mise en situation. Plusieurs réponses peuvent sembler correctes — choisissez la plus juste.</p>
     <div class="quiz-container" id="quiz1-container">
 
-      <div class="quiz-q" data-correct="b">
-        <div class="q-text">1. Que signifie l'acronyme OSINT ?</div>
-        <label><input type="radio" name="q1" value="a"> Open Source Internet</label>
-        <label><input type="radio" name="q1" value="b"> Open Source Intelligence</label>
-        <label><input type="radio" name="q1" value="c"> Online Search & Investigation Network</label>
-        <label><input type="radio" name="q1" value="d"> Operational Security Intelligence</label>
-        <div class="quiz-feedback">L'OSINT désigne le renseignement à partir de sources ouvertes — informations légalement accessibles au public.</div>
-      </div>
-
       <div class="quiz-q" data-correct="c">
-        <div class="q-text">2. Dans le contexte RGPD, quelle base légale s'applique le plus souvent aux recherches RLF ?</div>
-        <label><input type="radio" name="q2" value="a"> Le consentement explicite de la personne recherchée</label>
-        <label><input type="radio" name="q2" value="b"> L'intérêt commercial du responsable de traitement</label>
-        <label><input type="radio" name="q2" value="c"> L'intérêt vital de la personne concernée ou d'une autre personne</label>
-        <label><input type="radio" name="q2" value="d"> La loi nationale sur la sécurité publique</label>
-        <div class="quiz-feedback">L'article 9(2)(c) du RGPD permet le traitement de données sensibles lorsque cela est nécessaire pour sauvegarder les intérêts vitaux d'une personne.</div>
-      </div>
-
-      <div class="quiz-q" data-correct="a">
-        <div class="q-text">3. Quel opérateur Google Dorking permet de limiter la recherche à un site spécifique ?</div>
-        <label><input type="radio" name="q3" value="a"> site:</label>
-        <label><input type="radio" name="q3" value="b"> domain:</label>
-        <label><input type="radio" name="q3" value="c"> web:</label>
-        <label><input type="radio" name="q3" value="d"> host:</label>
-        <div class="quiz-feedback">L'opérateur site: limite les résultats à un domaine précis. Ex : site:facebook.com "Fatima Al-Rashid"</div>
-      </div>
-
-      <div class="quiz-q" data-correct="d">
-        <div class="q-text">4. Quelle est la première phase du cycle du renseignement ?</div>
-        <label><input type="radio" name="q4" value="a"> Collecte</label>
-        <label><input type="radio" name="q4" value="b"> Analyse</label>
-        <label><input type="radio" name="q4" value="c"> Diffusion</label>
-        <label><input type="radio" name="q4" value="d"> Orientation</label>
-        <div class="quiz-feedback">Le cycle commence par l'orientation : définir ce qu'on cherche, pourquoi, et comment. Sans cette étape, la collecte est aveugle.</div>
+        <div class="q-text">1. Un collègue consulte le profil LinkedIn verrouillé d'une personne en se créant un faux compte recruteur pour y accéder. S'agit-il d'OSINT ?</div>
+        <label><input type="radio" name="q1" value="a"> Oui — LinkedIn est une source publique et les informations récoltées sont librement accessibles</label>
+        <label><input type="radio" name="q1" value="b"> Oui — l'intention est légitime (retrouver une personne disparue), ce qui justifie les moyens</label>
+        <label><input type="radio" name="q1" value="c"> Non — l'accès à un espace verrouillé via une identité fictive sort du périmètre légal de l'OSINT</label>
+        <label><input type="radio" name="q1" value="d"> Cela dépend du pays dans lequel se trouve la personne recherchée</label>
+        <div class="quiz-feedback">L'OSINT se limite aux sources légalement accessibles sans tromperie. Contourner une restriction d'accès via une fausse identité constitue une usurpation d'identité et sort du cadre légal — quelle que soit la légitimité de l'objectif. La fin ne justifie pas les moyens.</div>
       </div>
 
       <div class="quiz-q" data-correct="b">
-        <div class="q-text">5. Pourquoi est-il important de tester plusieurs variantes orthographiques d'un nom arabe ?</div>
-        <label><input type="radio" name="q5" value="a"> Pour contourner les restrictions de confidentialité Facebook</label>
-        <label><input type="radio" name="q5" value="b"> Parce que la translittération arabe-latin n'est pas standardisée et produit de nombreuses variantes</label>
-        <label><input type="radio" name="q5" value="c"> Pour éviter les faux positifs dans les résultats</label>
-        <label><input type="radio" name="q5" value="d"> Car Google pénalise les recherches en arabe</label>
-        <div class="quiz-feedback">Un même prénom arabe peut s'écrire de 5 à 10 façons différentes en caractères latins selon les pays et les habitudes de translittération.</div>
-      </div>
-
-      <div class="quiz-q" data-correct="c">
-        <div class="q-text">6. Lequel de ces éléments NE fait PAS partie des sources OSINT ?</div>
-        <label><input type="radio" name="q6" value="a"> Un article de presse en ligne</label>
-        <label><input type="radio" name="q6" value="b"> Un profil Facebook public</label>
-        <label><input type="radio" name="q6" value="c"> Un fichier confidentiel obtenu par hacking</label>
-        <label><input type="radio" name="q6" value="d"> Une image satellite publique</label>
-        <div class="quiz-feedback">L'OSINT se limite aux sources légalement accessibles. Toute information obtenue illégalement sort du périmètre OSINT et engage la responsabilité pénale.</div>
-      </div>
-
-      <div class="quiz-q" data-correct="a">
-        <div class="q-text">7. Que désigne le principe de "minimisation des données" dans le contexte RLF ?</div>
-        <label><input type="radio" name="q7" value="a"> Ne collecter que les données strictement nécessaires à la recherche en cours</label>
-        <label><input type="radio" name="q7" value="b"> Supprimer toutes les données après 30 jours</label>
-        <label><input type="radio" name="q7" value="c"> Limiter la recherche à trois sources maximum</label>
-        <label><input type="radio" name="q7" value="d"> Ne pas partager les données avec les Sociétés nationales</label>
-        <div class="quiz-feedback">Le principe de minimisation (art. 5 RGPD) impose de ne traiter que les données adéquates, pertinentes et limitées à ce qui est nécessaire au regard des finalités.</div>
+        <div class="q-text">2. Vous trouvez sur Facebook un profil public correspondant à la personne recherchée dans un dossier RLF. Elle a publié une photo depuis Gaziantep en octobre 2023. À quel niveau de la pyramide du renseignement vous situez-vous ?</div>
+        <label><input type="radio" name="q2" value="a"> Renseignement — l'information est vérifiée et exploitable directement</label>
+        <label><input type="radio" name="q2" value="b"> Donnée brute — la photo doit encore être vérifiée, croisée et contextualisée avant d'être exploitable</label>
+        <label><input type="radio" name="q2" value="c"> Intelligence — vous pouvez formuler des recommandations immédiates au service RLF</label>
+        <label><input type="radio" name="q2" value="d"> Information — la photo est organisée et prête à intégrer le rapport</label>
+        <div class="quiz-feedback">Une publication Facebook non vérifiée reste une donnée brute : le profil pourrait être un homonyme, la photo ancienne, la géolocalisation erronée. Il faut croiser avec d'autres EEI et vérifier les métadonnées avant de monter dans la pyramide.</div>
       </div>
 
       <div class="quiz-q" data-correct="d">
-        <div class="q-text">8. Quel moteur de recherche est particulièrement recommandé pour les recherches en cyrillique ou arabe ?</div>
-        <label><input type="radio" name="q8" value="a"> DuckDuckGo</label>
-        <label><input type="radio" name="q8" value="b"> Bing</label>
-        <label><input type="radio" name="q8" value="c"> Startpage</label>
-        <label><input type="radio" name="q8" value="d"> Yandex</label>
-        <div class="quiz-feedback">Yandex indexe beaucoup mieux les contenus arabophones et russophones que Google, et son moteur de recherche d'images est particulièrement efficace pour la vérification.</div>
+        <div class="q-text">3. Lors d'un dossier RLF, vous souhaitez partager avec l'APD (Autorité de Protection des Données belge) les informations collectées sur la personne recherchée. Quelle base légale du RGPD vous couvre dans votre collecte initiale — et cette transmission est-elle possible ?</div>
+        <label><input type="radio" name="q3" value="a"> Art. 6.1.e (mission d'intérêt public) — la transmission à l'APD est automatiquement couverte</label>
+        <label><input type="radio" name="q3" value="b"> Art. 6.1.f (intérêt légitime) — la transmission est possible avec accord du demandeur</label>
+        <label><input type="radio" name="q3" value="c"> Art. 6.1.d (intérêt vital) — la transmission est possible car l'APD est une autorité publique</label>
+        <label><input type="radio" name="q3" value="d"> Art. 6.1.d (intérêt vital) couvre la collecte, mais la transmission hors réseau Croix-Rouge est interdite par les principes de confidentialité du CICR</label>
+        <div class="quiz-feedback">L'art. 6.1.d couvre bien la collecte dans un contexte RLF. Mais les données collectées sont soumises au principe de confidentialité strict du réseau Croix-Rouge/Croissant-Rouge — elles ne peuvent être transmises à aucune autorité externe, y compris l'APD, sans compromettre la mission.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="a">
+        <div class="q-text">4. Un demandeur vous fournit ces EEI sur son épouse : prénom Fatima, née à Deir ez-Zor, téléphone hors service, dernière localisation connue "quelque part en Bosnie". Dans quel ordre logique conduire votre plan de collecte ?</div>
+        <label><input type="radio" name="q4" value="a"> Identifier toutes les variantes du prénom → chercher des traces numériques → croiser avec les sources humanitaires → formuler des hypothèses de localisation</label>
+        <label><input type="radio" name="q4" value="b"> Contacter directement la Croix-Rouge de Bosnie → attendre leur réponse → compléter avec l'OSINT si nécessaire</label>
+        <label><input type="radio" name="q4" value="c"> Lancer une recherche Google immédiatement → affiner selon les résultats → documenter</label>
+        <label><input type="radio" name="q4" value="d"> Demander des EEI supplémentaires au demandeur avant de commencer toute recherche</label>
+        <div class="quiz-feedback">Le plan de collecte suit le cycle : évaluation des besoins d'abord (variantes du nom, liste des EEI exploitables), puis collecte structurée (traces numériques), puis croisement avec les sources spécialisées (UNHCR, ACLED, réseaux humanitaires). Lancer Google immédiatement sans préparation est le piège classique.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="c">
+        <div class="q-text">5. Vous utilisez votre ordinateur professionnel, connecté au réseau de la Croix-Rouge, pour rechercher des informations sur une personne impliquée dans un réseau de passeurs. Quel est le risque principal ?</div>
+        <label><input type="radio" name="q5" value="a"> Votre recherche pourrait déclencher une alerte de l'antivirus institutionnel</label>
+        <label><input type="radio" name="q5" value="b"> Les résultats de recherche seront biaisés par le proxy de l'institution</label>
+        <label><input type="radio" name="q5" value="c"> L'adresse IP de la Croix-Rouge est enregistrée dans les logs du site visité, exposant potentiellement l'institution et révélant votre intérêt pour ce réseau</label>
+        <label><input type="radio" name="q5" value="d"> La connexion sera trop lente pour une investigation efficace</label>
+        <div class="quiz-feedback">Chaque visite d'un site enregistre l'adresse IP source. Sur un réseau institutionnel, cette IP identifie la Croix-Rouge de Belgique. Pour des recherches sensibles (réseaux criminels, passeurs), utiliser impérativement un environnement isolé avec VPN — jamais le réseau institutionnel.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="b">
+        <div class="q-text">6. Vous supprimez les cookies de votre navigateur après une session de recherche sur un forum de migrants. Deux jours plus tard, en retournant sur ce forum, le site semble vous reconnaître. Comment est-ce possible ?</div>
+        <label><input type="radio" name="q6" value="a"> Votre adresse IP n'a pas changé — le site vous identifie uniquement par IP</label>
+        <label><input type="radio" name="q6" value="b"> Le site utilise des evercookies qui se sont reconstitués via d'autres mécanismes de stockage (localStorage, cache, ETag...)</label>
+        <label><input type="radio" name="q6" value="c"> Votre navigateur a restauré automatiquement les cookies supprimés</label>
+        <label><input type="radio" name="q6" value="d"> Le forum a accès à votre historique de navigation via votre FAI</label>
+        <div class="quiz-feedback">Les evercookies (zombie cookies) utilisent de multiples mécanismes de stockage simultanément. Supprimer les cookies classiques ne suffit pas — ils se reconstituent. Seul un navigateur configuré pour l'investigation (profil dédié avec nettoyage complet à chaque fermeture) offre une protection réelle.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="d">
+        <div class="q-text">7. Un rapport de l'ONG "Borders in Motion" publié en janvier 2024 mentionne qu'un camp informel à Velika Kladuša comptait 340 personnes en décembre 2023. Comment évaluez-vous cette source ?</div>
+        <label><input type="radio" name="q7" value="a"> Fiable et primaire — une ONG présente sur le terrain est une source de première main</label>
+        <label><input type="radio" name="q7" value="b"> Non fiable — les ONG ont des biais militants qui faussent leurs chiffres</label>
+        <label><input type="radio" name="q7" value="c"> Fiable et suffisante — inutile de croiser avec d'autres sources pour cette information</label>
+        <label><input type="radio" name="q7" value="d"> Potentiellement fiable mais à croiser : vérifier les méthodes de comptage, la date exacte de collecte, et corroborer avec UNHCR ou IOM pour le même camp et la même période</label>
+        <div class="quiz-feedback">Une ONG terrain est une source potentiellement primaire et fiable — mais "potentiellement". Il faut évaluer la fiabilité (méthodes transparentes ?), la pertinence (même période ?), l'autorité (présence directe ou relais ?) et l'exactitude (corroborée par UNHCR/IOM ?). Une source seule ne suffit jamais.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="a">
+        <div class="q-text">8. Vous créez un profil Facebook fictif pour accéder à un groupe de migrants syriens fermé. Deux semaines plus tard, le compte est suspendu. Quelle erreur avez-vous probablement commise ?</div>
+        <label><input type="radio" name="q8" value="a"> Vous n'avez pas assuré le "nursing" du profil — un compte inactif ou nouvellement créé sans historique est rapidement détecté et suspendu</label>
+        <label><input type="radio" name="q8" value="b"> Vous avez utilisé une photo générée par IA, facilement détectable par Facebook</label>
+        <label><input type="radio" name="q8" value="c"> Le groupe a signalé votre compte car votre arabe n'était pas convaincant</label>
+        <label><input type="radio" name="q8" value="d"> Vous avez oublié d'activer le VPN lors de la création du compte</label>
+        <div class="quiz-feedback">Le "nursing" est indispensable : un profil doit être actif (publications régulières, interactions, abonnements) avant d'être utilisé pour une investigation. La règle des 3 comptes (principal, backup, réserve en nursing) existe précisément pour éviter cette situation.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="c">
+        <div class="q-text">9. Pour rechercher "Ahmad Al-Rashid" sur Facebook, vous tapez : site:facebook.com "Ahmad Al-Rashid". Quels résultats manquerez-vous probablement ?</div>
+        <label><input type="radio" name="q9" value="a"> Les profils dont le nom de famille est différent</label>
+        <label><input type="radio" name="q9" value="b"> Les profils dont le compte est désactivé</label>
+        <label><input type="radio" name="q9" value="c"> Les profils utilisant des variantes orthographiques (Ahmad Rashid, Ahmed Al-Rachid, أحمد الراشد, Ahmed Rashidi...) et les profils non indexés par Google</label>
+        <label><input type="radio" name="q9" value="d"> Les profils créés il y a moins de 6 mois</label>
+        <div class="quiz-feedback">Une recherche en guillemets avec une seule orthographe exclut toutes les variantes. Pour Ahmad Al-Rashid, il faut tester : Ahmad Rashid, Ahmed Al-Rachid, Ahmed Rashidi, أحمد الراشد, أحمد راشد... Et rappel : Google n'indexe pas tous les profils Facebook — compléter avec une recherche directe sur la plateforme.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="b">
+        <div class="q-text">10. Votre mind map du dossier RLF montre une branche "Contacts connus" complètement vide, alors que toutes les autres branches ont des informations. Que vous indique cette lacune ?</div>
+        <label><input type="radio" name="q10" value="a"> La personne recherchée est probablement isolée socialement — inutile de chercher par cette voie</label>
+        <label><input type="radio" name="q10" value="b"> Cette lacune identifie une priorité d'investigation : les contacts sont souvent le chemin le plus direct pour localiser une personne disparue</label>
+        <label><input type="radio" name="q10" value="c"> Le mind map est incomplet — il faut recommencer depuis le début</label>
+        <label><input type="radio" name="q10" value="d"> Cela confirme que l'OSINT ne peut pas aller plus loin et qu'il faut passer au réseau officiel Croix-Rouge</label>
+        <div class="quiz-feedback">La valeur pédagogique du mind map est précisément de rendre les lacunes visibles. Une branche vide n'indique pas l'absence d'information — elle indique qu'on n'a pas encore cherché par cette voie. Les contacts (Rania Khalil, Omar Hamdan dans le scénario Al-Wada) sont souvent le chemin le plus court vers la personne disparue.</div>
       </div>
 
     </div>
     <button class="btn-quiz" onclick="submitQuiz('quiz1')">Valider mes réponses</button>
     <div class="quiz-score" id="quiz1-score"></div>
+    <div id="quiz1-actions" style="display:none;margin-top:16px;display:none;gap:12px;flex-wrap:wrap">
+      <button class="btn-quiz" style="background:var(--grey-dark)" onclick="resetQuiz('quiz1')">↺ Recommencer</button>
+      <button class="btn-quiz" onclick="showPage('quiz2')">Continuer → Quiz Jour 2</button>
+    </div>
   </div>
 
   <!-- JOUR 2 : MODULE A -->
   <div id="page-j2ma" class="page">
     <span class="tag tag-red">Jour 2</span><span class="tag tag-blue">Module A</span>
     <h1>Suivi des crises & sources humanitaires</h1>
-    <p class="lead">Identifier et exploiter les sources spécialisées pour documenter les contextes de conflit, de migration et de catastrophe — directement applicables aux dossiers RLF.</p>
-    <h2>Sources de référence</h2>
-    <div class="placeholder">[ À compléter : ACLED, ReliefWeb, Crisis Group, UNOSAT, UNHCR — présentation et cas d'usage ]</div>
-    <h2>Atelier — Construire une veille</h2>
+    <p class="lead">Les dossiers RLF naissent précisément dans les contextes que ces sources documentent : conflits armés, déplacements de population, catastrophes naturelles. Savoir les exploiter, c'est comprendre l'environnement dans lequel les personnes disparaissent.</p>
+
+    <h2>Pourquoi ces sources pour le RLF ?</h2>
+    <div class="card card-blue">
+      <p style="font-size:13px">Quand Ahmad Al-Rashid signale que sa femme a été refoulée à la frontière bosno-croate en décembre 2023, trois questions se posent immédiatement : <strong>Qu'est-ce qui se passait dans cette zone à ce moment-là ?</strong> Quels camps étaient actifs ? Quels incidents ont été documentés ? Ce sont exactement les questions auxquelles les sources humanitaires répondent.</p>
+      <p style="font-size:13px;margin:0">Ces sources permettent de <strong>contextualiser</strong> un dossier, de <strong>valider</strong> les informations du demandeur, et d'<strong>orienter</strong> la recherche vers les zones et structures les plus probables.</p>
+    </div>
+
+    <h2>Sources de suivi des conflits</h2>
+
+    <h3>ACLED — Armed Conflict Location & Event Data</h3>
+    <p>Base de données géolocalisée recensant les incidents de violence politique dans le monde, mise à jour hebdomadairement. Données téléchargeables gratuitement en CSV ou consultables via un explorateur en ligne.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0">
+      <div class="card" style="margin:0;padding:12px">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:4px">Types d'événements couverts</div>
+        <div style="font-size:12px">Batailles · Violences contre civils · Explosions · Protestations · Émeutes · Développements stratégiques</div>
+      </div>
+      <div class="card" style="margin:0;padding:12px">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:4px">Filtres disponibles</div>
+        <div style="font-size:12px">Pays · Région · Période · Type d'acteur · Nombre de victimes · Proximité géographique</div>
+      </div>
+    </div>
+    <a href="https://acleddata.com/data-export-tool/" target="_blank" class="tool-link">
+      <span class="tool-icon">⚡</span><div><div class="tool-name">ACLED Data Export Tool</div><div class="tool-desc">Télécharger les données filtrées par pays et période</div></div>
+    </a>
+    <a href="https://acleddata.com/platform/explorer" target="_blank" class="tool-link">
+      <span class="tool-icon">🗺️</span><div><div class="tool-name">ACLED Explorer</div><div class="tool-desc">Explorateur cartographique interactif (compte gratuit requis)</div></div>
+    </a>
+
+    <h3>Crisis Group</h3>
+    <p>Organisation indépendante produisant des analyses approfondies sur les conflits actifs. Particulièrement utile pour comprendre le contexte politique et sécuritaire d'une zone avant de chercher des personnes qui en sont originaires.</p>
+    <a href="https://www.crisisgroup.org/crisiswatch" target="_blank" class="tool-link">
+      <span class="tool-icon">🔔</span><div><div class="tool-name">CrisisWatch</div><div class="tool-desc">Baromètre mensuel de l'état des conflits dans le monde</div></div>
+    </a>
+
+    <h3>UNOSAT</h3>
+    <p>Satellite imagery analysis du système des Nations Unies. Produit des cartes d'évaluation des dommages, des cartes de déplacements et des analyses géospatiales des zones de conflit.</p>
+    <a href="https://unosat.org/products/" target="_blank" class="tool-link">
+      <span class="tool-icon">🛰️</span><div><div class="tool-name">UNOSAT Products</div><div class="tool-desc">Cartes d'analyse satellite humanitaires gratuites</div></div>
+    </a>
+
+    <h2>Sources humanitaires de terrain</h2>
+
+    <h3>ReliefWeb (OCHA)</h3>
+    <p>Portail central de l'information humanitaire, géré par OCHA. Agrège rapports, alertes, cartes et offres d'emploi de centaines d'organisations. Moteur de recherche puissant avec filtres par pays, thème, organisation et date.</p>
     <div class="card card-green">
-      <div class="placeholder">[ À compléter : exercice pratique — construire une alerte sur une zone de conflit active pertinente pour les dossiers RLF ]</div>
+      <h3>Astuce RLF — filtrer efficacement</h3>
+      <p style="font-size:13px">Sur ReliefWeb, combiner : <strong>Pays</strong> (ex. Bosnia and Herzegovina) + <strong>Thème</strong> (Refugees) + <strong>Date</strong> (déc. 2023 - janv. 2024) + <strong>Format</strong> (Situation Report). Vous obtenez les rapports de situation les plus récents et pertinents pour votre dossier.</p>
+    </div>
+    <a href="https://reliefweb.int" target="_blank" class="tool-link">
+      <span class="tool-icon">🆘</span><div><div class="tool-name">ReliefWeb</div><div class="tool-desc">Portail humanitaire OCHA — rapports, alertes, cartes</div></div>
+    </a>
+
+    <h3>UNHCR & IOM — Displacement Tracking Matrix</h3>
+    <p>L'IOM publie via son <strong>Displacement Tracking Matrix (DTM)</strong> la localisation et la capacité des camps et centres d'accueil actifs, pays par pays. C'est la source la plus directe pour identifier où une personne déplacée a pu être hébergée.</p>
+    <a href="https://dtm.iom.int/bosnia-herzegovina" target="_blank" class="tool-link">
+      <span class="tool-icon">🏕️</span><div><div class="tool-name">IOM DTM — Bosnie-Herzégovine</div><div class="tool-desc">Rapports de situation et données sur les camps actifs</div></div>
+    </a>
+    <a href="https://data.unhcr.org/en/situations" target="_blank" class="tool-link">
+      <span class="tool-icon">📊</span><div><div class="tool-name">UNHCR Data Portal</div><div class="tool-desc">Données sur les réfugiés et déplacés par situation</div></div>
+    </a>
+
+    <h3>Border Violence Monitoring Network</h3>
+    <p>Réseau d'ONG documentant les pushbacks et violations aux frontières européennes, notamment sur la route des Balkans. Publie des rapports mensuels avec témoignages, cartes et statistiques. Données fiables et vérifiées pour la période 2019-présent.</p>
+    <a href="https://borderviolence.eu/reports/" target="_blank" class="tool-link">
+      <span class="tool-icon">📋</span><div><div class="tool-name">Border Violence Monitoring — Rapports</div><div class="tool-desc">Rapports mensuels sur les pushbacks aux frontières européennes</div></div>
+    </a>
+
+    <h3>Trace the Face & Family Links (CICR)</h3>
+    <div class="card card-red">
+      <h3>Sources spécifiques au réseau RLF</h3>
+      <p style="font-size:13px"><strong>Trace the Face :</strong> galerie photos du CICR permettant aux familles de publier et rechercher des photos de proches disparus. Plus de 6 000 photos publiques, 50 000 identités en base privée (réseau RLF uniquement).</p>
+      <p style="font-size:13px;margin:0"><strong>Family Links (familylinks.icrc.org) :</strong> portail international du CICR pour la recherche de personnes disparues. Permet de soumettre des demandes au réseau mondial Croix-Rouge/Croissant-Rouge.</p>
+    </div>
+    <a href="https://familylinks.icrc.org" target="_blank" class="tool-link">
+      <span class="tool-icon">✛</span><div><div class="tool-name">Family Links CICR</div><div class="tool-desc">Portail international de recherche RLF</div></div>
+    </a>
+
+    <h2>Exercice guidé — Frontière bosno-croate, décembre 2023</h2>
+    <div class="card card-orange" style="margin-bottom:16px">
+      <h3>Contexte</h3>
+      <p style="font-size:13px;margin:0">Ahmad Al-Rashid vous signale que son épouse Fatima et leur fils Kareem ont été refoulés à la frontière bosno-croate le 18 décembre 2023 vers 3h du matin. Il pense qu'ils ont été renvoyés vers un camp près de Velika Kladuša. Vous devez documenter le contexte et identifier les structures d'accueil actives à ce moment-là.</p>
+    </div>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">1</div>
+        <div class="exercise-step-title">Documenter les incidents frontaliers avec ACLED</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Rendez-vous sur <a href="https://acleddata.com/data-export-tool/" target="_blank" style="color:var(--blue)">acleddata.com/data-export-tool</a>. Appliquez les filtres suivants : <strong>Pays :</strong> Bosnia-Herzegovina + Croatia · <strong>Dates :</strong> 01/11/2023 – 31/01/2024 · <strong>Event type :</strong> Violence against civilians + Strategic developments. Exportez en CSV et identifiez les incidents à proximité de Velika Kladuša et Cetingrad.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-a1')">▼ Voir la réponse</button>
+        <div class="exercise-answer" id="ans-a1">
+          <strong>Résultats attendus :</strong> ACLED documente plusieurs incidents de "Strategic developments" à la frontière bosno-croate durant cette période, incluant des rapports de refoulements (pushbacks) par la police croate. Les localités de Velika Kladuša (BiH) et Cetingrad (HR) apparaissent dans les données géolocalisées. Le nombre d'incidents augmente en décembre — période hivernale où les tentatives de passage s'intensifient malgré les conditions difficiles. <br><br><strong>Note :</strong> ACLED classe souvent les pushbacks sous "Strategic developments" plutôt que "Violence against civilians" — chercher dans les deux catégories.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">2</div>
+        <div class="exercise-step-title">Consulter le rapport Border Violence Monitoring de décembre 2023</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Sur <a href="https://borderviolence.eu/reports/" target="_blank" style="color:var(--blue)">borderviolence.eu/reports</a>, trouvez le rapport mensuel de décembre 2023 couvrant la Bosnie-Herzégovine. Identifiez : (1) le nombre de pushbacks documentés, (2) les conditions décrites dans les camps informels, (3) les ONG actives à Velika Kladuša à cette période.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-a2')">▼ Voir la réponse</button>
+        <div class="exercise-answer" id="ans-a2">
+          <strong>Résultats attendus :</strong> Le rapport BVM de décembre 2023 documente des dizaines de pushbacks sur la route bosno-croate, avec des témoignages de violence physique et de confiscation de téléphones. Les conditions hivernales dans les camps informels autour de Velika Kladuša sont décrites comme critiques. <br><br><strong>ONG actives identifiées :</strong> No Name Kitchen (@nonamekitchenbih), Are You Syrious?, Médecins Sans Frontières, Danish Refugee Council — toutes présentes à Velika Kladuša ou Bihać fin 2023. Leurs comptes Instagram et rapports sont des sources secondaires précieuses.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">3</div>
+        <div class="exercise-step-title">Identifier les camps actifs via IOM DTM</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Sur <a href="https://dtm.iom.int/bosnia-and-herzegovina" target="_blank" style="color:var(--blue)">dtm.iom.int/bosnia-and-herzegovina</a>, consultez les rapports de situation de fin 2023. Listez les centres d'accueil actifs dans la région de Velika Kladuša et à Sarajevo, avec leur capacité et gestionnaire.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-a3')">▼ Voir la réponse</button>
+        <div class="exercise-answer" id="ans-a3">
+          <strong>Centres actifs fin 2023 :</strong><br>
+          • <strong>Camp Miral</strong> (Velika Kladuša) — géré par IOM, capacité ~500 personnes<br>
+          • <strong>Camp Lipa</strong> (Bihać) — géré par IOM, capacité ~1 500 personnes<br>
+          • <strong>Centre Ušivak</strong> (Hadžići, Sarajevo) — géré par IOM, capacité ~1 000 personnes<br>
+          • <strong>Centre Salakovac</strong> (Mostar) — géré par IOM<br><br>
+          <strong>Conclusion pour le dossier :</strong> Fatima et Kareem, refoulés le 18 décembre 2023 près de Velika Kladuša, ont pu être pris en charge par Miral en premier, puis potentiellement transférés vers Ušivak ou Lipa selon la saturation. Ce sont les premières structures à contacter via la Croix-Rouge de Bosnie.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">4</div>
+        <div class="exercise-step-title">Synthèse — ce que vous savez maintenant</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Sur la base des trois étapes précédentes, rédigez en 5-6 lignes un paragraphe de contexte à intégrer dans votre dossier RLF. Il doit répondre à : Que se passait-il dans la zone ? Quelles structures existaient ? Où Fatima et Kareem ont-ils le plus probablement été acheminés ?</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-a4')">▼ Voir un exemple de réponse</button>
+        <div class="exercise-answer" id="ans-a4">
+          <strong>Exemple :</strong> "En décembre 2023, la frontière bosno-croate fait l'objet de nombreux refoulements documentés par ACLED et le Border Violence Monitoring Network, notamment dans la zone Velika Kladuša — Cetingrad. Les personnes refoulées sont généralement acheminées vers les camps IOM actifs dans la région : Miral (Velika Kladuša) en premier accueil, puis potentiellement Lipa (Bihać) ou Ušivak (Sarajevo) en cas de transfert. La Croix-Rouge de Bosnie-Herzégovine dispose d'une présence dans ces structures et constitue le canal prioritaire pour confirmer la prise en charge de Mme Al-Rashid et de son fils."
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- JOUR 2 : MODULE B -->
+
   <div id="page-j2mb" class="page">
     <span class="tag tag-red">Jour 2</span><span class="tag tag-blue">Module B</span>
     <h1>Recherche multilingue</h1>
-    <p class="lead">Dépasser la barrière de la langue pour accéder aux sources locales — arabe, dari, somali, tigrigna.</p>
-    <h2>Outils de traduction</h2>
-    <div class="placeholder">[ À compléter : DeepL, Google Translate, Yandex.Translate — forces et limites de chacun ]</div>
-    <h2>Stratégies de recherche multilingue</h2>
-    <div class="placeholder">[ À compléter : recherche directe en alphabet arabe, translittération, combinaisons ]</div>
-    <h2>Atelier — Variantes de noms propres</h2>
-    <div class="card card-green">
-      <div class="placeholder">[ À compléter : exercice sur les variantes orthographiques de prénoms arabes courants dans les dossiers RLF ]</div>
+    <p class="lead">28 % des demandeurs RLF en Belgique sont originaires d'Afghanistan. Syrie, Éthiopie, Somalie, RDC, Érythrée complètent le tableau. Chercher uniquement en français ou en anglais, c'est manquer l'essentiel.</p>
+
+    <h2>Pourquoi la langue est un obstacle critique</h2>
+    <div class="card card-orange">
+      <p style="font-size:13px">Un même prénom peut s'écrire de <strong>5 à 15 façons différentes</strong> en caractères latins selon le pays, l'administration, le niveau d'éducation et les habitudes locales de translittération. Une recherche limitée à une seule orthographe exclut la quasi-totalité des résultats pertinents.</p>
+      <p style="font-size:13px;margin:0">De plus, les personnes migrantes publient sur les réseaux sociaux <strong>dans leur langue maternelle</strong>. Un profil Facebook syrien sera en arabe. Un profil afghan en dari ou pachtou. Sans capacité de recherche multilingue, ces profils sont invisibles.</p>
     </div>
+
+    <h2>Les langues prioritaires au RLF belge</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0">
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--red)">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:6px">🇸🇾 Arabe</div>
+        <div style="font-size:12px;line-height:1.7">Syrie · Liban · Maroc · Algérie · Tunisie · Irak · Libye · Égypte<br><span style="color:var(--grey-mid)">Script : arabe (RTL)<br>Translittération : non standardisée</span></div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--blue)">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:6px">🇦🇫 Dari / Pachtou</div>
+        <div style="font-size:12px;line-height:1.7">Afghanistan · Pakistan<br><span style="color:var(--grey-mid)">Script : perso-arabe (RTL)<br>Dari = persan afghan</span></div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--green)">
+        <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:6px">🇸🇴 Somali</div>
+        <div style="font-size:12px;line-height:1.7">Somalie · Éthiopie · Kenya<br><span style="color:var(--grey-mid)">Script : latin<br>Translittération standardisée</span></div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--orange)">
+        <div style="font-weight:700;font-size:13px;color:var(--orange);margin-bottom:6px">🇪🇹 Amharique / Tigrigna</div>
+        <div style="font-size:12px;line-height:1.7">Éthiopie · Érythrée<br><span style="color:var(--grey-mid)">Script : guèze (Ge'ez)<br>Propre à la Corne de l'Afrique</span></div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--grey-dark)">
+        <div style="font-weight:700;font-size:13px;color:var(--grey-dark);margin-bottom:6px">🇨🇩 Lingala / Swahili</div>
+        <div style="font-size:12px;line-height:1.7">RDC · Burundi · Rwanda<br><span style="color:var(--grey-mid)">Script : latin<br>Nombreux dialectes régionaux</span></div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--grey-mid)">
+        <div style="font-weight:700;font-size:13px;color:var(--grey-mid);margin-bottom:6px">🌍 Autres</div>
+        <div style="font-size:12px;line-height:1.7">Russe · Ukrainien · Albanais · Kurde · Ourdou · Turc<br><span style="color:var(--grey-mid)">Selon les flux migratoires du moment</span></div>
+      </div>
+    </div>
+
+    <h2>Outils de traduction — forces et limites</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:6px">DeepL</div>
+        <div style="font-size:12px;margin-bottom:6px">✅ Meilleure qualité pour les langues européennes et l'arabe littéraire<br>✅ Traduction de documents entiers (PDF, Word)<br>❌ Limité pour le dari, pachtou, somali, langues africaines</div>
+        <a href="https://deepl.com" target="_blank" style="font-size:11px;color:var(--blue)">deepl.com →</a>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:6px">Google Translate</div>
+        <div style="font-size:12px;margin-bottom:6px">✅ Couverture la plus large (133 langues dont amharique, somali, swahili)<br>✅ Traduction d'images (via l'appli mobile)<br>❌ Qualité inégale sur les langues rares</div>
+        <a href="https://translate.google.com" target="_blank" style="font-size:11px;color:var(--red)">translate.google.com →</a>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--orange);margin-bottom:6px">Yandex Translate</div>
+        <div style="font-size:12px;margin-bottom:6px">✅ Excellent pour l'arabe, le russe, les langues d'Asie centrale<br>✅ Détection automatique de langue très fiable<br>❌ Interface moins intuitive</div>
+        <a href="https://translate.yandex.com" target="_blank" style="font-size:11px;color:var(--orange)">translate.yandex.com →</a>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:6px">Google Sheets + GOOGLETRANSLATE</div>
+        <div style="font-size:12px;margin-bottom:6px">✅ Traduit automatiquement une liste de mots-clés dans plusieurs langues simultanément<br>✅ Exportable en CSV pour les moteurs de recherche</div>
+        <div style="font-size:11px;background:var(--grey-light);padding:4px 8px;border-radius:3px;font-family:monospace">=GOOGLETRANSLATE(A2;"fr";"ar")</div>
+      </div>
+    </div>
+
+    <h2>La translittération — le problème central</h2>
+    <p>La translittération consiste à transcrire les caractères d'un alphabet dans un autre. Elle n'est <strong>jamais standardisée</strong> pour l'arabe, le dari ou l'amharique — chaque pays, chaque administration, chaque individu applique ses propres conventions.</p>
+    <div class="card card-green">
+      <h3>Exemple — le prénom Ahmad en arabe</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+        <span style="background:var(--green);color:white;padding:3px 10px;border-radius:10px;font-size:13px">Ahmad</span>
+        <span style="background:var(--green);color:white;padding:3px 10px;border-radius:10px;font-size:13px">Ahmed</span>
+        <span style="background:var(--green);color:white;padding:3px 10px;border-radius:10px;font-size:13px">Ahmet</span>
+        <span style="background:var(--green);color:white;padding:3px 10px;border-radius:10px;font-size:13px">Achmed</span>
+        <span style="background:var(--green);color:white;padding:3px 10px;border-radius:10px;font-size:13px">Ahmod</span>
+        <span style="background:#4A8860;color:white;padding:3px 10px;border-radius:10px;font-size:13px">أحمد</span>
+      </div>
+      <p style="font-size:12px;margin-top:8px;margin-bottom:0;color:var(--green)">6 variantes pour un seul prénom. Une recherche avec une seule orthographe manque les 5 autres.</p>
+    </div>
+
+    <h2>Démo interactive — Générateur de variantes</h2>
+    <p>Saisissez un prénom ou un nom issu d'un dossier RLF. Le générateur propose les variantes orthographiques les plus courantes et les équivalents dans les alphabets natifs.</p>
+
+    <div class="card" style="margin-bottom:16px">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+        <input type="text" id="name-input" placeholder="Ex : Fatima, Omar, Kareem..." style="flex:1;min-width:200px;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none">
+        <select id="lang-select" style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;color:var(--black)" onchange="document.getElementById('variants-output').style.display='none'">
+          <option value="ar">Arabe / Syrie-Liban-Maroc</option>
+          <option value="af">Dari / Afghanistan</option>
+          <option value="so">Somali</option>
+          <option value="et">Amharique / Éthiopie</option>
+          <option value="cd">Lingala / RDC</option>
+          <option value="ru">Russe / Ukraine</option>
+        </select>
+        <button class="btn-quiz" style="margin-top:0" onclick="generateVariants()">Générer les variantes</button>
+      </div>
+      <div id="variants-output" style="display:none">
+        <div style="font-size:12px;color:var(--grey-mid);margin-bottom:8px">Variantes orthographiques suggérées — à tester dans vos moteurs de recherche :</div>
+        <div id="variants-latin" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
+        <div id="variants-native" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
+        <div id="variants-dork" style="background:var(--grey-light);padding:10px 14px;border-radius:6px;font-family:monospace;font-size:12px;color:var(--black);word-break:break-all"></div>
+        <div style="font-size:11px;color:var(--grey-mid);margin-top:8px">💡 Copiez le Google Dork ci-dessus et collez-le directement dans Google ou site:facebook.com</div>
+      </div>
+    </div>
+
+    <h2>Stratégies de recherche multilingue</h2>
+    <div style="display:flex;flex-direction:column;gap:8px;margin:10px 0">
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:20px;flex-shrink:0">1️⃣</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">Rechercher dans l'alphabet natif</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Copier-coller le nom en arabe (ex. فاطمة الراشد) directement dans Google, Yandex ou la barre de recherche Facebook. Les résultats sont radicalement différents de ceux obtenus en latin.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:20px;flex-shrink:0">2️⃣</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">Combiner variantes avec OR</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Grouper toutes les variantes dans une seule requête : <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px">"Fatima Rashid" OR "Fatima Al-Rashid" OR "فاطمة الراشد" site:facebook.com</code></div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:20px;flex-shrink:0">3️⃣</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">Utiliser Yandex pour les contenus arabophones</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Yandex indexe mieux les contenus en arabe, russe et dari que Google. Sa recherche d'images inversée reconnaît aussi mieux les visages d'Asie centrale et du Moyen-Orient.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:20px;flex-shrink:0">4️⃣</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">Tableau de mots-clés multilingues (Google Sheets)</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Pour chaque dossier, créer un tableau avec le nom en FR, EN, AR, Dari — via la formule <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px">=GOOGLETRANSLATE(A2;"fr";"ar")</code>. Exporter en CSV et utiliser dans vos requêtes.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:20px;flex-shrink:0">5️⃣</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">Sources locales en langue originale</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Chercher dans les médias locaux du pays d'origine (en arabe, somali...), les groupes Facebook de la diaspora, les forums d'entraide migratoire. Ces espaces contiennent souvent des informations introuvables en français ou anglais.</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Exercice guidé — Dossier Al-Rashid</h2>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">1</div>
+        <div class="exercise-step-title">Construire toutes les variantes du nom</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Le dossier mentionne "Fatima Rashid" originaire de Deir ez-Zor, Syrie. Sans utiliser le générateur, listez manuellement au moins 8 variantes orthographiques latines plausibles et la transcription en arabe. Ensuite, construisez un Google Dork ciblant Facebook avec toutes ces variantes.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-b1')">▼ Voir la réponse</button>
+        <div class="exercise-answer" id="ans-b1">
+          <strong>Variantes latines attendues :</strong> Fatima Rashid · Fatima Al-Rashid · Fatima Rachid · Fatima El-Rachid · Fatima Rashidi · Fatima Rasheed · Fatima Rached · Fatimah Rashid<br><br>
+          <strong>Script arabe :</strong> فاطمة الراشد · فاطمة راشد · فاطمه رشيد<br><br>
+          <strong>Google Dork :</strong><br>
+          <code style="background:white;display:block;padding:8px;border-radius:4px;margin-top:6px;font-size:12px;word-break:break-all">site:facebook.com ("Fatima Rashid" OR "Fatima Al-Rashid" OR "Fatima Rachid" OR "Fatima Rashidi" OR "فاطمة الراشد" OR "فاطمة راشد") "Deir"</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">2</div>
+        <div class="exercise-step-title">Identifier la langue et le script d'une publication</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Vous trouvez un profil avec cette publication : <span style="direction:rtl;display:inline-block;font-size:14px">«أخيراً وصلنا تركيا. غازي عنتاب مدينة حلوة»</span>. (1) Identifiez la langue et le script. (2) Traduisez avec l'outil le plus adapté. (3) Que vous apprend cette publication sur le parcours de la personne ?</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-b2')">▼ Voir la réponse</button>
+        <div class="exercise-answer" id="ans-b2">
+          <strong>Langue :</strong> Arabe, script arabe (lecture de droite à gauche).<br><br>
+          <strong>Traduction :</strong> « Enfin nous sommes arrivés en Turquie. Gaziantep est une belle ville. » — Utiliser Yandex Translate ou Google Translate (meilleurs résultats que DeepL pour l'arabe dialectal syrien).<br><br>
+          <strong>Ce que ça révèle :</strong> la personne a atteint Gaziantep (Turquie), étape classique sur la route migratoire Syrie → Europe. C'est un EEI géographique et temporel exploitable : à croiser avec la date de publication pour reconstituer la chronologie du parcours.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">3</div>
+        <div class="exercise-step-title">Construire un tableau de mots-clés multilingues</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Vous travaillez sur un dossier impliquant un camp de réfugiés en Bosnie. Ouvrez Google Sheets et créez un tableau avec les mots-clés suivants en FR, EN, AR et Dari : "camp", "réfugié", "frontière", "disparu". Utilisez la formule GOOGLETRANSLATE. Notez les résultats et identifiez d'éventuelles surprises ou incohérences dans les traductions.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-b3')">▼ Voir la réponse</button>
+        <div class="exercise-answer" id="ans-b3">
+          <strong>Résultats attendus :</strong><br>
+          Camp : camp (EN) · مخيم (AR) · کمپ (Dari)<br>
+          Réfugié : refugee (EN) · لاجئ (AR) · پناهنده (Dari)<br>
+          Frontière : border (EN) · حدود (AR) · مرز (Dari)<br>
+          Disparu : missing (EN) · مفقود (AR) · ناپدید (Dari)<br><br>
+          <strong>Observations attendues :</strong> le dari et le persan partagent de nombreux mots — un Iranien et un Afghan utiliseront souvent les mêmes termes. L'arabe littéraire (fus'ha) peut différer de l'arabe dialectal utilisé sur les réseaux sociaux syriens — tester les deux. GOOGLETRANSLATE peut produire des approximations sur les langues rares : toujours vérifier avec un locuteur natif ou une seconde source.
+        </div>
+      </div>
+    </div>
+
+    <h2>Ressources utiles</h2>
+    <a href="https://deepl.com" target="_blank" class="tool-link">
+      <span class="tool-icon">🌐</span><div><div class="tool-name">DeepL</div><div class="tool-desc">Meilleure qualité pour l'arabe littéraire et les langues européennes</div></div>
+    </a>
+    <a href="https://translate.google.com" target="_blank" class="tool-link">
+      <span class="tool-icon">🌐</span><div><div class="tool-name">Google Translate</div><div class="tool-desc">133 langues — dont amharique, somali, swahili, pachtou</div></div>
+    </a>
+    <a href="https://translate.yandex.com" target="_blank" class="tool-link">
+      <span class="tool-icon">🌐</span><div><div class="tool-name">Yandex Translate</div><div class="tool-desc">Arabe, russe, dari, langues d'Asie centrale</div></div>
+    </a>
+    <a href="https://www.lexilogos.com/clavier/arabe.htm" target="_blank" class="tool-link">
+      <span class="tool-icon">⌨️</span><div><div class="tool-name">Lexilogos — Clavier arabe</div><div class="tool-desc">Saisir du texte en arabe sans clavier arabe physique</div></div>
+    </a>
+    <a href="https://sheets.google.com" target="_blank" class="tool-link">
+      <span class="tool-icon">📊</span><div><div class="tool-name">Google Sheets</div><div class="tool-desc">Tableau de mots-clés multilingues avec GOOGLETRANSLATE</div></div>
+    </a>
   </div>
 
   <!-- JOUR 2 : MODULE C -->
   <div id="page-j2mc" class="page">
     <span class="tag tag-red">Jour 2</span><span class="tag tag-blue">Module C</span>
     <h1>Vérification de contenu</h1>
-    <p class="lead">Évaluer la fiabilité des images, vidéos et informations reçues dans le cadre d'une demande RLF.</p>
+    <p class="lead">Une photo mal datée, une fausse localisation, un profil usurpé — en contexte RLF, ces erreurs peuvent orienter une investigation dans la mauvaise direction pendant des semaines. La vérification n'est pas optionnelle.</p>
+
+    <h2>Pourquoi vérifier systématiquement</h2>
+    <div class="card card-orange">
+      <p style="font-size:13px">Dans les contextes de conflit et de migration, la désinformation circule massivement : photos recyclées d'autres crises, dates falsifiées, localisations inventées, profils usurpés pour obtenir de l'aide ou tromper les autorités. Un demandeur peut transmettre de bonne foi une information erronée qu'il croit exacte.</p>
+      <p style="font-size:13px;margin:0"><strong>Règle fondamentale :</strong> toute image, vidéo ou information reçue dans le cadre d'un dossier RLF doit être vérifiée avant d'être intégrée au rapport — même si la source semble fiable.</p>
+    </div>
+
     <h2>Vérification d'images</h2>
-    <div class="placeholder">[ À compléter : Google Lens, TinEye, FotoForensics, InVID/WeVerify — procédure étape par étape ]</div>
-    <h2>Détection de manipulation</h2>
-    <div class="placeholder">[ À compléter : signes visuels d'une image manipulée, analyse des métadonnées EXIF ]</div>
-    <h2>Atelier — Vérification d'une photo reçue</h2>
-    <div class="card card-green">
-      <div class="placeholder">[ À compléter : exercice sur une photo fictive reçue d'un proche — vérifier l'authenticité et la géolocalisation ]</div>
+    <h3>La recherche inversée — quel outil, quand</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0">
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--blue)">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:6px">Google Lens</div>
+        <div style="font-size:12px;line-height:1.7;margin-bottom:8px">✅ Identifie les objets, lieux, textes dans une image<br>✅ Trouve les occurrences similaires sur le web<br>✅ Fonctionne sur mobile (photo en temps réel)<br>❌ Moins efficace sur les visages</div>
+        <a href="https://lens.google.com" target="_blank" style="font-size:11px;color:var(--blue)">lens.google.com →</a>
+      </div>
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--red)">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:6px">Yandex Images</div>
+        <div style="font-size:12px;line-height:1.7;margin-bottom:8px">✅ Meilleur pour les visages et les contenus non-occidentaux<br>✅ Trouve des variantes et versions similaires<br>✅ Souvent complémentaire à Google Lens<br>❌ Interface en russe par défaut</div>
+        <a href="https://yandex.com/images" target="_blank" style="font-size:11px;color:var(--red)">yandex.com/images →</a>
+      </div>
+      <div class="card" style="margin:0;padding:14px;border-top:3px solid var(--grey-dark)">
+        <div style="font-weight:700;font-size:13px;color:var(--grey-dark);margin-bottom:6px">TinEye</div>
+        <div style="font-size:12px;line-height:1.7;margin-bottom:8px">✅ Spécialisé dans la recherche de la <strong>première occurrence</strong> d'une image sur le web<br>✅ Trie par date — idéal pour détecter les images recyclées<br>❌ Base d'index plus petite que Google</div>
+        <a href="https://tineye.com" target="_blank" style="font-size:11px;color:var(--grey-dark)">tineye.com →</a>
+      </div>
+    </div>
+
+    <div class="card card-blue">
+      <h3>Procédure recommandée — recherche inversée</h3>
+      <p style="font-size:13px"><strong>1.</strong> Enregistrer l'image originale (sans recadrage ni compression).</p>
+      <p style="font-size:13px"><strong>2.</strong> Lancer sur Google Lens — noter les occurrences trouvées et leurs dates.</p>
+      <p style="font-size:13px"><strong>3.</strong> Lancer sur Yandex Images — comparer les résultats.</p>
+      <p style="font-size:13px"><strong>4.</strong> Lancer sur TinEye — trier par "Oldest" pour trouver la première publication.</p>
+      <p style="font-size:13px;margin:0"><strong>5.</strong> Si des occurrences antérieures existent dans un contexte différent (autre pays, autre année) → l'image est probablement recyclée.</p>
+    </div>
+
+    <h3>Détection de manipulation — FotoForensics</h3>
+    <p>FotoForensics utilise l'<strong>analyse ELA</strong> (Error Level Analysis — analyse du niveau d'erreur) pour détecter les zones d'une image qui ont été modifiées numériquement. Le principe : quand une image JPEG est compressée, toutes ses zones subissent le même niveau de dégradation. Si une zone a été ajoutée ou modifiée après coup, elle présente un niveau de compression différent du reste — et donc un niveau d'erreur différent. <strong>Les zones manipulées apparaissent plus lumineuses</strong> que le reste de l'image dans la visualisation ELA.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
+      <div class="card card-green" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:6px">Signaux d'authenticité</div>
+        <div style="font-size:12px;line-height:1.7">Niveaux ELA uniformes sur l'ensemble de l'image · EXIF cohérents avec le contexte · Première occurrence récente · Ombres et perspectives cohérentes</div>
+      </div>
+      <div class="card card-orange" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--orange);margin-bottom:6px">Signaux de manipulation</div>
+        <div style="font-size:12px;line-height:1.7">Zones ELA anormalement lumineuses · EXIF absents ou incohérents · Image trouvée dans un autre contexte · Ombres contradictoires · Pixels dupliqués</div>
+      </div>
+    </div>
+    <a href="https://fotoforensics.com" target="_blank" class="tool-link">
+      <span class="tool-icon">🔬</span><div><div class="tool-name">FotoForensics</div><div class="tool-desc">Analyse ELA d'images — détection de manipulation</div></div>
+    </a>
+
+    <h2>Vérification de vidéos</h2>
+    <p>Les vidéos sont encore plus difficiles à vérifier que les images. La démarche consiste à extraire des images-clés puis à les vérifier individuellement.</p>
+    <div class="card card-blue">
+      <h3>InVID / WeVerify — procédure</h3>
+      <p style="font-size:13px"><strong>1.</strong> Installer l'extension InVID/WeVerify dans Firefox ou Chrome.</p>
+      <p style="font-size:13px"><strong>2.</strong> Coller l'URL de la vidéo (YouTube, Facebook, Twitter...) dans l'outil.</p>
+      <p style="font-size:13px"><strong>3.</strong> Extraire les images-clés — InVID découpe la vidéo en frames représentatives.</p>
+      <p style="font-size:13px"><strong>4.</strong> Lancer une recherche inversée sur chaque frame via Google Lens ou Yandex.</p>
+      <p style="font-size:13px;margin:0"><strong>5.</strong> Vérifier les métadonnées disponibles (date de publication, chaîne source, commentaires).</p>
+    </div>
+    <a href="https://chromewebstore.google.com/detail/fake-news-debunker-invid/mhccpoafgdgbhnjfhkcmgknndkeenfhe?hl=fr&utm_source=ext_sidebar" target="_blank" class="tool-link">
+      <span class="tool-icon">🎬</span><div><div class="tool-name">InVID / WeVerify</div><div class="tool-desc">Extension navigateur — vérification de vidéos et images</div></div>
+    </a>
+
+    <h2>Vérification de textes et informations</h2>
+    <div style="display:flex;flex-direction:column;gap:6px;margin:10px 0">
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🔗</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px">Remonter à la source primaire</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Un article de presse cite souvent une autre source. Remonter jusqu'à la source originale (ONG, rapport officiel, témoignage direct) avant d'utiliser l'information.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">✖️3</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px">Règle des 3 sources indépendantes</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Une information n'est considérée comme fiable que si elle est corroborée par au moins 3 sources indépendantes les unes des autres — qui ne se citent pas mutuellement.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">📅</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px">Vérifier la date et le contexte</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Une information vraie mais périmée peut induire en erreur. Toujours vérifier la date de publication et si la situation a évolué depuis.</div>
+        </div>
+      </div>
+      <div class="card card-orange" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">⚠️</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px">Signaux d'alerte d'une information manipulée</div>
+          <div style="font-size:13px;color:var(--grey-dark)">Titre sensationnaliste · Absence de date · Source anonyme ou inconnue · Impossible à retrouver via d'autres canaux · Provoque une réaction émotionnelle forte · Circule massivement sans être reprise par des médias vérifiés.</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Application RLF directe</h2>
+    <div class="card card-blue">
+      <h3>Cas 1 — Vérifier une photo reçue d'un demandeur</h3>
+      <p style="font-size:13px">Un demandeur vous envoie une photo de son proche "prise la semaine dernière dans un camp en Bosnie". Démarche :</p>
+      <p style="font-size:13px">① Extraire les <strong>EXIF</strong> (Exchangeable Image File Format — métadonnées intégrées dans le fichier image) — la date de prise de vue correspond-elle à "la semaine dernière" ?</p>
+      <p style="font-size:13px">② Lancer une recherche inversée — cette photo existait-elle avant la date déclarée ?</p>
+      <p style="font-size:13px">③ Géolocaliser via les éléments visuels — le cadre correspond-il à la Bosnie ?</p>
+      <p style="font-size:13px;margin:0">④ Analyser via FotoForensics — des zones ont-elles été modifiées ?</p>
+    </div>
+    <div class="card card-blue">
+      <h3>Cas 2 — Vérifier la correspondance profil/personne</h3>
+      <p style="font-size:13px">Vous trouvez un profil Facebook qui pourrait correspondre à la personne recherchée. Comment confirmer ?</p>
+      <p style="font-size:13px">① Croiser les EEI : nom, date de naissance, lieu d'origine, contacts communs avec le demandeur.</p>
+      <p style="font-size:13px">② Analyser la cohérence temporelle des publications : les dates, lieux et événements correspondent-ils au parcours décrit ?</p>
+      <p style="font-size:13px">③ Vérifier la photo de profil via recherche inversée — appartient-elle à une autre personne ?</p>
+      <p style="font-size:13px;margin:0">④ Ne jamais contacter directement — toute prise de contact passe par le canal officiel Croix-Rouge avec consentement préalable.</p>
+    </div>
+
+    <h2>Exercice guidé</h2>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">1</div>
+        <div class="exercise-step-title">Cas pratique — Image reçue d'un demandeur</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Un demandeur vous envoie une image qu'il a reçue via WhatsApp, présentée comme montrant son fils "dans le camp de Lipa en janvier 2024". Rendez-vous sur <a href="https://fotoforensics.com" target="_blank" style="color:var(--blue)">fotoforensics.com</a> et chargez une photo de votre choix issue d'une source publique (ex. une photo du camp de Lipa trouvée via Google Images). Analysez l'image ELA et répondez : quels éléments vous permettraient de conclure à une manipulation ou à une authenticité ? Ensuite, lancez une recherche inversée sur Google Lens et Yandex Images.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-c1')">▼ Voir les éléments de réponse</button>
+        <div class="exercise-answer" id="ans-c1">
+          <strong>Éléments d'authenticité à rechercher :</strong> zones ELA uniformes sur l'ensemble de l'image (pas de zones anormalement lumineuses) · EXIF présents avec date et éventuellement GPS · Première occurrence récente sur TinEye · Éléments visuels cohérents avec le camp de Lipa (infrastructure IOM, tentes blanches, terrain rocheux caractéristique de la région de Bihać).<br><br>
+          <strong>Signaux d'alerte :</strong> si la recherche inversée retrouve la même image publiée en 2021 ou dans un autre pays → image recyclée. Si les EXIF indiquent un autre pays ou une date antérieure à 2024 → incohérence. Si des zones ELA sont anormalement lumineuses autour d'un visage → possible ajout ou modification.<br><br>
+          <strong>Conclusion RLF :</strong> même si l'image semble authentique, elle ne constitue qu'un indice — pas une confirmation d'identité. Elle doit être croisée avec d'autres EEI et la confirmation passe par le réseau officiel Croix-Rouge.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">2</div>
+        <div class="exercise-step-title">Cas pratique — Information partagée sur Facebook</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Un demandeur vous signale avoir vu un post Facebook affirmant : "Le camp de Velika Kladuša a fermé définitivement en décembre 2023 — toutes les personnes ont été expulsées vers la Serbie." Cette information, si vraie, changerait radicalement votre stratégie de recherche. Vérifiez-la en utilisant ReliefWeb, le rapport IOM DTM de décembre 2023, et le Border Violence Monitoring Network.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-c2')">▼ Voir la réponse</button>
+        <div class="exercise-answer" id="ans-c2">
+          <strong>Résultat de la vérification :</strong> cette information est <strong>fausse</strong>. Les sources officielles (IOM DTM décembre 2023, ReliefWeb, BVM) confirment que le camp Miral à Velika Kladuša était toujours actif en décembre 2023 et janvier 2024. Des fermetures temporaires et des transferts ont eu lieu, mais aucune expulsion massive vers la Serbie n'est documentée pour cette période.<br><br>
+          <strong>Leçon :</strong> cette désinformation circule régulièrement dans les groupes Facebook de la diaspora — soit par confusion avec d'autres camps, soit délibérément pour décourager les tentatives de passage. Ne jamais utiliser une information Facebook non vérifiée pour orienter un dossier RLF.<br><br>
+          <strong>Signaux d'alerte qui auraient dû alerter :</strong> aucune source citée · information sensationnaliste ("expulsés définitivement") · non reprise par aucun média ou ONG vérifiée · absence de date précise.
+        </div>
+      </div>
+    </div>
+
+    <h2>Outils récapitulatifs</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <a href="https://lens.google.com" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🖼️</span><div><div class="tool-name">Google Lens</div><div class="tool-desc">Recherche inversée — lieux, objets, textes</div></div>
+      </a>
+      <a href="https://yandex.com/images" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🖼️</span><div><div class="tool-name">Yandex Images</div><div class="tool-desc">Recherche inversée — visages et contenus non-occidentaux</div></div>
+      </a>
+      <a href="https://tineye.com" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">📅</span><div><div class="tool-name">TinEye</div><div class="tool-desc">Première occurrence d'une image — tri par date</div></div>
+      </a>
+      <a href="https://fotoforensics.com" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🔬</span><div><div class="tool-name">FotoForensics</div><div class="tool-desc">Analyse ELA — détection de manipulation</div></div>
+      </a>
+      <a href="https://chromewebstore.google.com/detail/fake-news-debunker-invid/mhccpoafgdgbhnjfhkcmgknndkeenfhe?hl=fr&utm_source=ext_sidebar" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">🎬</span><div><div class="tool-name">InVID / WeVerify</div><div class="tool-desc">Vérification de vidéos — extraction de frames</div></div>
+      </a>
+      <a href="https://exifdata.com" target="_blank" class="tool-link" style="margin:0">
+        <span class="tool-icon">📷</span><div><div class="tool-name">ExifData.com</div><div class="tool-desc">Extraction EXIF en ligne — date, GPS, appareil</div></div>
+      </a>
     </div>
   </div>
 
@@ -1088,66 +2028,88 @@
   <div id="page-quiz2" class="page">
     <span class="tag tag-red">Jour 2</span><span class="tag tag-grey">Quiz de consolidation</span>
     <h1>Quiz — Outils terrain</h1>
-    <p class="lead">6 questions pour consolider les acquis du Jour 2.</p>
+    <p class="lead">8 questions de mise en situation. Plusieurs réponses peuvent sembler correctes — choisissez la plus juste.</p>
     <div class="quiz-container" id="quiz2-container">
 
-      <div class="quiz-q" data-correct="b">
-        <div class="q-text">1. Quelle base de données documente les événements de violence politique et les crises dans le monde en temps quasi-réel ?</div>
-        <label><input type="radio" name="q2_1" value="a"> ReliefWeb</label>
-        <label><input type="radio" name="q2_1" value="b"> ACLED</label>
-        <label><input type="radio" name="q2_1" value="c"> Crisis Group</label>
-        <label><input type="radio" name="q2_1" value="d"> UNOSAT</label>
-        <div class="quiz-feedback">ACLED (Armed Conflict Location & Event Data) recense et géolocalise les incidents de violence politique dans le monde. Données téléchargeables gratuitement.</div>
-      </div>
-
       <div class="quiz-q" data-correct="c">
-        <div class="q-text">2. Pourquoi Yandex est-il préférable à Google pour chercher des profils arabophones ?</div>
-        <label><input type="radio" name="q2_2" value="a"> Il ne respecte pas le RGPD et montre plus de données</label>
-        <label><input type="radio" name="q2_2" value="b"> Il traduit automatiquement les résultats en français</label>
-        <label><input type="radio" name="q2_2" value="c"> Il indexe mieux les contenus en alphabet cyrillique et arabe</label>
-        <label><input type="radio" name="q2_2" value="d"> Il accède aux profils privés Facebook</label>
-        <div class="quiz-feedback">Yandex a développé ses algorithmes pour les langues slaves et arabes. Son moteur de recherche d'images est également très efficace pour la vérification.</div>
+        <div class="q-text">1. Vous recherchez "Fatima Rashid" sur Facebook et obtenez peu de résultats. Quelle est la première action à entreprendre ?</div>
+        <label><input type="radio" name="q2_1" value="a"> Conclure que la personne n'a pas de compte Facebook et passer à une autre piste</label>
+        <label><input type="radio" name="q2_1" value="b"> Contacter directement les profils trouvés pour demander si ils connaissent la personne</label>
+        <label><input type="radio" name="q2_1" value="c"> Tester les variantes orthographiques (Rachid, Rashidi, Al-Rashid...) et rechercher en arabe (فاطمة الراشد)</label>
+        <label><input type="radio" name="q2_1" value="d"> Changer de plateforme et chercher sur LinkedIn</label>
+        <div class="quiz-feedback">Le manque de résultats en latin est presque toujours lié à une orthographe inadaptée. La translittération arabe-latin n'étant pas standardisée, "Rashid" peut s'écrire Rachid, Rashidi, Rached, Al-Rashid... Et la recherche en arabe (فاطمة الراشد) donne accès à des profils entièrement rédigés en arabe, invisibles en latin.</div>
       </div>
 
-      <div class="quiz-q" data-correct="a">
-        <div class="q-text">3. Qu'est-ce que les métadonnées EXIF d'une photo peuvent révéler ?</div>
-        <label><input type="radio" name="q2_3" value="a"> La date, l'heure, les coordonnées GPS et le modèle d'appareil</label>
-        <label><input type="radio" name="q2_3" value="b"> Le nom du photographe et son adresse email</label>
-        <label><input type="radio" name="q2_3" value="c"> Le nombre de fois que la photo a été partagée</label>
-        <label><input type="radio" name="q2_3" value="d"> La résolution et la palette de couleurs uniquement</label>
-        <div class="quiz-feedback">Les EXIF peuvent contenir des coordonnées GPS précises, la date/heure exacte de prise de vue, le modèle d'appareil, et parfois le logiciel de traitement utilisé.</div>
+      <div class="quiz-q" data-correct="b">
+        <div class="q-text">2. Un demandeur vous transmet une publication Facebook en arabe : «وصلنا إلى إزمير الحمد لله». Quel outil utiliseriez-vous en priorité pour la traduire, et pourquoi ?</div>
+        <label><input type="radio" name="q2_2" value="a"> DeepL — c'est le meilleur outil de traduction disponible pour toutes les langues</label>
+        <label><input type="radio" name="q2_2" value="b"> Yandex Translate ou Google Translate — DeepL est limité pour l'arabe dialectal, ces outils gèrent mieux les variantes régionales</label>
+        <label><input type="radio" name="q2_2" value="c"> Un dictionnaire arabe-français en ligne — plus fiable qu'un outil automatique</label>
+        <label><input type="radio" name="q2_2" value="d"> Aucun outil — attendre un interprète professionnel avant d'utiliser l'information</label>
+        <div class="quiz-feedback">DeepL est excellent pour les langues européennes et l'arabe littéraire, mais moins performant sur l'arabe dialectal (syrien, marocain...). Yandex Translate et Google Translate gèrent mieux les dialectes arabes. La traduction automatique est un premier niveau — une vérification par un locuteur natif reste idéale pour les éléments cruciaux. La publication signifie : "Nous sommes arrivés à Izmir, Dieu merci."</div>
       </div>
 
       <div class="quiz-q" data-correct="d">
-        <div class="q-text">4. Quel outil est spécialisé dans la vérification de vidéos en ligne ?</div>
-        <label><input type="radio" name="q2_4" value="a"> TinEye</label>
-        <label><input type="radio" name="q2_4" value="b"> FotoForensics</label>
-        <label><input type="radio" name="q2_4" value="c"> Google Lens</label>
-        <label><input type="radio" name="q2_4" value="d"> InVID / WeVerify</label>
-        <div class="quiz-feedback">InVID/WeVerify est une extension navigateur spécialisée dans l'analyse de vidéos : extraction d'images-clés, recherche inversée, vérification de métadonnées.</div>
+        <div class="q-text">3. Vous construisez un tableau Google Sheets de mots-clés pour un dossier afghan. Vous utilisez =GOOGLETRANSLATE(A2;"fr";"fa") pour traduire "réfugié" en dari. Le résultat est "پناهنده". Quelle précaution s'impose ?</div>
+        <label><input type="radio" name="q2_3" value="a"> Aucune — GOOGLETRANSLATE est toujours fiable pour les langues officielles</label>
+        <label><input type="radio" name="q2_3" value="b"> Vérifier que le mot n'est pas trop technique pour la traduction automatique</label>
+        <label><input type="radio" name="q2_3" value="c"> Utiliser DeepL à la place, plus fiable pour le dari</label>
+        <label><input type="radio" name="q2_3" value="d"> Vérifier avec une seconde source — "fa" correspond au persan iranien, qui diffère du dari afghan sur certains termes ; et GOOGLETRANSLATE peut produire des approximations</label>
+        <div class="quiz-feedback">Le code "fa" dans GOOGLETRANSLATE désigne le persan (farsi iranien), très proche du dari mais avec des différences lexicales. Un Afghan peut utiliser des termes légèrement différents. De plus, sur les réseaux sociaux, les migrants afghans écrivent souvent en mélange dari-pachtou-anglais. La traduction automatique est un point de départ, jamais une certitude.</div>
       </div>
 
-      <div class="quiz-q" data-correct="b">
-        <div class="q-text">5. Qu'est-ce que ReliefWeb ?</div>
-        <label><input type="radio" name="q2_5" value="a"> Un outil de traduction humanitaire de l'ONU</label>
-        <label><input type="radio" name="q2_5" value="b"> Une plateforme d'information humanitaire gérée par OCHA avec rapports, cartes et offres d'emploi</label>
-        <label><input type="radio" name="q2_5" value="c"> Une base de données des réfugiés enregistrés par le HCR</label>
-        <label><input type="radio" name="q2_5" value="d"> Un système de veille des catastrophes naturelles</label>
-        <div class="quiz-feedback">ReliefWeb est géré par OCHA et centralise rapports humanitaires, cartes de crise, alertes et analyses provenant de centaines d'organisations.</div>
+      <div class="quiz-q" data-correct="a">
+        <div class="q-text">4. Vous recevez une image WhatsApp présentée comme "une photo récente de Kareem dans un camp en Bosnie". Quel est le premier réflexe avant d'intégrer cette information au dossier ?</div>
+        <label><input type="radio" name="q2_4" value="a"> Extraire les métadonnées EXIF pour vérifier la date et la localisation réelles de la prise de vue</label>
+        <label><input type="radio" name="q2_4" value="b"> Envoyer immédiatement la photo à la Croix-Rouge de Bosnie pour identification</label>
+        <label><input type="radio" name="q2_4" value="c"> Montrer la photo au demandeur pour qu'il confirme l'identification</label>
+        <label><input type="radio" name="q2_4" value="d"> Lancer une recherche inversée sur TinEye pour vérifier l'origine</label>
+        <div class="quiz-feedback">Les EXIF sont le premier réflexe car ils révèlent objectivement la date et potentiellement les coordonnées GPS de la prise de vue — sans passer par une interprétation humaine. Si la photo date de 2021 ou est géolocalisée en Turquie, "récente en Bosnie" est infirmé immédiatement. La recherche inversée (TinEye, Yandex) vient en deuxième, pour vérifier si l'image a été recyclée.</div>
       </div>
 
       <div class="quiz-q" data-correct="c">
-        <div class="q-text">6. En contexte RLF, vous recevez une photo d'un proche potentiellement retrouvé. Quelle est la bonne démarche ?</div>
-        <label><input type="radio" name="q2_6" value="a"> Partager immédiatement la photo avec le demandeur pour confirmation</label>
-        <label><input type="radio" name="q2_6" value="b"> Ignorer la photo car elle n'est pas une source officielle</label>
-        <label><input type="radio" name="q2_6" value="c"> Vérifier l'authenticité (EXIF, recherche inversée), géolocaliser si possible, usage strictement interne</label>
-        <label><input type="radio" name="q2_6" value="d"> Transférer la photo à la police pour identification</label>
-        <div class="quiz-feedback">Usage interne uniquement, vérification préalable obligatoire. Aucun partage externe sans consentement. La confirmation se fait via le canal officiel Croix-Rouge.</div>
+        <div class="q-text">5. Sur FotoForensics, vous analysez une photo transmise par un demandeur. Certaines zones autour d'un visage sont anormalement lumineuses dans la visualisation ELA. Que concluez-vous ?</div>
+        <label><input type="radio" name="q2_5" value="a"> La photo est définitivement falsifiée — vous l'écartez du dossier</label>
+        <label><input type="radio" name="q2_5" value="b"> La luminosité ELA est normale — toutes les photos compressées en JPEG ont ce comportement</label>
+        <label><input type="radio" name="q2_5" value="c"> C'est un signal d'alerte qui indique une possible manipulation dans cette zone — à croiser avec d'autres vérifications avant toute conclusion</label>
+        <label><input type="radio" name="q2_5" value="d"> Le visage a été flouté pour la confidentialité — c'est une pratique normale dans les camps humanitaires</label>
+        <div class="quiz-feedback">L'analyse ELA indique des anomalies de compression, pas une certitude de manipulation. Des zones lumineuses peuvent résulter d'une modification (ajout d'un visage, modification d'un fond) mais aussi d'une double compression JPEG ou d'un recadrage. C'est un signal d'alerte à croiser : lancer une recherche inversée, vérifier les EXIF, chercher une occurrence antérieure de l'image originale. Jamais une conclusion seule.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="b">
+        <div class="q-text">6. Vous cherchez des rapports sur la situation à Velika Kladuša en décembre 2023 via ReliefWeb. Quelle combinaison de filtres vous donnera les résultats les plus pertinents ?</div>
+        <label><input type="radio" name="q2_6" value="a"> Thème : Migration · Format : News · Langue : Français</label>
+        <label><input type="radio" name="q2_6" value="b"> Pays : Bosnia and Herzegovina · Thème : Refugees · Format : Situation Report · Date : nov. 2023 – janv. 2024</label>
+        <label><input type="radio" name="q2_6" value="c"> Organisation : UNHCR · Thème : Displacement · Langue : English</label>
+        <label><input type="radio" name="q2_6" value="d"> Pays : Croatia · Format : Assessment · Date : décembre 2023</label>
+        <div class="quiz-feedback">La combinaison Pays + Thème + Format + Date est la plus efficace sur ReliefWeb. "Situation Report" est le format clé — c'est le rapport de terrain régulier des opérations humanitaires, qui documente précisément les camps actifs, les mouvements de population et les conditions sur le terrain. La Bosnie (pas la Croatie) est le pays concerné pour les refoulements vers VK.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="d">
+        <div class="q-text">7. Un demandeur vous signale avoir vu sur Facebook qu'un groupe de migrants arrêtés à la frontière bosno-croate en décembre 2023 a été "transféré en avion en Afghanistan". Comment vérifiez-vous cette information ?</div>
+        <label><input type="radio" name="q2_7" value="a"> C'est une rumeur évidente — inutile de la vérifier</label>
+        <label><input type="radio" name="q2_7" value="b"> Contacter directement l'ambassade d'Afghanistan en Belgique</label>
+        <label><input type="radio" name="q2_7" value="c"> Chercher l'information sur Google News en français</label>
+        <label><input type="radio" name="q2_7" value="d"> Croiser ACLED, Border Violence Monitoring Network et IOM DTM pour cette période — aucune des sources humanitaires ne documente des expulsions aériennes massives de migrants économiques depuis la Bosnie</label>
+        <div class="quiz-feedback">La désinformation circule massivement dans les groupes de la diaspora — parfois pour décourager les tentatives de passage, parfois par simple confusion. La vérification correcte consiste à croiser les sources humanitaires de référence (ACLED, BVM, IOM) pour cette période précise. Les expulsions aériennes vers l'Afghanistan depuis la Bosnie sont extrêmement rares et toujours très documentées — leur absence dans les rapports est un indicateur fort.</div>
+      </div>
+
+      <div class="quiz-q" data-correct="a">
+        <div class="q-text">8. Pour vérifier qu'une vidéo partagée sur Facebook et présentée comme "filmée à Velika Kladuša en décembre 2023" est bien authentique, quelle est la démarche la plus complète ?</div>
+        <label><input type="radio" name="q2_8" value="a"> Utiliser InVID/WeVerify pour extraire des images-clés, lancer une recherche inversée sur chaque frame via Yandex Images, et comparer les éléments visuels (végétation, infrastructure, signalétique) avec des images satellites Google Earth Pro de la zone</label>
+        <label><input type="radio" name="q2_8" value="b"> Vérifier la date de publication sur Facebook — si elle correspond à décembre 2023, la vidéo est authentique</label>
+        <label><input type="radio" name="q2_8" value="c"> Analyser la vidéo avec FotoForensics pour détecter les manipulations</label>
+        <label><input type="radio" name="q2_8" value="d"> Envoyer la vidéo à un journaliste spécialisé dans les migrations pour qu'il la vérifie</label>
+        <div class="quiz-feedback">La vérification vidéo complète combine trois approches : (1) extraction de frames via InVID/WeVerify, (2) recherche inversée des frames sur Yandex/TinEye pour détecter si ces images existaient avant la date déclarée, (3) géolocalisation visuelle via Google Earth Pro — végétation, topographie, bâtiments identifiables permettent de confirmer ou infirmer la localisation. FotoForensics analyse les images fixes, pas les vidéos. La date Facebook est facilement falsifiable.</div>
       </div>
 
     </div>
     <button class="btn-quiz" onclick="submitQuiz('quiz2')">Valider mes réponses</button>
     <div class="quiz-score" id="quiz2-score"></div>
+    <div id="quiz2-actions" style="display:none;margin-top:16px;gap:12px;flex-wrap:wrap">
+      <button class="btn-quiz" style="background:var(--grey-dark)" onclick="resetQuiz('quiz2')">↺ Recommencer</button>
+      <button class="btn-quiz" onclick="showPage('j3mg')">Continuer → Jour 3</button>
+    </div>
   </div>
 
   <!-- JOUR 3 : MODULE D — fusionné avec Module G -->
@@ -1165,15 +2127,191 @@
   <div id="page-j3me" class="page">
     <span class="tag tag-red">Jour 3</span><span class="tag tag-blue">Module E</span>
     <h1>GEOINT — Géolocalisation</h1>
-    <p class="lead">Analyser des images satellites et géolocaliser des photos pour localiser des zones de résidence ou de passage.</p>
-    <h2>Google Earth Pro</h2>
-    <div class="placeholder">[ À compléter : navigation, historique d'images, mesures, coordonnées GPS ]</div>
-    <h2>Sentinel Hub & EO Browser</h2>
-    <div class="placeholder">[ À compléter : images satellites Copernicus, accès gratuit, cas d'usage humanitaire ]</div>
-    <h2>Atelier — Géolocalisation d'une image</h2>
-    <div class="card card-green">
-      <div class="placeholder">[ À compléter : exercice pratique — retrouver l'emplacement d'une photo à partir d'éléments visuels ]</div>
+    <p class="lead">Analyser des images satellites, géolocaliser des photos et reconstruire des itinéraires à partir d'éléments visuels. En contexte RLF, le GEOINT permet de confirmer ou d'infirmer une localisation déclarée, et d'identifier les structures d'accueil dans une zone.</p>
+
+    <h2>Qu'est-ce que le GEOINT ?</h2>
+    <p>Le <strong>GEOINT</strong> (Geospatial Intelligence) est le renseignement produit à partir de l'analyse d'images satellites, de cartographies et de données de localisation. Il permet de répondre à des questions concrètes : où se trouve exactement cette personne ? Ce camp existe-t-il réellement ? Cette photo a-t-elle été prise à l'endroit déclaré ?</p>
+    <div class="card card-blue">
+      <h3>Applications directes en contexte RLF</h3>
+      <p style="font-size:13px"><strong>Confirmer une localisation :</strong> croiser les coordonnées GPS des EXIF avec les images satellites pour valider qu'une photo a bien été prise dans le camp indiqué.</p>
+      <p style="font-size:13px"><strong>Identifier des structures :</strong> repérer un camp, un bâtiment ou un point de passage sur une image satellite.</p>
+      <p style="font-size:13px;margin:0"><strong>Géolocaliser sans GPS :</strong> identifier une localisation à partir d'éléments visuels — végétation, topographie, bâtiments, routes, ombres.</p>
     </div>
+
+    <h2>Google Earth Pro</h2>
+    <p>Google Earth Pro est l'outil de référence pour la géolocalisation OSINT. Il offre des images satellites de haute résolution, un historique d'images remontant parfois à 20 ans, et des outils de mesure précis.</p>
+
+    <h3>Fonctionnalités clés pour le RLF</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0">
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:6px">📅 Historique d'images</div>
+        <div style="font-size:12px">L'icône horloge permet de naviguer dans le temps. Voir l'état d'un camp en décembre 2023, comparer avec aujourd'hui. Essentiel pour valider une localisation à une date précise.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:6px">📍 Saisie de coordonnées GPS</div>
+        <div style="font-size:12px">Coller directement les coordonnées extraites des EXIF dans la barre de recherche. Format accepté : <code style="background:var(--grey-light);padding:1px 4px;border-radius:3px;font-size:11px">45.1823, 15.7856</code> ou degrés-minutes-secondes.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:6px">📏 Outils de mesure</div>
+        <div style="font-size:12px">Mesurer des distances, calculer des altitudes, tracer des itinéraires. Utile pour estimer le temps de marche entre deux points sur une route migratoire.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:6px">🌒 Analyse des ombres</div>
+        <div style="font-size:12px">L'outil "Soleil" simule la position du soleil à une date et heure précises. Permet de vérifier la cohérence des ombres dans une photo et d'affiner l'heure de prise de vue.</div>
+      </div>
+    </div>
+    <a href="https://earth.google.com/web/" target="_blank" class="tool-link">
+      <span class="tool-icon">🌍</span><div><div class="tool-name">Google Earth Web</div><div class="tool-desc">Version navigateur — pas d'installation requise</div></div>
+    </a>
+
+    <h2>Google Maps Street View</h2>
+    <p>Street View complète Google Earth en permettant une vue au niveau du sol. Idéal pour vérifier des éléments visuels (façades, enseignes, signalétique) qui ne sont pas visibles depuis le satellite.</p>
+    <div class="card card-green">
+      <h3>Technique de géolocalisation par Street View</h3>
+      <p style="font-size:13px"><strong>1.</strong> Identifier dans la photo un élément distinctif visible depuis la rue : enseigne, panneau de signalisation, bâtiment caractéristique.</p>
+      <p style="font-size:13px"><strong>2.</strong> Naviguer en Street View dans la zone supposée et chercher ce même élément.</p>
+      <p style="font-size:13px;margin:0"><strong>3.</strong> Vérifier la cohérence de l'ensemble : orientation, végétation, infrastructure environnante.</p>
+    </div>
+    <a href="https://www.google.com/maps" target="_blank" class="tool-link">
+      <span class="tool-icon">📍</span><div><div class="tool-name">Google Maps / Street View</div><div class="tool-desc">Vue au sol — vérification d'éléments visuels</div></div>
+    </a>
+
+    <h2>Sentinel Hub / EO Browser</h2>
+    <p>EO Browser donne accès gratuitement aux images satellites du programme Copernicus (ESA). Contrairement à Google Earth, les images sont disponibles quasi en temps réel (2-5 jours de délai) et couvrent l'ensemble du globe avec une résolution de 10 mètres par pixel.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
+      <div class="card card-green" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:6px">✅ Avantages vs Google Earth</div>
+        <div style="font-size:12px;line-height:1.7">Images récentes (quelques jours)<br>Accès gratuit sans compte<br>Multiples bandes spectrales (infrarouge, NDVI)<br>Comparaison temporelle facile</div>
+      </div>
+      <div class="card card-orange" style="margin:0;padding:14px">
+        <div style="font-weight:700;font-size:12px;color:var(--orange);margin-bottom:6px">⚠ Limites</div>
+        <div style="font-size:12px;line-height:1.7">Résolution 10m — moins précis que Google Earth<br>Couverture nuageuse fréquente<br>Interface plus technique<br>Pas de Street View</div>
+      </div>
+    </div>
+    <a href="https://browser.dataspace.copernicus.eu" target="_blank" class="tool-link">
+      <span class="tool-icon">🛰️</span><div><div class="tool-name">EO Browser (Copernicus)</div><div class="tool-desc">Images satellites ESA — accès gratuit, quasi temps réel</div></div>
+    </a>
+
+    <h2>La géolocalisation par éléments visuels</h2>
+    <p>Quand une photo ne contient pas de métadonnées GPS, il est souvent possible de la géolocaliser à partir d'éléments visuels. Cette technique demande de la méthode et de la patience.</p>
+    <div style="display:flex;flex-direction:column;gap:6px;margin:10px 0">
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🏔️</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">Topographie</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Relief, horizon, forme des collines. Utile pour distinguer les régions montagneuses des plaines. La frontière bosno-croate est caractérisée par des forêts denses de conifères et un relief marqué.</div></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🌿</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">Végétation</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Type d'arbres, couleur, densité. Les conifères denses indiquent une altitude ou une latitude élevée. Les oliviers indiquent le bassin méditerranéen. La végétation saisonnière aide à dater la photo.</div></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🏗️</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">Infrastructure</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Style architectural, matériaux de construction, couleur des toits, type de routes. Les camps IOM ont une apparence caractéristique (tentes blanches standardisées, préfabriqués).</div></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🪧</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">Signalétique & textes</div>
+        <div style="font-size:13px;color:var(--grey-dark)">Panneaux de signalisation, enseignes, logos d'ONG visibles. Un panneau en bosniaque (latin), arabe ou anglais situe immédiatement le contexte géographique.</div></div>
+      </div>
+      <div class="card" style="margin:0;padding:12px;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:18px;flex-shrink:0">🌅</div>
+        <div><div style="font-weight:700;font-size:13px;margin-bottom:3px">Ombres & orientation</div>
+        <div style="font-size:13px;color:var(--grey-dark)">La direction et longueur des ombres permettent d'estimer l'heure et la saison. Combinées avec la latitude supposée, elles permettent de valider ou infirmer la date déclarée.</div></div>
+      </div>
+    </div>
+
+    <h2>Démo interactive — Zone de Velika Kladuša</h2>
+    <p>Cliquez sur les marqueurs pour explorer les points-clés de la zone frontalière bosno-croate — centrale dans le scénario Al-Wada.</p>
+
+    <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow)">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d20000!2d15.789!3d45.185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sfr!2sbe!4v1700000000000!5m2!1sfr!2sbe"
+        width="100%" height="400" style="border:0;display:block"
+        allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+      <div class="card" style="margin:0;padding:14px;cursor:pointer;transition:all 0.15s" onclick="window.open('https://www.google.com/maps/search/Camp+Miral+Velika+Kladusa', '_blank')">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:4px">📍 Camp Miral — Velika Kladuša</div>
+        <div style="font-size:12px;color:var(--grey-mid)">45°11' N · 15°48' E (environ)</div>
+        <div style="font-size:12px;margin-top:6px">Premier point d'accueil après refoulement. Géré par IOM. Cliquer pour ouvrir dans Google Maps.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;cursor:pointer;transition:all 0.15s" onclick="window.open('https://www.google.com/maps/search/Camp+Lipa+Bihac+Bosnia', '_blank')">
+        <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:4px">📍 Camp Lipa — Bihać</div>
+        <div style="font-size:12px;color:var(--grey-mid)">44°49' N · 15°52' E (environ)</div>
+        <div style="font-size:12px;margin-top:6px">Camp principal de la région de Bihać. Capacité ~1500 personnes. Cliquer pour ouvrir dans Google Maps.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;cursor:pointer;transition:all 0.15s" onclick="window.open('https://www.google.com/maps/search/Usivak+reception+centre+Hadzici+Sarajevo', '_blank')">
+        <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:4px">📍 Centre Ušivak — Hadžići (Sarajevo)</div>
+        <div style="font-size:12px;color:var(--grey-mid)">43°48' N · 18°18' E (environ)</div>
+        <div style="font-size:12px;margin-top:6px">Centre de transfert secondaire. Localisation finale de Fatima Al-Rashid dans le scénario Al-Wada. Cliquer pour ouvrir dans Google Maps.</div>
+      </div>
+      <div class="card" style="margin:0;padding:14px;cursor:pointer;transition:all 0.15s" onclick="window.open('https://www.google.com/maps/search/Maljevac+border+crossing+Croatia+Bosnia', '_blank')">
+        <div style="font-weight:700;font-size:13px;color:var(--orange);margin-bottom:4px">📍 Poste frontière — Maljevac/Cetingrad</div>
+        <div style="font-size:12px;color:var(--grey-mid)">45°15' N · 15°46' E (environ)</div>
+        <div style="font-size:12px;margin-top:6px">Zone de passage et de refoulement documentés en décembre 2023. Cliquer pour ouvrir dans Google Maps.</div>
+      </div>
+    </div>
+
+    <h2>Exercice guidé — Géolocaliser une photo de camp</h2>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">1</div>
+        <div class="exercise-step-title">Identifier la zone à partir d'éléments visuels</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Vous recevez une photo d'un camp (choisissez une image publique du camp de Velika Kladuša ou de Lipa via Google Images). Sans utiliser les EXIF, identifiez les éléments visuels permettant de situer géographiquement la photo : végétation, topographie, infrastructure, signalétique. Comparez ensuite avec Google Earth Pro en naviguant sur les deux camps.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-e1')">▼ Voir les éléments de réponse</button>
+        <div class="exercise-answer" id="ans-e1">
+          <strong>Éléments caractéristiques de la zone Velika Kladuša / Bihać :</strong><br>
+          • <strong>Végétation :</strong> forêt dense de conifères et feuillus — typique des Balkans à cette altitude (200-500m). En hiver : sol boueux, arbres dépouillés.<br>
+          • <strong>Infrastructure :</strong> tentes blanches standardisées IOM, préfabriqués de couleur claire, clôtures métalliques, éclairage solaire.<br>
+          • <strong>Signalétique :</strong> panneaux en bosniaque (alphabet latin), logo IOM ou UNHCR sur les structures.<br>
+          • <strong>Topographie :</strong> terrain légèrement vallonné, pas de montagne dominante visible — à distinguer du camp de Lipa (plateau plus dégagé).<br><br>
+          <strong>Sur Google Earth Pro :</strong> activer l'historique d'images, naviguer jusqu'à décembre 2023. Le camp Miral apparaît clairement sur l'image satellite — tentes blanches en rangées régulières.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">2</div>
+        <div class="exercise-step-title">Valider des coordonnées GPS issues des EXIF</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Les coordonnées GPS suivantes ont été extraites des EXIF d'une photo transmise dans un dossier RLF : <code style="background:var(--grey-light);padding:2px 6px;border-radius:3px">45.185° N, 15.803° E</code>. Saisissez ces coordonnées dans Google Earth Web ou Google Maps (copiez-collez directement dans la barre de recherche). (1) Où se trouve exactement ce point ? (2) Est-il cohérent avec la zone de Velika Kladuša ? (3) Activez l'historique d'images pour décembre 2023.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-e2')">▼ Voir la réponse</button>
+        <div class="exercise-answer" id="ans-e2">
+          <strong>Résultat :</strong> Les coordonnées 45.1823° N, 15.7856° E correspondent à la périphérie nord de Velika Kladuša, à environ 1,5 km du camp Miral — dans la forêt proche de la frontière. Ce point est cohérent avec une présence dans la zone de Velika Kladuša, mais ne correspond pas directement au camp lui-même.<br><br>
+          <strong>Ce que ça indique pour le dossier :</strong> la photo a été prise dans la zone — probablement dans un campement informel en forêt (fréquents pour les personnes en attente de passage), pas dans le camp officiel IOM. Cette distinction est importante : les personnes dans les campements informels ne sont pas enregistrées par IOM et sont plus difficiles à localiser via les canaux officiels.<br><br>
+          <strong>Sur l'historique d'images :</strong> en décembre 2023, la zone présente une couverture neigeuse légère. Des traces de passage sont parfois visibles en haute résolution dans les images satellites d'hiver.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-step">
+      <div class="exercise-step-header">
+        <div class="exercise-step-num">3</div>
+        <div class="exercise-step-title">Comparer avec EO Browser (Sentinel Hub)</div>
+      </div>
+      <div class="exercise-step-body">
+        <p class="exercise-task">Sur <a href="https://browser.dataspace.copernicus.eu" target="_blank" style="color:var(--blue)">browser.dataspace.copernicus.eu</a>, naviguez jusqu'à Velika Kladuša (45.18° N, 15.79° E). Sélectionnez une image Sentinel-2 de décembre 2023. Comparez la résolution et le niveau de détail avec Google Earth Pro. Identifiez les structures du camp Miral sur l'image Sentinel.</p>
+        <button class="btn-reveal" onclick="toggleAnswer(this, 'ans-e3')">▼ Voir les éléments de réponse</button>
+        <div class="exercise-answer" id="ans-e3">
+          <strong>Observations attendues :</strong><br>
+          • Sentinel-2 offre une résolution de 10m/pixel — suffisante pour identifier des zones construites et des regroupements de structures, mais pas pour distinguer des tentes individuelles.<br>
+          • En décembre 2023, la couverture nuageuse peut limiter la disponibilité des images claires — sélectionner l'image avec le moins de nuages dans la période.<br>
+          • Le camp Miral apparaît comme une zone claire rectangulaire à la périphérie nord de Velika Kladuša.<br><br>
+          <strong>Quand utiliser Sentinel vs Google Earth :</strong> Sentinel pour des images récentes (quelques jours) ou pour suivre l'évolution d'une zone dans le temps. Google Earth pour la haute résolution et la vérification de détails visuels fins.
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- JOUR 3 : MODULE G -->
@@ -1338,17 +2476,295 @@
   <div id="page-j3consol" class="page">
     <span class="tag tag-red">Jour 3</span><span class="tag tag-grey">Consolidation</span>
     <h1>Révision & préparation à l'exercice</h1>
-    <p class="lead">Retour sur les points clés des Jours 1 et 2. Questions ouvertes. Briefing du scénario Al-Wada.</p>
-    <h2>Points-clés à retenir</h2>
-    <div class="card card-red">
-      <div class="placeholder">[ À compléter : synthèse des réflexes OSINT essentiels pour le quotidien RLF ]</div>
+    <p class="lead">Retour structuré sur les trois journées. Réponses aux questions fréquentes. Briefing de l'exercice final.</p>
+
+    <!-- ══ SYNTHÈSE PAR JOUR ══ -->
+    <h2>Synthèse par journée</h2>
+
+    <!-- JOUR 1 -->
+    <div class="card" style="margin-bottom:12px;border-left:4px solid var(--red)">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <div style="background:var(--red);color:white;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase">Jour 1 — Fondamentaux</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--grey-light);border-radius:6px;padding:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:6px">Ce que vous avez appris</div>
+          <ul style="font-size:13px;color:var(--grey-dark);line-height:1.8;padding-left:16px;margin:0">
+            <li>Définition et périmètre de l'OSINT</li>
+            <li>Pyramide des données → renseignement</li>
+            <li>Fonctionnement d'internet (IP, DNS, cookies)</li>
+            <li>Cadre légal : RGPD et vie privée</li>
+            <li>Profils d'investigation et cycle du renseignement</li>
+            <li>Recherche avancée (Google Dorks, opérateurs)</li>
+          </ul>
+        </div>
+        <div style="background:var(--red-light);border-radius:6px;padding:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:6px">Réflexes à ancrer</div>
+          <ul style="font-size:13px;color:var(--grey-dark);line-height:1.8;padding-left:16px;margin:0">
+            <li>Une IP n'est jamais une preuve d'identité</li>
+            <li>Toujours distinguer source et information</li>
+            <li>La collecte ne vaut que si elle est légalement fondée</li>
+            <li>Commencer large, puis affiner par opérateurs</li>
+            <li>Documenter chaque étape dès le début</li>
+          </ul>
+        </div>
+      </div>
     </div>
+
+    <!-- JOUR 2 -->
+    <div class="card" style="margin-bottom:12px;border-left:4px solid var(--blue)">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <div style="background:var(--blue);color:white;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase">Jour 2 — Outils terrain</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--grey-light);border-radius:6px;padding:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:6px">Ce que vous avez appris</div>
+          <ul style="font-size:13px;color:var(--grey-dark);line-height:1.8;padding-left:16px;margin:0">
+            <li>Cartographie de crises (ACLED, UNHCR, UNOCHA)</li>
+            <li>Recherche multilingue et translittération</li>
+            <li>Variantes orthographiques des prénoms arabes</li>
+            <li>Vérification d'images (recherche inversée, EXIF)</li>
+            <li>Vérification vidéo (InVID/WeVerify, frames)</li>
+            <li>Fact-checking systématique</li>
+          </ul>
+        </div>
+        <div style="background:var(--blue-light);border-radius:6px;padding:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:6px">Réflexes à ancrer</div>
+          <ul style="font-size:13px;color:var(--grey-dark);line-height:1.8;padding-left:16px;margin:0">
+            <li>Tester au moins 3 variantes orthographiques</li>
+            <li>Croiser Yandex + Google Images pour toute photo</li>
+            <li>Extraire les EXIF avant toute analyse visuelle</li>
+            <li>Ne jamais conclure sur une seule source</li>
+            <li>Vérifier la date de première publication, pas de partage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOUR 3 -->
+    <div class="card" style="margin-bottom:4px;border-left:4px solid var(--green)">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <div style="background:var(--green);color:white;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase">Jour 3 — Sécurité & GEOINT</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--grey-light);border-radius:6px;padding:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--green);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:6px">Ce que vous avez appris</div>
+          <ul style="font-size:13px;color:var(--grey-dark);line-height:1.8;padding-left:16px;margin:0">
+            <li>OPSEC et protection de l'investigateur</li>
+            <li>VPN, machines virtuelles, extensions Firefox</li>
+            <li>Géolocalisation par éléments visuels</li>
+            <li>Google Earth Pro et historique d'images</li>
+            <li>Sentinel Hub / EO Browser (images récentes)</li>
+            <li>Analyse des ombres et cohérence temporelle</li>
+          </ul>
+        </div>
+        <div style="background:var(--green-light);border-radius:6px;padding:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--green);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:6px">Réflexes à ancrer</div>
+          <ul style="font-size:13px;color:var(--grey-dark);line-height:1.8;padding-left:16px;margin:0">
+            <li>Activer le VPN avant toute recherche sensible</li>
+            <li>Travailler depuis la VM pour les cas complexes</li>
+            <li>Regarder, ne pas toucher — jamais interagir sans raison</li>
+            <li>Identifier 3 éléments visuels distincts avant de conclure</li>
+            <li>Vérifier la cohérence des ombres si la date est inconnue</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SYNTHÈSE THÉMATIQUE ══ -->
+    <h2>Synthèse thématique — les réflexes du quotidien RLF</h2>
+    <p>Au-delà des modules, voici les comportements qui font la différence entre une investigation approximative et une investigation professionnelle.</p>
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">
+
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:22px;flex-shrink:0">🔍</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Avant de chercher : définir le besoin</div>
+          <div style="font-size:13px;color:var(--grey-dark);line-height:1.6">Poser trois questions systématiques : <strong>Que cherche-t-on exactement ?</strong> (identité, localisation, contexte) — <strong>De quelles informations dispose-t-on déjà ?</strong> (nom, photo, date, pays) — <strong>Quelle est la limite temporelle et légale de cette recherche ?</strong> Une investigation mal cadrée fait perdre du temps et risque d'exposer des personnes vulnérables.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:22px;flex-shrink:0">🔄</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Pendant la recherche : croiser systématiquement</div>
+          <div style="font-size:13px;color:var(--grey-dark);line-height:1.6">Aucun élément isolé ne constitue une conclusion. Une photo géolocalisée + un profil correspondant + une mention dans un rapport de terrain = piste sérieuse. Un seul de ces éléments = hypothèse à creuser. La règle d'or : <strong>au moins trois sources indépendantes</strong> avant de documenter une certitude.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:22px;flex-shrink:0">📝</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Documenter au fil de l'eau</div>
+          <div style="font-size:13px;color:var(--grey-dark);line-height:1.6">Capturer les URL, les dates d'accès, les captures d'écran au fur et à mesure. Une page web peut disparaître en quelques heures. Le dossier OSINT doit être reconstituable par un tiers sans refaire les recherches. Utiliser un journal d'investigation structuré : date · source · information · niveau de fiabilité · action suivante.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:22px;flex-shrink:0">⚖️</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Évaluer avant de conclure</div>
+          <div style="font-size:13px;color:var(--grey-dark);line-height:1.6">Distinguer le niveau de certitude dans chaque formulation : <em>"Le profil correspond avec haute probabilité à la personne recherchée"</em> n'est pas la même chose que <em>"La personne est localisée à Thessalonique"</em>. Utiliser une échelle de fiabilité (confirmé / probable / possible / non vérifié) et l'indiquer systématiquement dans les rapports transmis au CICR.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin:0;padding:14px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:22px;flex-shrink:0">🛡️</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">Protéger — soi, les autres, l'institution</div>
+          <div style="font-size:13px;color:var(--grey-dark);line-height:1.6">L'OPSEC n'est pas optionnelle. En exposant l'identité numérique du service RLF, on peut alerter des acteurs malveillants (passeurs, geôliers, trafiquants) sur le fait qu'une recherche est en cours. Systématiser le VPN, le profil de navigation neutre, et la communication chiffrée dès que le contexte devient sensible.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ FAQ ══ -->
     <h2>Questions fréquentes</h2>
-    <div class="placeholder">[ À compléter : réponses aux questions récurrentes des jours précédents ]</div>
-    <h2>Accéder à l'exercice final</h2>
-    <div class="card card-orange">
-      <p>L'exercice final <strong>Opération Al-Wada</strong> est accessible via le menu latéral avec le code communiqué par le formateur.</p>
+    <p>Réponses aux questions les plus souvent posées au fil de ces trois journées.</p>
+
+    <div style="display:flex;flex-direction:column;gap:6px;margin:12px 0" id="faq-container">
+
+      <!-- FAQ 1 -->
+      <div class="card" style="margin:0;padding:0;overflow:hidden">
+        <button onclick="toggleFaq(this)" style="width:100%;text-align:left;background:none;border:none;padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Sans',sans-serif">
+          <span style="font-size:14px;font-weight:600;color:var(--black)">Est-ce que je peux prendre contact directement avec une personne retrouvée via Facebook ?</span>
+          <span style="font-size:18px;color:var(--grey-mid);flex-shrink:0;transition:transform 0.2s" class="faq-arrow">▸</span>
+        </button>
+        <div class="faq-body" style="display:none;padding:0 18px 16px;font-size:13px;color:var(--grey-dark);line-height:1.7;border-top:1px solid var(--border)">
+          <p style="margin-top:14px"><strong>Non — sauf exception très encadrée.</strong> Le principe "regarder, ne pas toucher" s'applique ici avec toute sa rigueur. Prendre contact directement via un compte personnel ou institutionnel : (1) révèle que la personne est recherchée, (2) peut alerter des tiers indésirables, (3) expose la personne si elle est sous contrôle, (4) viole le protocole CICR qui exige le consentement préalable avant tout rétablissement de contact.</p>
+          <p style="margin:0">La procédure correcte : transmettre les éléments trouvés au coordinateur RLF, qui suit le canal officiel via familylinks.icrc.org. C'est le CICR ou le partenaire national compétent qui gère la prise de contact dans les règles.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="card" style="margin:0;padding:0;overflow:hidden">
+        <button onclick="toggleFaq(this)" style="width:100%;text-align:left;background:none;border:none;padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Sans',sans-serif">
+          <span style="font-size:14px;font-weight:600;color:var(--black)">Que faire si on trouve des informations sensibles sur une personne qui ne sont pas utiles à la recherche ?</span>
+          <span style="font-size:18px;color:var(--grey-mid);flex-shrink:0;transition:transform 0.2s" class="faq-arrow">▸</span>
+        </button>
+        <div class="faq-body" style="display:none;padding:0 18px 16px;font-size:13px;color:var(--grey-dark);line-height:1.7;border-top:1px solid var(--border)">
+          <p style="margin-top:14px"><strong>Ne pas conserver, ne pas transmettre.</strong> Le principe de minimisation (RGPD) est clair : on ne collecte que ce qui est strictement nécessaire à la finalité de la recherche en cours. Si vous tombez sur des éléments liés à la santé, l'orientation sexuelle, la religion ou la situation judiciaire d'une personne qui n'ont aucun lien avec la recherche, ne les notez pas, ne les capturez pas.</p>
+          <p style="margin:0">En cas de doute sur la pertinence d'une information, la règle simple : <em>"Si je devais justifier devant un responsable pourquoi j'ai conservé cet élément, pourrais-je le faire ?"</em> Si la réponse est non, on ne le garde pas.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="card" style="margin:0;padding:0;overflow:hidden">
+        <button onclick="toggleFaq(this)" style="width:100%;text-align:left;background:none;border:none;padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Sans',sans-serif">
+          <span style="font-size:14px;font-weight:600;color:var(--black)">Combien de temps peut-on investir dans une recherche OSINT avant de décider qu'elle est sans issue ?</span>
+          <span style="font-size:18px;color:var(--grey-mid);flex-shrink:0;transition:transform 0.2s" class="faq-arrow">▸</span>
+        </button>
+        <div class="faq-body" style="display:none;padding:0 18px 16px;font-size:13px;color:var(--grey-dark);line-height:1.7;border-top:1px solid var(--border)">
+          <p style="margin-top:14px"><strong>Il n'existe pas de règle fixe — mais il faut des critères d'arrêt.</strong> Une investigation OSINT peut absorber des heures sans résultat si on ne la cadre pas. Avant de commencer, définissez : quelles sources minimales allez-vous consulter ? Après combien d'heures sans piste solide ferez-vous le point avec le coordinateur ?</p>
+          <p style="margin:0">Une bonne pratique : s'accorder un premier bloc de 45 minutes pour la recherche initiale (moteurs, réseaux sociaux, variantes orthographiques). Si aucune piste sérieuse n'émerge, documenter l'état des recherches et escalader plutôt que de continuer seul. L'OSINT est un outil parmi d'autres — quand il atteint ses limites, le réseau humain et diplomatique du CICR prend le relais.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="card" style="margin:0;padding:0;overflow:hidden">
+        <button onclick="toggleFaq(this)" style="width:100%;text-align:left;background:none;border:none;padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Sans',sans-serif">
+          <span style="font-size:14px;font-weight:600;color:var(--black)">Peut-on utiliser une fausse identité pour accéder à des profils verrouillés sur les réseaux sociaux ?</span>
+          <span style="font-size:18px;color:var(--grey-mid);flex-shrink:0;transition:transform 0.2s" class="faq-arrow">▸</span>
+        </button>
+        <div class="faq-body" style="display:none;padding:0 18px 16px;font-size:13px;color:var(--grey-dark);line-height:1.7;border-top:1px solid var(--border)">
+          <p style="margin-top:14px"><strong>Non — c'est une ligne rouge éthique et potentiellement légale.</strong> La création d'un faux profil pour accéder à des contenus privés constitue une tromperie caractérisée qui dépasse le périmètre de l'OSINT (sources ouvertes). Elle viole également les conditions d'utilisation de toutes les plateformes et, selon les circonstances, peut tomber sous le coup de la fraude informatique.</p>
+          <p style="margin:0">La règle : si l'information n'est pas accessible sans créer un compte ou sans se faire passer pour quelqu'un d'autre, elle n'est pas une source ouverte. Elle est donc hors périmètre pour le service RLF dans le cadre de l'OSINT. Cette limite protège aussi l'institution : une investigation conduite avec de faux profils compromettrait la crédibilité et la neutralité de la Croix-Rouge.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="card" style="margin:0;padding:0;overflow:hidden">
+        <button onclick="toggleFaq(this)" style="width:100%;text-align:left;background:none;border:none;padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Sans',sans-serif">
+          <span style="font-size:14px;font-weight:600;color:var(--black)">Quelle est la différence entre un VPN gratuit et un VPN payant ? Lequel utiliser ?</span>
+          <span style="font-size:18px;color:var(--grey-mid);flex-shrink:0;transition:transform 0.2s" class="faq-arrow">▸</span>
+        </button>
+        <div class="faq-body" style="display:none;padding:0 18px 16px;font-size:13px;color:var(--grey-dark);line-height:1.7;border-top:1px solid var(--border)">
+          <p style="margin-top:14px"><strong>Un VPN gratuit est généralement contre-productif pour l'OSINT sensible.</strong> Les services VPN ont des coûts d'infrastructure importants. S'ils sont gratuits, c'est qu'ils se rémunèrent autrement — souvent en revendant des données de navigation à des tiers. Vous cherchez à protéger vos recherches, ils les monétisent : l'effet est inverse à celui recherché.</p>
+          <p style="margin:0">Recommandés pour le service RLF : <strong>ProtonVPN</strong> (basé en Suisse, politique de non-journalisation auditée, offre gratuite limitée acceptable pour usage occasionnel), <strong>Mullvad</strong> (anonymat maximal, paiement par courrier possible), <strong>ExpressVPN</strong> (performance et couverture). Si la Croix-Rouge de Belgique dispose d'un VPN institutionnel, celui-ci prime toujours.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 6 -->
+      <div class="card" style="margin:0;padding:0;overflow:hidden">
+        <button onclick="toggleFaq(this)" style="width:100%;text-align:left;background:none;border:none;padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Sans',sans-serif">
+          <span style="font-size:14px;font-weight:600;color:var(--black)">Comment gérer le cas où une personne retrouvée ne souhaite pas être contactée par sa famille ?</span>
+          <span style="font-size:18px;color:var(--grey-mid);flex-shrink:0;transition:transform 0.2s" class="faq-arrow">▸</span>
+        </button>
+        <div class="faq-body" style="display:none;padding:0 18px 16px;font-size:13px;color:var(--grey-dark);line-height:1.7;border-top:1px solid var(--border)">
+          <p style="margin-top:14px"><strong>Le consentement de la personne retrouvée est absolu et prime sur tout.</strong> C'est un principe fondamental du service RLF : si une personne est localisée mais ne souhaite pas rétablir le contact, cette décision doit être respectée sans exception. L'objectif du RLF est le rétablissement des liens — pas leur imposition.</p>
+          <p style="margin:0">Concrètement, si vos recherches OSINT aboutissent à localiser quelqu'un, vous ne transmettez pas directement cette information à la famille demandeuse. Vous signalez au coordinateur RLF qui, via le canal officiel CICR, s'assure que la personne retrouvée est contactée de manière confidentielle pour recueillir son consentement avant toute communication avec la famille.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 7 -->
+      <div class="card" style="margin:0;padding:0;overflow:hidden">
+        <button onclick="toggleFaq(this)" style="width:100%;text-align:left;background:none;border:none;padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Sans',sans-serif">
+          <span style="font-size:14px;font-weight:600;color:var(--black)">Google Dorks, est-ce légal ? Est-ce qu'on risque quelque chose à les utiliser ?</span>
+          <span style="font-size:18px;color:var(--grey-mid);flex-shrink:0;transition:transform 0.2s" class="faq-arrow">▸</span>
+        </button>
+        <div class="faq-body" style="display:none;padding:0 18px 16px;font-size:13px;color:var(--grey-dark);line-height:1.7;border-top:1px solid var(--border)">
+          <p style="margin-top:14px"><strong>Oui, c'est parfaitement légal dans le cadre de l'OSINT.</strong> Un Google Dork n'est qu'une requête de recherche avancée. Google indexe des milliards de pages publiques — utiliser des opérateurs comme <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px">site:</code> ou <code style="background:var(--grey-light);padding:1px 5px;border-radius:3px">filetype:</code> pour affiner les résultats n'est ni du hacking ni une intrusion. Vous interagissez uniquement avec des données que Google a lui-même collectées et rendues accessibles.</p>
+          <p style="margin:0">La limite légale se situe là où les Dorks permettraient d'accéder à des systèmes non autorisés (bases de données mal sécurisées exposées accidentellement, pages d'administration non protégées). Dans ce cas, accéder à ces données — même via une requête banale — peut constituer un accès non autorisé à un système informatique. Règle pratique : si vous constatez que vous accédez à quelque chose qui ne devrait visiblement pas être public, fermez et ne conservez pas les données.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 8 -->
+      <div class="card" style="margin:0;padding:0;overflow:hidden">
+        <button onclick="toggleFaq(this)" style="width:100%;text-align:left;background:none;border:none;padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Sans',sans-serif">
+          <span style="font-size:14px;font-weight:600;color:var(--black)">Quelle est la fiabilité réelle des images satellites pour identifier un camp ou une structure ?</span>
+          <span style="font-size:18px;color:var(--grey-mid);flex-shrink:0;transition:transform 0.2s" class="faq-arrow">▸</span>
+        </button>
+        <div class="faq-body" style="display:none;padding:0 18px 16px;font-size:13px;color:var(--grey-dark);line-height:1.7;border-top:1px solid var(--border)">
+          <p style="margin-top:14px"><strong>Bonne, mais avec des limites importantes à connaître.</strong> Google Earth Pro offre des images de haute résolution, mais celles-ci peuvent dater de plusieurs mois à plusieurs années selon les zones. Pour une zone de conflit ou un camp informel, la situation peut changer radicalement en quelques semaines. EO Browser (Copernicus) fournit des images plus récentes (2-5 jours) mais à 10 mètres de résolution — on distingue des structures, pas des individus.</p>
+          <p style="margin:0">Pour valider une localisation avec des images satellites : (1) vérifier la date de l'image dans les métadonnées, (2) croiser avec une source récente indépendante (rapport UNHCR, témoignage), (3) comparer plusieurs dates pour voir l'évolution. Les images satellites sont un outil de corroboration, pas de certitude absolue.</p>
+        </div>
+      </div>
+
     </div>
+
+    <!-- ══ BRIEFING AL-WADA ══ -->
+    <h2>Briefing — Opération Al-Wada</h2>
+
+    <div class="card card-red" style="margin-bottom:12px">
+      <h3>📋 Contexte général</h3>
+      <p style="font-size:13px">Vous allez prendre en charge un <strong>dossier RLF fictif mais réaliste</strong>, construit à partir de situations documentées par le CICR et les organisations partenaires. Le scénario met en œuvre l'ensemble des compétences développées au cours des trois journées : recherche multilingue, vérification d'images, géolocalisation, sécurité numérique et respect du cadre éthique.</p>
+      <p style="font-size:13px;margin:0">Le nom de code <em>Al-Wada</em> (العودة — "le retour" en arabe) a été choisi en référence à l'objectif fondamental du service RLF : permettre à des familles séparées de se retrouver.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div class="card card-blue" style="margin:0">
+        <h3>🎯 Objectifs pédagogiques</h3>
+        <ul style="font-size:13px;color:var(--grey-dark);line-height:1.8;padding-left:16px;margin:0">
+          <li>Appliquer le cycle du renseignement dans un cas réel</li>
+          <li>Coordonner plusieurs techniques en parallèle</li>
+          <li>Gérer l'incertitude et l'information incomplète</li>
+          <li>Respecter les contraintes éthiques sous pression</li>
+          <li>Produire un rapport structuré et transmissible</li>
+        </ul>
+      </div>
+      <div class="card card-orange" style="margin:0">
+        <h3>⚠ Règles de l'exercice</h3>
+        <ul style="font-size:13px;color:var(--grey-dark);line-height:1.8;padding-left:16px;margin:0">
+          <li>Toutes les recherches restent dans le cadre OSINT</li>
+          <li>Aucune interaction avec des profils réels</li>
+          <li>Documenter chaque piste, même les impasses</li>
+          <li>Signaler toute découverte sensible au formateur</li>
+          <li>Le temps est limité — prioriser et arbitrer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card-green" style="margin-bottom:16px">
+      <h3>🔑 Comment accéder au dossier</h3>
+      <p style="font-size:13px">Le dossier complet est verrouillé. Le code d'accès à 4 chiffres vous sera communiqué oralement par le formateur au moment du lancement de l'exercice. Ce verrouillage simule la procédure de sécurité réelle : un dossier RLF sensible ne s'ouvre qu'après validation par le coordinateur responsable.</p>
+      <p style="font-size:13px;margin:0">Accédez à l'exercice via <strong>🔒 Exercice Al-Wada</strong> dans le menu latéral, puis saisissez le code communiqué.</p>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--grey-mid);margin-bottom:0">
+      <p style="font-size:13px;color:var(--grey-mid);margin:0;font-style:italic">💬 <strong>Mot du formateur :</strong> Cet exercice n'a pas de solution unique. Plusieurs approches peuvent mener à des conclusions valides. Ce qui est évalué, c'est votre rigueur méthodologique, votre respect du cadre éthique et la clarté de votre documentation — pas uniquement le résultat final.</p>
+    </div>
+
   </div>
 
   <!-- AL-WADA (VERROUILLÉ) -->
@@ -1421,7 +2837,7 @@
         <a class="tool-link" href="https://lens.google.com" target="_blank"><span class="tool-icon">🖼️</span><div><div class="tool-name">Google Lens</div><div class="tool-desc">Recherche inversée d'images</div></div></a>
         <a class="tool-link" href="https://www.tineye.com" target="_blank"><span class="tool-icon">🖼️</span><div><div class="tool-name">TinEye</div><div class="tool-desc">Recherche inversée spécialisée</div></div></a>
         <a class="tool-link" href="https://fotoforensics.com" target="_blank"><span class="tool-icon">🔬</span><div><div class="tool-name">FotoForensics</div><div class="tool-desc">Analyse ELA des images</div></div></a>
-        <a class="tool-link" href="https://www.invid-project.eu/tools-and-services/invid-verification-plugin/" target="_blank"><span class="tool-icon">🎬</span><div><div class="tool-name">InVID / WeVerify</div><div class="tool-desc">Vérification de vidéos</div></div></a>
+        <a class="tool-link" href="https://chromewebstore.google.com/detail/fake-news-debunker-invid/mhccpoafgdgbhnjfhkcmgknndkeenfhe?hl=fr&utm_source=ext_sidebar" target="_blank"><span class="tool-icon">🎬</span><div><div class="tool-name">InVID / WeVerify</div><div class="tool-desc">Vérification de vidéos</div></div></a>
       </div>
     </div>
 
@@ -1492,6 +2908,175 @@
 </div><!-- /main -->
 
 <script>
+function openCoords(lat, lng, label) {
+  window.open(`https://www.google.com/maps?q=${lat},${lng}&z=15`, '_blank');
+}
+
+function generateVariants() {
+  const name = document.getElementById('name-input').value.trim();
+  const lang = document.getElementById('lang-select').value;
+  if (!name) return;
+
+  const output = document.getElementById('variants-output');
+  const latinDiv = document.getElementById('variants-latin');
+  const nativeDiv = document.getElementById('variants-native');
+  const dorkDiv = document.getElementById('variants-dork');
+
+  // Transliteration rules per language
+  const rules = {
+    ar: {
+      label: 'Arabe',
+      substitutions: [
+        ['ph','f'],['ck','k'],['ck','q'],['ch','sh'],['ch','kh'],['ou','u'],
+        ['ou','w'],['ei','ay'],['ai','ay'],['j','dj'],['j','zh'],['y','i'],
+        ['h',''],['e','a'],['e','i'],['o','u'],['th','t'],['th','d'],
+        ['kh','x'],['gh','r'],['q','k'],['z','dh'],['ee','i'],
+      ],
+      nativeMap: {
+        'fatima':'فاطمة','ahmad':'أحمد','ahmed':'أحمد','kareem':'كريم',
+        'karim':'كريم','omar':'عمر','rania':'رانيا','ali':'علي',
+        'hassan':'حسن','hussein':'حسين','mohammed':'محمد','mohamed':'محمد',
+        'muhammad':'محمد','aisha':'عائشة','maryam':'مريم','ibrahim':'إبراهيم',
+        'khalid':'خالد','youssef':'يوسف','yousef':'يوسف','salma':'سلمى',
+        'nour':'نور','sara':'سارة','layla':'ليلى','leila':'ليلى',
+        'rashid':'الراشد','al-rashid':'الراشد',
+      }
+    },
+    af: {
+      label: 'Dari/Pachtou',
+      substitutions: [
+        ['kh','x'],['gh','g'],['sh','š'],['zh','j'],['ou','u'],
+        ['ai','ay'],['ei','ay'],['ee','i'],['oo','u'],['w','v'],
+        ['q','k'],['h',''],['ph','f'],
+      ],
+      nativeMap: {
+        'ahmad':'احمد','fatima':'فاطمه','omar':'عمر','ali':'علی',
+        'hassan':'حسن','kareem':'کریم','karim':'کریم','maryam':'مریم',
+        'reza':'رضا','yusuf':'یوسف','khalid':'خالد','noor':'نور',
+      }
+    },
+    so: {
+      label: 'Somali',
+      substitutions: [
+        ['dh','d'],['kh','k'],['sh','s'],['c','a'],['x','h'],
+        ['q','k'],['dh','r'],['w','v'],['oo','o'],['ee','e'],
+      ],
+      nativeMap: {}
+    },
+    et: {
+      label: 'Amharique/Tigrigna',
+      substitutions: [
+        ['ts','tz'],['ch','tch'],['sh','sh'],['kh','h'],['ph','f'],
+        ['w','v'],['q','k'],['y','i'],['e','a'],['o','u'],
+      ],
+      nativeMap: {}
+    },
+    cd: {
+      label: 'Lingala/Swahili',
+      substitutions: [
+        ['ng','n'],['mb','m'],['nd','n'],['th','t'],['ph','f'],
+        ['y','i'],['v','b'],['ou','u'],['ei','e'],
+      ],
+      nativeMap: {}
+    },
+    ru: {
+      label: 'Russe/Ukrainien',
+      substitutions: [
+        ['y','i'],['y','j'],['j','y'],['kh','h'],['sh','sch'],
+        ['zh','j'],['ts','tz'],['ch','tch'],['ou','u'],['ei','ey'],
+        ['iy','iy'],['aya','ia'],['ov','off'],['ev','eff'],
+      ],
+      nativeMap: {}
+    },
+  };
+
+  // Fix typo in af rules
+  if (lang === 'af') {
+    rules.af.substitutions = [
+      ['kh','x'],['gh','g'],['sh','š'],['zh','j'],['ou','u'],
+      ['ai','ay'],['ei','ay'],['ee','i'],['oo','u'],['w','v'],
+      ['q','k'],['h',''],['ph','f'],
+    ];
+  }
+
+  const rule = rules[lang] || rules.ar;
+  const lower = name.toLowerCase();
+
+  // Generate latin variants
+  const variants = new Set([name, lower]);
+
+  // Capitalize first letter
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+  // Apply substitutions
+  rule.substitutions.forEach(([from, to]) => {
+    variants.forEach(v => {
+      if (v.includes(from)) variants.add(cap(v.replace(new RegExp(from,'gi'), to)));
+    });
+  });
+
+  // Common suffix/prefix variations
+  const base = Array.from(variants);
+  base.forEach(v => {
+    const vl = v.toLowerCase();
+    if (!vl.endsWith('i') && vl.length > 3) variants.add(cap(vl + 'i'));
+    if (!vl.endsWith('a') && vl.length > 3) variants.add(cap(vl + 'a'));
+    // Al- prefix only for Arabic and Dari
+    if (lang === 'ar' || lang === 'af') {
+      if (vl.startsWith('al-') || vl.startsWith('el-') || vl.startsWith('ul-')) {
+        variants.add(cap(vl.replace(/^(al|el|ul)-/,'')));
+      } else if (!vl.startsWith('al-')) {
+        variants.add('Al-' + cap(vl));
+      }
+    }
+  });
+
+  // Limit to 12 most relevant
+  const latinVariants = Array.from(variants).slice(0, 12);
+
+  // Native script lookup
+  const native = rule.nativeMap[lower] || rule.nativeMap[lower.replace(/^al-/,'')] || null;
+
+  // Render latin pills
+  latinDiv.innerHTML = latinVariants.map(v =>
+    `<span style="background:var(--blue);color:white;padding:3px 10px;border-radius:10px;font-size:13px;cursor:pointer" title="Cliquer pour copier" onclick="navigator.clipboard.writeText('${v}')">${v}</span>`
+  ).join('');
+
+  // Render native script
+  if (native) {
+    nativeDiv.innerHTML = `
+      <span style="font-size:11px;color:var(--grey-mid);align-self:center">Script natif :</span>
+      <span style="background:var(--red);color:white;padding:3px 14px;border-radius:10px;font-size:15px;direction:rtl;cursor:pointer" title="Cliquer pour copier" onclick="navigator.clipboard.writeText('${native}')">${native}</span>
+    `;
+    nativeDiv.style.display = 'flex';
+    nativeDiv.style.alignItems = 'center';
+    nativeDiv.style.gap = '8px';
+  } else {
+    nativeDiv.innerHTML = `<span style="font-size:12px;color:var(--grey-mid);font-style:italic">Script natif non disponible pour ce nom — essayez Google Translate pour obtenir la translittération.</span>`;
+  }
+
+  // Build Google Dork
+  const dorkParts = latinVariants.slice(0, 6).map(v => `"${v}"`);
+  if (native) dorkParts.push(`"${native}"`);
+  dorkDiv.innerHTML = `<span style="color:var(--grey-mid)">site:facebook.com</span> ${dorkParts.join(' OR ')}`;
+
+  output.style.display = 'block';
+}
+
+function toggleAnswer(btn, id) {
+  const ans = document.getElementById(id);
+  if (ans.classList.toggle('show')) {
+    btn.textContent = '▲ Masquer la réponse';
+  } else {
+    btn.textContent = '▼ Voir la réponse';
+  }
+}
+
+// Store original feedback text for clean reset
+document.querySelectorAll('.quiz-feedback').forEach(fb => {
+  fb.setAttribute('data-orig', fb.innerHTML);
+});
+
 // ── GLOSSAIRE DATA ──────────────────────────────────────────────────────────
 const glossary = [
   { term: "OSINT", def: "Open Source Intelligence — renseignement à partir de sources légalement accessibles au public : internet, réseaux sociaux, bases de données publiques, images satellites, archives." },
@@ -1574,6 +3159,15 @@ function updateTopbar(id) {
   });
 }
 
+// ── FAQ ACCORDÉON ────────────────────────────────────────────────────────────
+function toggleFaq(btn) {
+  const body = btn.nextElementSibling;
+  const arrow = btn.querySelector('.faq-arrow');
+  const isOpen = body.style.display === 'block';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (arrow) arrow.style.transform = isOpen ? '' : 'rotate(90deg)';
+}
+
 // ── LOCK ────────────────────────────────────────────────────────────────────
 function checkCode() {
   const input = document.getElementById('lock-code');
@@ -1594,47 +3188,106 @@ function submitQuiz(quizId) {
   const container = document.getElementById(quizId + '-container');
   const questions = container.querySelectorAll('.quiz-q');
   let score = 0;
-  let answered = 0;
+  const results = []; // 'ok', 'ko', 'skip' per question
 
   questions.forEach((q, i) => {
     const correct = q.dataset.correct;
     const selected = q.querySelector('input:checked');
     const feedback = q.querySelector('.quiz-feedback');
     const labels = q.querySelectorAll('label');
+    const qText = q.querySelector('.q-text');
 
-    // Reveal correct answer always
+    // Always reveal correct answer in green
     labels.forEach(label => {
       const val = label.querySelector('input').value;
       if (val === correct) label.classList.add('reveal-correct');
     });
 
+    let result = 'skip';
     if (selected) {
-      answered++;
       if (selected.value === correct) {
+        result = 'ok';
         score++;
         selected.closest('label').classList.add('correct');
         feedback.classList.add('show', 'ok');
-        feedback.innerHTML = '✓ Correct ! ' + feedback.innerHTML;
+        feedback.innerHTML = '<strong>✓ Bonne réponse</strong> — ' + feedback.innerHTML;
       } else {
+        result = 'ko';
         selected.closest('label').classList.add('wrong');
         feedback.classList.add('show', 'ko');
-        feedback.innerHTML = '✗ Incorrect. ' + feedback.innerHTML;
+        feedback.innerHTML = '<strong>✗ Incorrect</strong> — ' + feedback.innerHTML;
       }
     } else {
       feedback.classList.add('show', 'ko');
-      feedback.innerHTML = '— Sans réponse. ' + feedback.innerHTML;
+      feedback.innerHTML = '<strong>— Sans réponse</strong> — ' + feedback.innerHTML;
     }
+    results.push(result);
+
+    // Add badge to question text
+    const badge = document.createElement('span');
+    badge.className = `q-badge ${result}`;
+    badge.textContent = result === 'ok' ? '✓ 1 pt' : result === 'ko' ? '✗ 0 pt' : '— 0 pt';
+    qText.appendChild(badge);
 
     // Disable all inputs
     q.querySelectorAll('input').forEach(inp => inp.disabled = true);
   });
 
-  const scoreEl = document.getElementById(quizId + '-score');
+  // Build rich score panel
   const pct = Math.round((score / questions.length) * 100);
-  let msg = pct >= 75 ? '🎯 Excellent !' : pct >= 50 ? '👍 Bien !' : '💪 À revoir.';
-  scoreEl.textContent = `${msg}  Résultat : ${score} / ${questions.length} (${pct}%)`;
+  const msg = pct >= 80 ? '🎯 Excellent !' : pct >= 60 ? '👍 Bien !' : pct >= 40 ? '📖 À retravailler' : '💪 À revoir attentivement';
+  const scoreEl = document.getElementById(quizId + '-score');
+
+  // Build pill list linking to each question
+  const pillsHtml = results.map((r, i) => {
+    return `<span class="quiz-q-pill ${r}" onclick="document.querySelectorAll('#${quizId}-container .quiz-q')[${i}].scrollIntoView({behavior:'smooth',block:'start'})">Q${i+1}</span>`;
+  }).join('');
+
+  scoreEl.innerHTML = `
+    <div class="quiz-score-header">
+      <div class="quiz-score-msg">${msg}</div>
+      <div class="quiz-score-pct">${score} / ${questions.length}</div>
+    </div>
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" style="width:0%" id="${quizId}-bar"></div>
+    </div>
+    <div class="quiz-score-detail">${pillsHtml}</div>
+  `;
   scoreEl.classList.add('show');
+
+  // Animate progress bar
+  setTimeout(() => {
+    const bar = document.getElementById(quizId + '-bar');
+    if (bar) bar.style.width = pct + '%';
+  }, 100);
+
   scoreEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Show post-quiz action buttons
+  const actions = document.getElementById(quizId + '-actions');
+  if (actions) actions.style.display = 'flex';
+}
+
+function resetQuiz(quizId) {
+  const container = document.getElementById(quizId + '-container');
+  container.querySelectorAll('.quiz-q').forEach(q => {
+    q.querySelectorAll('input').forEach(inp => { inp.disabled = false; inp.checked = false; });
+    q.querySelectorAll('label').forEach(l => l.classList.remove('correct', 'wrong', 'reveal-correct'));
+    // Remove badge from question text
+    const badge = q.querySelector('.q-badge');
+    if (badge) badge.remove();
+    // Reset feedback
+    const fb = q.querySelector('.quiz-feedback');
+    fb.classList.remove('show', 'ok', 'ko');
+    const orig = fb.getAttribute('data-orig');
+    if (orig) fb.innerHTML = orig;
+  });
+  const scoreEl = document.getElementById(quizId + '-score');
+  scoreEl.classList.remove('show');
+  scoreEl.innerHTML = '';
+  const actions = document.getElementById(quizId + '-actions');
+  if (actions) actions.style.display = 'none';
+  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 </script>
 </body>
